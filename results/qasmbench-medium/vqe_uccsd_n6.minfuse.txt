@@ -1,0 +1,4192 @@
+Parsing circuit
+
+Processing circuit
+
+Converting statements to qrane tuples ...  Done.
+Constructing domains of one dimension ... 
+Frontr: 123 0 2 3 635 
+Chosen: 0 2 123 
+Frontr: 1 3 635 
+Chosen: 1 3 
+Frontr: 4 635 
+Chosen: 635 
+Frontr: 4 
+Chosen: 4 
+Frontr: 5 
+Chosen: 5 
+Frontr: 6 
+Chosen: 6 
+Frontr: 7 
+Chosen: 7 
+Frontr: 8 
+Chosen: 8 
+Frontr: 13 9 
+Chosen: 9 
+Frontr: 13 10 
+Chosen: 10 
+Frontr: 13 11 
+Chosen: 11 
+Frontr: 13 12 
+Chosen: 12 
+Frontr: 13 
+Chosen: 13 
+Frontr: 14 
+Chosen: 14 
+Frontr: 17 15 
+Chosen: 15 17 
+Frontr: 18 16 
+Chosen: 16 18 
+Frontr: 19 
+Chosen: 19 
+Frontr: 20 
+Chosen: 20 
+Frontr: 21 
+Chosen: 21 
+Frontr: 22 
+Chosen: 22 
+Frontr: 23 
+Chosen: 23 
+Frontr: 28 24 
+Chosen: 24 
+Frontr: 28 25 
+Chosen: 25 
+Frontr: 28 26 
+Chosen: 26 
+Frontr: 28 27 
+Chosen: 27 
+Frontr: 28 
+Chosen: 28 
+Frontr: 29 
+Chosen: 29 
+Frontr: 30 32 
+Chosen: 30 32 
+Frontr: 31 33 
+Chosen: 31 33 
+Frontr: 34 
+Chosen: 34 
+Frontr: 35 
+Chosen: 35 
+Frontr: 36 
+Chosen: 36 
+Frontr: 37 
+Chosen: 37 
+Frontr: 38 
+Chosen: 38 
+Frontr: 39 43 
+Chosen: 39 
+Frontr: 40 43 
+Chosen: 40 
+Frontr: 41 43 
+Chosen: 41 
+Frontr: 42 43 
+Chosen: 42 
+Frontr: 43 
+Chosen: 43 
+Frontr: 44 
+Chosen: 44 
+Frontr: 45 47 
+Chosen: 45 47 
+Frontr: 46 48 
+Chosen: 46 48 
+Frontr: 49 
+Chosen: 49 
+Frontr: 50 
+Chosen: 50 
+Frontr: 51 
+Chosen: 51 
+Frontr: 52 
+Chosen: 52 
+Frontr: 53 
+Chosen: 53 
+Frontr: 54 58 
+Chosen: 54 
+Frontr: 55 58 
+Chosen: 55 
+Frontr: 56 58 
+Chosen: 56 
+Frontr: 57 58 
+Chosen: 57 
+Frontr: 58 
+Chosen: 58 
+Frontr: 59 
+Chosen: 59 
+Frontr: 62 60 
+Chosen: 60 62 
+Frontr: 63 61 
+Chosen: 61 63 
+Frontr: 64 
+Chosen: 64 
+Frontr: 65 
+Chosen: 65 
+Frontr: 66 
+Chosen: 66 
+Frontr: 67 
+Chosen: 67 
+Frontr: 68 
+Chosen: 68 
+Frontr: 73 69 
+Chosen: 69 
+Frontr: 73 70 
+Chosen: 70 
+Frontr: 73 71 
+Chosen: 71 
+Frontr: 73 72 
+Chosen: 72 
+Frontr: 73 
+Chosen: 73 
+Frontr: 74 
+Chosen: 74 
+Frontr: 77 75 
+Chosen: 75 77 
+Frontr: 78 76 
+Chosen: 76 78 
+Frontr: 79 
+Chosen: 79 
+Frontr: 80 
+Chosen: 80 
+Frontr: 81 
+Chosen: 81 
+Frontr: 82 
+Chosen: 82 
+Frontr: 83 
+Chosen: 83 
+Frontr: 88 84 
+Chosen: 84 
+Frontr: 88 85 
+Chosen: 85 
+Frontr: 88 86 
+Chosen: 86 
+Frontr: 88 87 
+Chosen: 87 
+Frontr: 88 
+Chosen: 88 
+Frontr: 89 
+Chosen: 89 
+Frontr: 92 90 
+Chosen: 90 92 
+Frontr: 93 91 
+Chosen: 91 93 
+Frontr: 94 
+Chosen: 94 
+Frontr: 95 
+Chosen: 95 
+Frontr: 96 
+Chosen: 96 
+Frontr: 97 
+Chosen: 97 
+Frontr: 98 
+Chosen: 98 
+Frontr: 103 99 
+Chosen: 99 
+Frontr: 103 100 
+Chosen: 100 
+Frontr: 103 101 
+Chosen: 101 
+Frontr: 103 102 
+Chosen: 102 
+Frontr: 103 
+Chosen: 103 
+Frontr: 104 
+Chosen: 104 
+Frontr: 107 105 
+Chosen: 105 107 
+Frontr: 108 106 
+Chosen: 106 108 
+Frontr: 109 
+Chosen: 109 
+Frontr: 110 
+Chosen: 110 
+Frontr: 111 
+Chosen: 111 
+Frontr: 112 
+Chosen: 112 
+Frontr: 113 
+Chosen: 113 
+Frontr: 118 114 
+Chosen: 114 
+Frontr: 118 115 
+Chosen: 115 
+Frontr: 118 116 
+Chosen: 116 
+Frontr: 118 117 
+Chosen: 117 
+Frontr: 118 
+Chosen: 118 
+Frontr: 119 
+Chosen: 119 
+Frontr: 122 120 
+Chosen: 120 122 
+Frontr: 124 121 
+Chosen: 121 
+Frontr: 124 
+Chosen: 124 
+Frontr: 125 
+Chosen: 125 
+Frontr: 126 
+Chosen: 126 
+Frontr: 127 
+Chosen: 127 
+Frontr: 128 
+Chosen: 128 
+Frontr: 129 
+Chosen: 129 
+Frontr: 130 134 
+Chosen: 130 
+Frontr: 131 134 
+Chosen: 131 
+Frontr: 132 134 
+Chosen: 132 
+Frontr: 133 134 
+Chosen: 133 
+Frontr: 134 
+Chosen: 134 
+Frontr: 135 
+Chosen: 135 
+Frontr: 136 138 
+Chosen: 136 
+Frontr: 137 138 
+Chosen: 137 
+Frontr: 138 
+Chosen: 138 
+Frontr: 139 
+Chosen: 139 
+Frontr: 140 
+Chosen: 140 
+Frontr: 141 
+Chosen: 141 
+Frontr: 142 
+Chosen: 142 
+Frontr: 143 
+Chosen: 143 
+Frontr: 144 
+Chosen: 144 
+Frontr: 145 
+Chosen: 145 
+Frontr: 146 
+Chosen: 146 
+Frontr: 147 151 
+Chosen: 147 
+Frontr: 148 151 
+Chosen: 148 
+Frontr: 149 151 
+Chosen: 149 
+Frontr: 150 151 
+Chosen: 150 
+Frontr: 151 
+Chosen: 151 
+Frontr: 152 
+Chosen: 152 
+Frontr: 153 155 
+Chosen: 153 
+Frontr: 154 155 
+Chosen: 154 
+Frontr: 155 
+Chosen: 155 
+Frontr: 156 
+Chosen: 156 
+Frontr: 157 
+Chosen: 157 
+Frontr: 158 
+Chosen: 158 
+Frontr: 159 
+Chosen: 159 
+Frontr: 160 
+Chosen: 160 
+Frontr: 161 
+Chosen: 161 
+Frontr: 162 
+Chosen: 162 
+Frontr: 163 
+Chosen: 163 
+Frontr: 164 168 
+Chosen: 164 
+Frontr: 165 168 
+Chosen: 165 
+Frontr: 166 168 
+Chosen: 166 
+Frontr: 167 168 
+Chosen: 167 
+Frontr: 168 
+Chosen: 168 
+Frontr: 169 
+Chosen: 169 
+Frontr: 170 172 
+Chosen: 170 
+Frontr: 171 172 
+Chosen: 171 
+Frontr: 172 
+Chosen: 172 
+Frontr: 173 
+Chosen: 173 
+Frontr: 174 
+Chosen: 174 
+Frontr: 175 
+Chosen: 175 
+Frontr: 176 
+Chosen: 176 
+Frontr: 177 
+Chosen: 177 
+Frontr: 178 
+Chosen: 178 
+Frontr: 179 
+Chosen: 179 
+Frontr: 180 
+Chosen: 180 
+Frontr: 181 185 
+Chosen: 181 
+Frontr: 182 185 
+Chosen: 182 
+Frontr: 183 185 
+Chosen: 183 
+Frontr: 184 185 
+Chosen: 184 
+Frontr: 185 
+Chosen: 185 
+Frontr: 186 
+Chosen: 186 
+Frontr: 187 189 
+Chosen: 187 
+Frontr: 188 189 
+Chosen: 188 
+Frontr: 189 
+Chosen: 189 
+Frontr: 190 
+Chosen: 190 
+Frontr: 191 
+Chosen: 191 
+Frontr: 192 
+Chosen: 192 
+Frontr: 193 
+Chosen: 193 
+Frontr: 194 
+Chosen: 194 
+Frontr: 195 
+Chosen: 195 
+Frontr: 196 
+Chosen: 196 
+Frontr: 197 
+Chosen: 197 
+Frontr: 198 202 
+Chosen: 198 
+Frontr: 199 202 
+Chosen: 199 
+Frontr: 200 202 
+Chosen: 200 
+Frontr: 201 202 
+Chosen: 201 
+Frontr: 202 
+Chosen: 202 
+Frontr: 203 
+Chosen: 203 
+Frontr: 204 206 
+Chosen: 204 
+Frontr: 205 206 
+Chosen: 205 
+Frontr: 206 
+Chosen: 206 
+Frontr: 207 
+Chosen: 207 
+Frontr: 208 
+Chosen: 208 
+Frontr: 209 
+Chosen: 209 
+Frontr: 210 
+Chosen: 210 
+Frontr: 211 
+Chosen: 211 
+Frontr: 212 
+Chosen: 212 
+Frontr: 213 
+Chosen: 213 
+Frontr: 214 
+Chosen: 214 
+Frontr: 215 219 
+Chosen: 215 
+Frontr: 216 219 
+Chosen: 216 
+Frontr: 217 219 
+Chosen: 217 
+Frontr: 218 219 
+Chosen: 218 
+Frontr: 219 
+Chosen: 219 
+Frontr: 220 
+Chosen: 220 
+Frontr: 221 223 
+Chosen: 221 
+Frontr: 222 223 
+Chosen: 222 
+Frontr: 223 
+Chosen: 223 
+Frontr: 224 
+Chosen: 224 
+Frontr: 225 
+Chosen: 225 
+Frontr: 226 
+Chosen: 226 
+Frontr: 227 
+Chosen: 227 
+Frontr: 228 
+Chosen: 228 
+Frontr: 229 
+Chosen: 229 
+Frontr: 230 
+Chosen: 230 
+Frontr: 231 
+Chosen: 231 
+Frontr: 232 236 
+Chosen: 232 
+Frontr: 233 236 
+Chosen: 233 
+Frontr: 234 236 
+Chosen: 234 
+Frontr: 235 236 
+Chosen: 235 
+Frontr: 236 
+Chosen: 236 
+Frontr: 237 
+Chosen: 237 
+Frontr: 238 240 
+Chosen: 238 
+Frontr: 239 240 
+Chosen: 239 
+Frontr: 240 
+Chosen: 240 
+Frontr: 241 
+Chosen: 241 
+Frontr: 242 
+Chosen: 242 
+Frontr: 243 
+Chosen: 243 
+Frontr: 244 
+Chosen: 244 
+Frontr: 245 
+Chosen: 245 
+Frontr: 246 
+Chosen: 246 
+Frontr: 247 
+Chosen: 247 
+Frontr: 248 
+Chosen: 248 
+Frontr: 249 253 
+Chosen: 249 
+Frontr: 250 253 
+Chosen: 250 
+Frontr: 251 253 
+Chosen: 251 
+Frontr: 252 253 
+Chosen: 252 
+Frontr: 253 
+Chosen: 253 
+Frontr: 254 
+Chosen: 254 
+Frontr: 255 256 
+Chosen: 255 
+Frontr: 256 
+Chosen: 256 
+Frontr: 258 257 
+Chosen: 257 258 
+Frontr: 259 
+Chosen: 259 
+Frontr: 260 
+Chosen: 260 
+Frontr: 261 
+Chosen: 261 
+Frontr: 262 
+Chosen: 262 
+Frontr: 263 
+Chosen: 263 
+Frontr: 264 
+Chosen: 264 
+Frontr: 269 265 
+Chosen: 265 
+Frontr: 269 266 
+Chosen: 266 
+Frontr: 269 267 
+Chosen: 267 
+Frontr: 269 268 
+Chosen: 268 
+Frontr: 269 
+Chosen: 269 
+Frontr: 270 
+Chosen: 270 
+Frontr: 273 271 
+Chosen: 271 273 
+Frontr: 274 272 
+Chosen: 272 274 
+Frontr: 275 
+Chosen: 275 
+Frontr: 276 
+Chosen: 276 
+Frontr: 277 
+Chosen: 277 
+Frontr: 278 
+Chosen: 278 
+Frontr: 279 
+Chosen: 279 
+Frontr: 284 280 
+Chosen: 280 
+Frontr: 284 281 
+Chosen: 281 
+Frontr: 284 282 
+Chosen: 282 
+Frontr: 284 283 
+Chosen: 283 
+Frontr: 284 
+Chosen: 284 
+Frontr: 285 
+Chosen: 285 
+Frontr: 288 286 
+Chosen: 286 288 
+Frontr: 289 287 
+Chosen: 287 289 
+Frontr: 290 
+Chosen: 290 
+Frontr: 291 
+Chosen: 291 
+Frontr: 292 
+Chosen: 292 
+Frontr: 293 
+Chosen: 293 
+Frontr: 294 
+Chosen: 294 
+Frontr: 299 295 
+Chosen: 295 
+Frontr: 299 296 
+Chosen: 296 
+Frontr: 299 297 
+Chosen: 297 
+Frontr: 299 298 
+Chosen: 298 
+Frontr: 299 
+Chosen: 299 
+Frontr: 300 
+Chosen: 300 
+Frontr: 303 301 
+Chosen: 301 303 
+Frontr: 304 302 
+Chosen: 302 304 
+Frontr: 305 
+Chosen: 305 
+Frontr: 306 
+Chosen: 306 
+Frontr: 307 
+Chosen: 307 
+Frontr: 308 
+Chosen: 308 
+Frontr: 309 
+Chosen: 309 
+Frontr: 314 310 
+Chosen: 310 
+Frontr: 314 311 
+Chosen: 311 
+Frontr: 314 312 
+Chosen: 312 
+Frontr: 314 313 
+Chosen: 313 
+Frontr: 314 
+Chosen: 314 
+Frontr: 315 
+Chosen: 315 
+Frontr: 318 316 
+Chosen: 316 318 
+Frontr: 319 317 
+Chosen: 317 319 
+Frontr: 320 
+Chosen: 320 
+Frontr: 321 
+Chosen: 321 
+Frontr: 322 
+Chosen: 322 
+Frontr: 323 
+Chosen: 323 
+Frontr: 324 
+Chosen: 324 
+Frontr: 329 325 
+Chosen: 325 
+Frontr: 329 326 
+Chosen: 326 
+Frontr: 329 327 
+Chosen: 327 
+Frontr: 329 328 
+Chosen: 328 
+Frontr: 329 
+Chosen: 329 
+Frontr: 330 
+Chosen: 330 
+Frontr: 333 331 
+Chosen: 331 333 
+Frontr: 334 332 
+Chosen: 332 334 
+Frontr: 335 
+Chosen: 335 
+Frontr: 336 
+Chosen: 336 
+Frontr: 337 
+Chosen: 337 
+Frontr: 338 
+Chosen: 338 
+Frontr: 339 
+Chosen: 339 
+Frontr: 344 340 
+Chosen: 340 
+Frontr: 344 341 
+Chosen: 341 
+Frontr: 344 342 
+Chosen: 342 
+Frontr: 344 343 
+Chosen: 343 
+Frontr: 344 
+Chosen: 344 
+Frontr: 345 
+Chosen: 345 
+Frontr: 348 346 
+Chosen: 346 348 
+Frontr: 349 347 
+Chosen: 347 349 
+Frontr: 350 
+Chosen: 350 
+Frontr: 351 
+Chosen: 351 
+Frontr: 352 
+Chosen: 352 
+Frontr: 353 
+Chosen: 353 
+Frontr: 354 
+Chosen: 354 
+Frontr: 359 355 
+Chosen: 355 
+Frontr: 359 356 
+Chosen: 356 
+Frontr: 359 357 
+Chosen: 357 
+Frontr: 359 358 
+Chosen: 358 
+Frontr: 359 
+Chosen: 359 
+Frontr: 360 
+Chosen: 360 
+Frontr: 363 361 
+Chosen: 361 363 
+Frontr: 364 362 
+Chosen: 362 364 
+Frontr: 365 
+Chosen: 365 
+Frontr: 366 
+Chosen: 366 
+Frontr: 367 
+Chosen: 367 
+Frontr: 368 
+Chosen: 368 
+Frontr: 369 
+Chosen: 369 
+Frontr: 374 370 
+Chosen: 370 
+Frontr: 374 371 
+Chosen: 371 
+Frontr: 374 372 
+Chosen: 372 
+Frontr: 374 373 
+Chosen: 373 
+Frontr: 374 
+Chosen: 374 
+Frontr: 375 
+Chosen: 375 
+Frontr: 378 376 
+Chosen: 376 378 
+Frontr: 379 377 
+Chosen: 377 379 
+Frontr: 380 
+Chosen: 380 
+Frontr: 381 
+Chosen: 381 
+Frontr: 382 
+Chosen: 382 
+Frontr: 383 
+Chosen: 383 
+Frontr: 384 
+Chosen: 384 
+Frontr: 385 
+Chosen: 385 
+Frontr: 390 386 
+Chosen: 386 
+Frontr: 390 387 
+Chosen: 387 
+Frontr: 390 388 
+Chosen: 388 
+Frontr: 390 389 
+Chosen: 389 
+Frontr: 390 
+Chosen: 390 
+Frontr: 391 
+Chosen: 391 
+Frontr: 392 
+Chosen: 392 
+Frontr: 395 393 
+Chosen: 393 395 
+Frontr: 396 394 
+Chosen: 394 396 
+Frontr: 397 
+Chosen: 397 
+Frontr: 398 
+Chosen: 398 
+Frontr: 399 
+Chosen: 399 
+Frontr: 400 
+Chosen: 400 
+Frontr: 401 
+Chosen: 401 
+Frontr: 402 
+Chosen: 402 
+Frontr: 407 403 
+Chosen: 403 
+Frontr: 407 404 
+Chosen: 404 
+Frontr: 407 405 
+Chosen: 405 
+Frontr: 407 406 
+Chosen: 406 
+Frontr: 407 
+Chosen: 407 
+Frontr: 408 
+Chosen: 408 
+Frontr: 409 
+Chosen: 409 
+Frontr: 412 410 
+Chosen: 410 412 
+Frontr: 413 411 
+Chosen: 411 413 
+Frontr: 414 
+Chosen: 414 
+Frontr: 415 
+Chosen: 415 
+Frontr: 416 
+Chosen: 416 
+Frontr: 417 
+Chosen: 417 
+Frontr: 418 
+Chosen: 418 
+Frontr: 419 
+Chosen: 419 
+Frontr: 424 420 
+Chosen: 420 
+Frontr: 424 421 
+Chosen: 421 
+Frontr: 424 422 
+Chosen: 422 
+Frontr: 424 423 
+Chosen: 423 
+Frontr: 424 
+Chosen: 424 
+Frontr: 425 
+Chosen: 425 
+Frontr: 426 
+Chosen: 426 
+Frontr: 429 427 
+Chosen: 427 429 
+Frontr: 430 428 
+Chosen: 428 430 
+Frontr: 431 
+Chosen: 431 
+Frontr: 432 
+Chosen: 432 
+Frontr: 433 
+Chosen: 433 
+Frontr: 434 
+Chosen: 434 
+Frontr: 435 
+Chosen: 435 
+Frontr: 436 
+Chosen: 436 
+Frontr: 441 437 
+Chosen: 437 
+Frontr: 441 438 
+Chosen: 438 
+Frontr: 441 439 
+Chosen: 439 
+Frontr: 441 440 
+Chosen: 440 
+Frontr: 441 
+Chosen: 441 
+Frontr: 442 
+Chosen: 442 
+Frontr: 443 
+Chosen: 443 
+Frontr: 446 444 
+Chosen: 444 446 
+Frontr: 447 445 
+Chosen: 445 447 
+Frontr: 448 
+Chosen: 448 
+Frontr: 449 
+Chosen: 449 
+Frontr: 450 
+Chosen: 450 
+Frontr: 451 
+Chosen: 451 
+Frontr: 452 
+Chosen: 452 
+Frontr: 453 
+Chosen: 453 
+Frontr: 458 454 
+Chosen: 454 
+Frontr: 458 455 
+Chosen: 455 
+Frontr: 458 456 
+Chosen: 456 
+Frontr: 458 457 
+Chosen: 457 
+Frontr: 458 
+Chosen: 458 
+Frontr: 459 
+Chosen: 459 
+Frontr: 460 
+Chosen: 460 
+Frontr: 463 461 
+Chosen: 461 463 
+Frontr: 464 462 
+Chosen: 462 464 
+Frontr: 465 
+Chosen: 465 
+Frontr: 466 
+Chosen: 466 
+Frontr: 467 
+Chosen: 467 
+Frontr: 468 
+Chosen: 468 
+Frontr: 469 
+Chosen: 469 
+Frontr: 470 
+Chosen: 470 
+Frontr: 475 471 
+Chosen: 471 
+Frontr: 475 472 
+Chosen: 472 
+Frontr: 475 473 
+Chosen: 473 
+Frontr: 475 474 
+Chosen: 474 
+Frontr: 475 
+Chosen: 475 
+Frontr: 476 
+Chosen: 476 
+Frontr: 477 
+Chosen: 477 
+Frontr: 480 478 
+Chosen: 478 480 
+Frontr: 481 479 
+Chosen: 479 481 
+Frontr: 482 
+Chosen: 482 
+Frontr: 483 
+Chosen: 483 
+Frontr: 484 
+Chosen: 484 
+Frontr: 485 
+Chosen: 485 
+Frontr: 486 
+Chosen: 486 
+Frontr: 487 
+Chosen: 487 
+Frontr: 492 488 
+Chosen: 488 
+Frontr: 492 489 
+Chosen: 489 
+Frontr: 492 490 
+Chosen: 490 
+Frontr: 492 491 
+Chosen: 491 
+Frontr: 492 
+Chosen: 492 
+Frontr: 493 
+Chosen: 493 
+Frontr: 494 
+Chosen: 494 
+Frontr: 497 495 
+Chosen: 495 497 
+Frontr: 498 496 
+Chosen: 496 498 
+Frontr: 499 
+Chosen: 499 
+Frontr: 500 
+Chosen: 500 
+Frontr: 501 
+Chosen: 501 
+Frontr: 502 
+Chosen: 502 
+Frontr: 503 
+Chosen: 503 
+Frontr: 504 
+Chosen: 504 
+Frontr: 509 505 
+Chosen: 505 
+Frontr: 509 506 
+Chosen: 506 
+Frontr: 509 507 
+Chosen: 507 
+Frontr: 509 508 
+Chosen: 508 
+Frontr: 509 
+Chosen: 509 
+Frontr: 512 510 
+Chosen: 510 
+Frontr: 512 511 
+Chosen: 511 
+Frontr: 512 
+Chosen: 512 
+Frontr: 513 
+Chosen: 513 
+Frontr: 516 514 
+Chosen: 514 516 
+Frontr: 517 515 
+Chosen: 515 517 
+Frontr: 518 
+Chosen: 518 
+Frontr: 519 
+Chosen: 519 
+Frontr: 520 
+Chosen: 520 
+Frontr: 521 
+Chosen: 521 
+Frontr: 522 
+Chosen: 522 
+Frontr: 527 523 
+Chosen: 523 
+Frontr: 527 524 
+Chosen: 524 
+Frontr: 527 525 
+Chosen: 525 
+Frontr: 527 526 
+Chosen: 526 
+Frontr: 527 
+Chosen: 527 
+Frontr: 528 
+Chosen: 528 
+Frontr: 531 529 
+Chosen: 529 531 
+Frontr: 532 530 
+Chosen: 530 532 
+Frontr: 533 
+Chosen: 533 
+Frontr: 534 
+Chosen: 534 
+Frontr: 535 
+Chosen: 535 
+Frontr: 536 
+Chosen: 536 
+Frontr: 537 
+Chosen: 537 
+Frontr: 538 542 
+Chosen: 538 
+Frontr: 539 542 
+Chosen: 539 
+Frontr: 540 542 
+Chosen: 540 
+Frontr: 541 542 
+Chosen: 541 
+Frontr: 542 
+Chosen: 542 
+Frontr: 543 
+Chosen: 543 
+Frontr: 544 546 
+Chosen: 544 546 
+Frontr: 545 547 
+Chosen: 545 547 
+Frontr: 548 
+Chosen: 548 
+Frontr: 549 
+Chosen: 549 
+Frontr: 550 
+Chosen: 550 
+Frontr: 551 
+Chosen: 551 
+Frontr: 552 
+Chosen: 552 
+Frontr: 553 557 
+Chosen: 553 
+Frontr: 554 557 
+Chosen: 554 
+Frontr: 555 557 
+Chosen: 555 
+Frontr: 556 557 
+Chosen: 556 
+Frontr: 557 
+Chosen: 557 
+Frontr: 558 
+Chosen: 558 
+Frontr: 559 561 
+Chosen: 559 561 
+Frontr: 560 562 
+Chosen: 560 562 
+Frontr: 563 
+Chosen: 563 
+Frontr: 564 
+Chosen: 564 
+Frontr: 565 
+Chosen: 565 
+Frontr: 566 
+Chosen: 566 
+Frontr: 567 
+Chosen: 567 
+Frontr: 568 572 
+Chosen: 568 
+Frontr: 569 572 
+Chosen: 569 
+Frontr: 570 572 
+Chosen: 570 
+Frontr: 571 572 
+Chosen: 571 
+Frontr: 572 
+Chosen: 572 
+Frontr: 573 
+Chosen: 573 
+Frontr: 574 576 
+Chosen: 574 576 
+Frontr: 575 577 
+Chosen: 575 577 
+Frontr: 578 
+Chosen: 578 
+Frontr: 579 
+Chosen: 579 
+Frontr: 580 
+Chosen: 580 
+Frontr: 581 
+Chosen: 581 
+Frontr: 582 
+Chosen: 582 
+Frontr: 583 587 
+Chosen: 583 
+Frontr: 584 587 
+Chosen: 584 
+Frontr: 585 587 
+Chosen: 585 
+Frontr: 586 587 
+Chosen: 586 
+Frontr: 587 
+Chosen: 587 
+Frontr: 588 
+Chosen: 588 
+Frontr: 589 591 
+Chosen: 589 591 
+Frontr: 590 592 
+Chosen: 590 592 
+Frontr: 593 
+Chosen: 593 
+Frontr: 594 
+Chosen: 594 
+Frontr: 595 
+Chosen: 595 
+Frontr: 596 
+Chosen: 596 
+Frontr: 597 
+Chosen: 597 
+Frontr: 598 602 
+Chosen: 598 
+Frontr: 599 602 
+Chosen: 599 
+Frontr: 600 602 
+Chosen: 600 
+Frontr: 601 602 
+Chosen: 601 
+Frontr: 602 
+Chosen: 602 
+Frontr: 603 
+Chosen: 603 
+Frontr: 604 606 
+Chosen: 604 606 
+Frontr: 605 607 
+Chosen: 605 607 
+Frontr: 608 
+Chosen: 608 
+Frontr: 609 
+Chosen: 609 
+Frontr: 610 
+Chosen: 610 
+Frontr: 611 
+Chosen: 611 
+Frontr: 612 
+Chosen: 612 
+Frontr: 613 617 
+Chosen: 613 
+Frontr: 614 617 
+Chosen: 614 
+Frontr: 615 617 
+Chosen: 615 
+Frontr: 616 617 
+Chosen: 616 
+Frontr: 617 
+Chosen: 617 
+Frontr: 618 
+Chosen: 618 
+Frontr: 619 621 
+Chosen: 619 621 
+Frontr: 620 622 
+Chosen: 620 622 
+Frontr: 623 
+Chosen: 623 
+Frontr: 624 
+Chosen: 624 
+Frontr: 625 
+Chosen: 625 
+Frontr: 626 
+Chosen: 626 
+Frontr: 627 
+Chosen: 627 
+Frontr: 628 630 
+Chosen: 628 
+Frontr: 629 630 
+Chosen: 629 
+Frontr: 630 
+Chosen: 630 
+Frontr: 631 632 
+Chosen: 631 
+Frontr: 632 
+Chosen: 632 
+Frontr: 633 634 
+Chosen: 633 634 
+Frontr: 636 
+Chosen: 636 
+Frontr: 637 
+Chosen: 637 
+Frontr: 638 
+Chosen: 638 
+Frontr: 639 
+Chosen: 639 
+Frontr: 640 
+Chosen: 640 
+Frontr: 641 
+Chosen: 641 
+Frontr: 642 
+Chosen: 642 
+Frontr: 643 647 
+Chosen: 643 
+Frontr: 644 647 
+Chosen: 644 
+Frontr: 645 647 
+Chosen: 645 
+Frontr: 646 647 
+Chosen: 646 
+Frontr: 647 
+Chosen: 647 
+Frontr: 648 
+Chosen: 648 
+Frontr: 649 651 
+Chosen: 649 
+Frontr: 650 651 
+Chosen: 650 
+Frontr: 651 
+Chosen: 651 
+Frontr: 652 
+Chosen: 652 
+Frontr: 653 
+Chosen: 653 
+Frontr: 654 
+Chosen: 654 
+Frontr: 655 
+Chosen: 655 
+Frontr: 656 
+Chosen: 656 
+Frontr: 657 
+Chosen: 657 
+Frontr: 658 
+Chosen: 658 
+Frontr: 659 
+Chosen: 659 
+Frontr: 660 
+Chosen: 660 
+Frontr: 661 
+Chosen: 661 
+Frontr: 662 666 
+Chosen: 662 
+Frontr: 663 666 
+Chosen: 663 
+Frontr: 664 666 
+Chosen: 664 
+Frontr: 665 666 
+Chosen: 665 
+Frontr: 666 
+Chosen: 666 
+Frontr: 667 
+Chosen: 667 
+Frontr: 668 670 
+Chosen: 668 
+Frontr: 669 670 
+Chosen: 669 
+Frontr: 670 
+Chosen: 670 
+Frontr: 671 
+Chosen: 671 
+Frontr: 672 
+Chosen: 672 
+Frontr: 673 
+Chosen: 673 
+Frontr: 674 
+Chosen: 674 
+Frontr: 675 
+Chosen: 675 
+Frontr: 676 
+Chosen: 676 
+Frontr: 677 
+Chosen: 677 
+Frontr: 678 
+Chosen: 678 
+Frontr: 679 
+Chosen: 679 
+Frontr: 680 
+Chosen: 680 
+Frontr: 681 685 
+Chosen: 681 
+Frontr: 682 685 
+Chosen: 682 
+Frontr: 683 685 
+Chosen: 683 
+Frontr: 684 685 
+Chosen: 684 
+Frontr: 685 
+Chosen: 685 
+Frontr: 686 
+Chosen: 686 
+Frontr: 687 689 
+Chosen: 687 
+Frontr: 688 689 
+Chosen: 688 
+Frontr: 689 
+Chosen: 689 
+Frontr: 690 
+Chosen: 690 
+Frontr: 691 
+Chosen: 691 
+Frontr: 692 
+Chosen: 692 
+Frontr: 693 
+Chosen: 693 
+Frontr: 694 
+Chosen: 694 
+Frontr: 695 
+Chosen: 695 
+Frontr: 696 
+Chosen: 696 
+Frontr: 697 
+Chosen: 697 
+Frontr: 698 
+Chosen: 698 
+Frontr: 699 
+Chosen: 699 
+Frontr: 700 704 
+Chosen: 700 
+Frontr: 701 704 
+Chosen: 701 
+Frontr: 702 704 
+Chosen: 702 
+Frontr: 703 704 
+Chosen: 703 
+Frontr: 704 
+Chosen: 704 
+Frontr: 705 
+Chosen: 705 
+Frontr: 706 708 
+Chosen: 706 
+Frontr: 707 708 
+Chosen: 707 
+Frontr: 708 
+Chosen: 708 
+Frontr: 709 
+Chosen: 709 
+Frontr: 710 
+Chosen: 710 
+Frontr: 711 
+Chosen: 711 
+Frontr: 712 
+Chosen: 712 
+Frontr: 713 
+Chosen: 713 
+Frontr: 714 
+Chosen: 714 
+Frontr: 715 
+Chosen: 715 
+Frontr: 716 
+Chosen: 716 
+Frontr: 717 
+Chosen: 717 
+Frontr: 718 
+Chosen: 718 
+Frontr: 719 723 
+Chosen: 719 
+Frontr: 720 723 
+Chosen: 720 
+Frontr: 721 723 
+Chosen: 721 
+Frontr: 722 723 
+Chosen: 722 
+Frontr: 723 
+Chosen: 723 
+Frontr: 724 
+Chosen: 724 
+Frontr: 725 727 
+Chosen: 725 
+Frontr: 726 727 
+Chosen: 726 
+Frontr: 727 
+Chosen: 727 
+Frontr: 728 
+Chosen: 728 
+Frontr: 729 
+Chosen: 729 
+Frontr: 730 
+Chosen: 730 
+Frontr: 731 
+Chosen: 731 
+Frontr: 732 
+Chosen: 732 
+Frontr: 733 
+Chosen: 733 
+Frontr: 734 
+Chosen: 734 
+Frontr: 735 
+Chosen: 735 
+Frontr: 736 
+Chosen: 736 
+Frontr: 737 
+Chosen: 737 
+Frontr: 738 742 
+Chosen: 738 
+Frontr: 739 742 
+Chosen: 739 
+Frontr: 740 742 
+Chosen: 740 
+Frontr: 741 742 
+Chosen: 741 
+Frontr: 742 
+Chosen: 742 
+Frontr: 743 
+Chosen: 743 
+Frontr: 744 746 
+Chosen: 744 
+Frontr: 745 746 
+Chosen: 745 
+Frontr: 746 
+Chosen: 746 
+Frontr: 747 
+Chosen: 747 
+Frontr: 748 
+Chosen: 748 
+Frontr: 749 
+Chosen: 749 
+Frontr: 750 
+Chosen: 750 
+Frontr: 751 
+Chosen: 751 
+Frontr: 752 
+Chosen: 752 
+Frontr: 753 
+Chosen: 753 
+Frontr: 754 
+Chosen: 754 
+Frontr: 755 
+Chosen: 755 
+Frontr: 756 
+Chosen: 756 
+Frontr: 757 761 
+Chosen: 757 
+Frontr: 758 761 
+Chosen: 758 
+Frontr: 759 761 
+Chosen: 759 
+Frontr: 760 761 
+Chosen: 760 
+Frontr: 761 
+Chosen: 761 
+Frontr: 762 
+Chosen: 762 
+Frontr: 763 765 
+Chosen: 763 
+Frontr: 764 765 
+Chosen: 764 
+Frontr: 765 
+Chosen: 765 
+Frontr: 766 
+Chosen: 766 
+Frontr: 767 
+Chosen: 767 
+Frontr: 768 
+Chosen: 768 
+Frontr: 769 
+Chosen: 769 
+Frontr: 770 
+Chosen: 770 
+Frontr: 771 
+Chosen: 771 
+Frontr: 772 
+Chosen: 772 
+Frontr: 773 
+Chosen: 773 
+Frontr: 774 
+Chosen: 774 
+Frontr: 775 
+Chosen: 775 
+Frontr: 776 780 
+Chosen: 776 
+Frontr: 777 780 
+Chosen: 777 
+Frontr: 778 780 
+Chosen: 778 
+Frontr: 779 780 
+Chosen: 779 
+Frontr: 780 
+Chosen: 780 
+Frontr: 781 
+Chosen: 781 
+Frontr: 782 783 
+Chosen: 782 
+Frontr: 783 
+Chosen: 783 
+Frontr: 784 785 
+Chosen: 784 
+Frontr: 785 
+Chosen: 785 
+Frontr: 786 
+Chosen: 786 
+Frontr: 787 
+Chosen: 787 
+Frontr: 788 
+Chosen: 788 
+Frontr: 789 
+Chosen: 789 
+Frontr: 790 
+Chosen: 790 
+Frontr: 791 
+Chosen: 791 
+Frontr: 792 
+Chosen: 792 
+Frontr: 793 
+Chosen: 793 
+Frontr: 794 798 
+Chosen: 794 
+Frontr: 795 798 
+Chosen: 795 
+Frontr: 796 798 
+Chosen: 796 
+Frontr: 797 798 
+Chosen: 797 
+Frontr: 798 
+Chosen: 798 
+Frontr: 799 
+Chosen: 799 
+Frontr: 800 802 
+Chosen: 800 
+Frontr: 801 802 
+Chosen: 801 
+Frontr: 802 
+Chosen: 802 
+Frontr: 803 
+Chosen: 803 
+Frontr: 804 
+Chosen: 804 
+Frontr: 805 
+Chosen: 805 
+Frontr: 806 
+Chosen: 806 
+Frontr: 807 
+Chosen: 807 
+Frontr: 808 
+Chosen: 808 
+Frontr: 809 
+Chosen: 809 
+Frontr: 810 
+Chosen: 810 
+Frontr: 811 815 
+Chosen: 811 
+Frontr: 812 815 
+Chosen: 812 
+Frontr: 813 815 
+Chosen: 813 
+Frontr: 814 815 
+Chosen: 814 
+Frontr: 815 
+Chosen: 815 
+Frontr: 816 
+Chosen: 816 
+Frontr: 817 819 
+Chosen: 817 
+Frontr: 818 819 
+Chosen: 818 
+Frontr: 819 
+Chosen: 819 
+Frontr: 820 
+Chosen: 820 
+Frontr: 821 
+Chosen: 821 
+Frontr: 822 
+Chosen: 822 
+Frontr: 823 
+Chosen: 823 
+Frontr: 824 
+Chosen: 824 
+Frontr: 825 
+Chosen: 825 
+Frontr: 826 
+Chosen: 826 
+Frontr: 827 
+Chosen: 827 
+Frontr: 828 832 
+Chosen: 828 
+Frontr: 829 832 
+Chosen: 829 
+Frontr: 830 832 
+Chosen: 830 
+Frontr: 831 832 
+Chosen: 831 
+Frontr: 832 
+Chosen: 832 
+Frontr: 833 
+Chosen: 833 
+Frontr: 834 836 
+Chosen: 834 
+Frontr: 835 836 
+Chosen: 835 
+Frontr: 836 
+Chosen: 836 
+Frontr: 837 
+Chosen: 837 
+Frontr: 838 
+Chosen: 838 
+Frontr: 839 
+Chosen: 839 
+Frontr: 840 
+Chosen: 840 
+Frontr: 841 
+Chosen: 841 
+Frontr: 842 
+Chosen: 842 
+Frontr: 843 
+Chosen: 843 
+Frontr: 844 
+Chosen: 844 
+Frontr: 845 849 
+Chosen: 845 
+Frontr: 846 849 
+Chosen: 846 
+Frontr: 847 849 
+Chosen: 847 
+Frontr: 848 849 
+Chosen: 848 
+Frontr: 849 
+Chosen: 849 
+Frontr: 850 
+Chosen: 850 
+Frontr: 851 853 
+Chosen: 851 
+Frontr: 852 853 
+Chosen: 852 
+Frontr: 853 
+Chosen: 853 
+Frontr: 854 
+Chosen: 854 
+Frontr: 855 
+Chosen: 855 
+Frontr: 856 
+Chosen: 856 
+Frontr: 857 
+Chosen: 857 
+Frontr: 858 
+Chosen: 858 
+Frontr: 859 
+Chosen: 859 
+Frontr: 860 
+Chosen: 860 
+Frontr: 861 
+Chosen: 861 
+Frontr: 862 866 
+Chosen: 862 
+Frontr: 863 866 
+Chosen: 863 
+Frontr: 864 866 
+Chosen: 864 
+Frontr: 865 866 
+Chosen: 865 
+Frontr: 866 
+Chosen: 866 
+Frontr: 867 
+Chosen: 867 
+Frontr: 868 870 
+Chosen: 868 
+Frontr: 869 870 
+Chosen: 869 
+Frontr: 870 
+Chosen: 870 
+Frontr: 871 
+Chosen: 871 
+Frontr: 872 
+Chosen: 872 
+Frontr: 873 
+Chosen: 873 
+Frontr: 874 
+Chosen: 874 
+Frontr: 875 
+Chosen: 875 
+Frontr: 876 
+Chosen: 876 
+Frontr: 877 
+Chosen: 877 
+Frontr: 878 
+Chosen: 878 
+Frontr: 879 883 
+Chosen: 879 
+Frontr: 880 883 
+Chosen: 880 
+Frontr: 881 883 
+Chosen: 881 
+Frontr: 882 883 
+Chosen: 882 
+Frontr: 883 
+Chosen: 883 
+Frontr: 884 
+Chosen: 884 
+Frontr: 885 887 
+Chosen: 885 
+Frontr: 886 887 
+Chosen: 886 
+Frontr: 887 
+Chosen: 887 
+Frontr: 888 
+Chosen: 888 
+Frontr: 889 
+Chosen: 889 
+Frontr: 890 
+Chosen: 890 
+Frontr: 891 
+Chosen: 891 
+Frontr: 892 
+Chosen: 892 
+Frontr: 893 
+Chosen: 893 
+Frontr: 894 
+Chosen: 894 
+Frontr: 895 
+Chosen: 895 
+Frontr: 896 900 
+Chosen: 896 
+Frontr: 897 900 
+Chosen: 897 
+Frontr: 898 900 
+Chosen: 898 
+Frontr: 899 900 
+Chosen: 899 
+Frontr: 900 
+Chosen: 900 
+Frontr: 901 
+Chosen: 901 
+Frontr: 902 904 
+Chosen: 902 
+Frontr: 903 904 
+Chosen: 903 
+Frontr: 904 
+Chosen: 904 
+Frontr: 905 
+Chosen: 905 
+Frontr: 906 
+Chosen: 906 
+Frontr: 907 
+Chosen: 907 
+Frontr: 908 
+Chosen: 908 
+Frontr: 909 
+Chosen: 909 
+Frontr: 910 
+Chosen: 910 
+Frontr: 911 
+Chosen: 911 
+Frontr: 912 
+Chosen: 912 
+Frontr: 913 917 
+Chosen: 913 
+Frontr: 914 917 
+Chosen: 914 
+Frontr: 915 917 
+Chosen: 915 
+Frontr: 916 917 
+Chosen: 916 
+Frontr: 917 
+Chosen: 917 
+Frontr: 918 
+Chosen: 918 
+Frontr: 919 921 
+Chosen: 919 
+Frontr: 920 921 
+Chosen: 920 
+Frontr: 921 
+Chosen: 921 
+Frontr: 922 
+Chosen: 922 
+Frontr: 923 
+Chosen: 923 
+Frontr: 924 
+Chosen: 924 
+Frontr: 925 
+Chosen: 925 
+Frontr: 926 
+Chosen: 926 
+Frontr: 927 
+Chosen: 927 
+Frontr: 928 
+Chosen: 928 
+Frontr: 929 
+Chosen: 929 
+Frontr: 930 
+Chosen: 930 
+Frontr: 931 935 
+Chosen: 931 
+Frontr: 932 935 
+Chosen: 932 
+Frontr: 933 935 
+Chosen: 933 
+Frontr: 934 935 
+Chosen: 934 
+Frontr: 935 
+Chosen: 935 
+Frontr: 936 
+Chosen: 936 
+Frontr: 937 
+Chosen: 937 
+Frontr: 938 940 
+Chosen: 938 
+Frontr: 939 940 
+Chosen: 939 
+Frontr: 940 
+Chosen: 940 
+Frontr: 941 
+Chosen: 941 
+Frontr: 942 
+Chosen: 942 
+Frontr: 943 
+Chosen: 943 
+Frontr: 944 
+Chosen: 944 
+Frontr: 945 
+Chosen: 945 
+Frontr: 946 
+Chosen: 946 
+Frontr: 947 
+Chosen: 947 
+Frontr: 948 
+Chosen: 948 
+Frontr: 949 
+Chosen: 949 
+Frontr: 950 954 
+Chosen: 950 
+Frontr: 951 954 
+Chosen: 951 
+Frontr: 952 954 
+Chosen: 952 
+Frontr: 953 954 
+Chosen: 953 
+Frontr: 954 
+Chosen: 954 
+Frontr: 955 
+Chosen: 955 
+Frontr: 956 
+Chosen: 956 
+Frontr: 957 959 
+Chosen: 957 
+Frontr: 958 959 
+Chosen: 958 
+Frontr: 959 
+Chosen: 959 
+Frontr: 960 
+Chosen: 960 
+Frontr: 961 
+Chosen: 961 
+Frontr: 962 
+Chosen: 962 
+Frontr: 963 
+Chosen: 963 
+Frontr: 964 
+Chosen: 964 
+Frontr: 965 
+Chosen: 965 
+Frontr: 966 
+Chosen: 966 
+Frontr: 967 
+Chosen: 967 
+Frontr: 968 
+Chosen: 968 
+Frontr: 969 973 
+Chosen: 969 
+Frontr: 970 973 
+Chosen: 970 
+Frontr: 971 973 
+Chosen: 971 
+Frontr: 972 973 
+Chosen: 972 
+Frontr: 973 
+Chosen: 973 
+Frontr: 974 
+Chosen: 974 
+Frontr: 975 
+Chosen: 975 
+Frontr: 976 978 
+Chosen: 976 
+Frontr: 977 978 
+Chosen: 977 
+Frontr: 978 
+Chosen: 978 
+Frontr: 979 
+Chosen: 979 
+Frontr: 980 
+Chosen: 980 
+Frontr: 981 
+Chosen: 981 
+Frontr: 982 
+Chosen: 982 
+Frontr: 983 
+Chosen: 983 
+Frontr: 984 
+Chosen: 984 
+Frontr: 985 
+Chosen: 985 
+Frontr: 986 
+Chosen: 986 
+Frontr: 987 
+Chosen: 987 
+Frontr: 988 992 
+Chosen: 988 
+Frontr: 989 992 
+Chosen: 989 
+Frontr: 990 992 
+Chosen: 990 
+Frontr: 991 992 
+Chosen: 991 
+Frontr: 992 
+Chosen: 992 
+Frontr: 993 
+Chosen: 993 
+Frontr: 994 
+Chosen: 994 
+Frontr: 995 997 
+Chosen: 995 
+Frontr: 996 997 
+Chosen: 996 
+Frontr: 997 
+Chosen: 997 
+Frontr: 998 
+Chosen: 998 
+Frontr: 999 
+Chosen: 999 
+Frontr: 1000 
+Chosen: 1000 
+Frontr: 1001 
+Chosen: 1001 
+Frontr: 1002 
+Chosen: 1002 
+Frontr: 1003 
+Chosen: 1003 
+Frontr: 1004 
+Chosen: 1004 
+Frontr: 1005 
+Chosen: 1005 
+Frontr: 1006 
+Chosen: 1006 
+Frontr: 1007 1011 
+Chosen: 1007 
+Frontr: 1008 1011 
+Chosen: 1008 
+Frontr: 1009 1011 
+Chosen: 1009 
+Frontr: 1010 1011 
+Chosen: 1010 
+Frontr: 1011 
+Chosen: 1011 
+Frontr: 1012 
+Chosen: 1012 
+Frontr: 1013 
+Chosen: 1013 
+Frontr: 1014 1016 
+Chosen: 1014 
+Frontr: 1015 1016 
+Chosen: 1015 
+Frontr: 1016 
+Chosen: 1016 
+Frontr: 1017 
+Chosen: 1017 
+Frontr: 1018 
+Chosen: 1018 
+Frontr: 1019 
+Chosen: 1019 
+Frontr: 1020 
+Chosen: 1020 
+Frontr: 1021 
+Chosen: 1021 
+Frontr: 1022 
+Chosen: 1022 
+Frontr: 1023 
+Chosen: 1023 
+Frontr: 1024 
+Chosen: 1024 
+Frontr: 1025 
+Chosen: 1025 
+Frontr: 1026 1030 
+Chosen: 1026 
+Frontr: 1027 1030 
+Chosen: 1027 
+Frontr: 1028 1030 
+Chosen: 1028 
+Frontr: 1029 1030 
+Chosen: 1029 
+Frontr: 1030 
+Chosen: 1030 
+Frontr: 1031 
+Chosen: 1031 
+Frontr: 1032 
+Chosen: 1032 
+Frontr: 1033 1035 
+Chosen: 1033 
+Frontr: 1034 1035 
+Chosen: 1034 
+Frontr: 1035 
+Chosen: 1035 
+Frontr: 1036 
+Chosen: 1036 
+Frontr: 1037 
+Chosen: 1037 
+Frontr: 1038 
+Chosen: 1038 
+Frontr: 1039 
+Chosen: 1039 
+Frontr: 1040 
+Chosen: 1040 
+Frontr: 1041 
+Chosen: 1041 
+Frontr: 1042 
+Chosen: 1042 
+Frontr: 1043 
+Chosen: 1043 
+Frontr: 1044 
+Chosen: 1044 
+Frontr: 1045 1049 
+Chosen: 1045 
+Frontr: 1046 1049 
+Chosen: 1046 
+Frontr: 1047 1049 
+Chosen: 1047 
+Frontr: 1048 1049 
+Chosen: 1048 
+Frontr: 1049 
+Chosen: 1049 
+Frontr: 1050 
+Chosen: 1050 
+Frontr: 1051 
+Chosen: 1051 
+Frontr: 1052 1054 
+Chosen: 1052 
+Frontr: 1053 1054 
+Chosen: 1053 
+Frontr: 1054 
+Chosen: 1054 
+Frontr: 1055 
+Chosen: 1055 
+Frontr: 1056 
+Chosen: 1056 
+Frontr: 1057 
+Chosen: 1057 
+Frontr: 1058 
+Chosen: 1058 
+Frontr: 1059 
+Chosen: 1059 
+Frontr: 1060 
+Chosen: 1060 
+Frontr: 1061 
+Chosen: 1061 
+Frontr: 1062 
+Chosen: 1062 
+Frontr: 1063 
+Chosen: 1063 
+Frontr: 1064 1068 
+Chosen: 1064 
+Frontr: 1065 1068 
+Chosen: 1065 
+Frontr: 1066 1068 
+Chosen: 1066 
+Frontr: 1067 1068 
+Chosen: 1067 
+Frontr: 1068 
+Chosen: 1068 
+Frontr: 1069 1071 
+Chosen: 1069 
+Frontr: 1070 1071 
+Chosen: 1070 
+Frontr: 1071 
+Chosen: 1071 
+Frontr: 1072 
+Chosen: 1072 
+Frontr: 1073 1075 
+Chosen: 1073 
+Frontr: 1074 1075 
+Chosen: 1074 
+Frontr: 1075 
+Chosen: 1075 
+Frontr: 1076 
+Chosen: 1076 
+Frontr: 1077 
+Chosen: 1077 
+Frontr: 1078 
+Chosen: 1078 
+Frontr: 1079 
+Chosen: 1079 
+Frontr: 1080 
+Chosen: 1080 
+Frontr: 1081 
+Chosen: 1081 
+Frontr: 1082 
+Chosen: 1082 
+Frontr: 1083 
+Chosen: 1083 
+Frontr: 1084 1088 
+Chosen: 1084 
+Frontr: 1085 1088 
+Chosen: 1085 
+Frontr: 1086 1088 
+Chosen: 1086 
+Frontr: 1087 1088 
+Chosen: 1087 
+Frontr: 1088 
+Chosen: 1088 
+Frontr: 1089 
+Chosen: 1089 
+Frontr: 1090 1092 
+Chosen: 1090 
+Frontr: 1091 1092 
+Chosen: 1091 
+Frontr: 1092 
+Chosen: 1092 
+Frontr: 1093 
+Chosen: 1093 
+Frontr: 1094 
+Chosen: 1094 
+Frontr: 1095 
+Chosen: 1095 
+Frontr: 1096 
+Chosen: 1096 
+Frontr: 1097 
+Chosen: 1097 
+Frontr: 1098 
+Chosen: 1098 
+Frontr: 1099 
+Chosen: 1099 
+Frontr: 1100 
+Chosen: 1100 
+Frontr: 1101 1105 
+Chosen: 1101 
+Frontr: 1102 1105 
+Chosen: 1102 
+Frontr: 1103 1105 
+Chosen: 1103 
+Frontr: 1104 1105 
+Chosen: 1104 
+Frontr: 1105 
+Chosen: 1105 
+Frontr: 1106 
+Chosen: 1106 
+Frontr: 1109 1107 
+Chosen: 1107 
+Frontr: 1109 1108 
+Chosen: 1108 
+Frontr: 1109 
+Chosen: 1109 
+Frontr: 1110 
+Chosen: 1110 
+Frontr: 1111 
+Chosen: 1111 
+Frontr: 1112 
+Chosen: 1112 
+Frontr: 1113 
+Chosen: 1113 
+Frontr: 1114 
+Chosen: 1114 
+Frontr: 1115 
+Chosen: 1115 
+Frontr: 1116 
+Chosen: 1116 
+Frontr: 1117 
+Chosen: 1117 
+Frontr: 1122 1118 
+Chosen: 1118 
+Frontr: 1122 1119 
+Chosen: 1119 
+Frontr: 1122 1120 
+Chosen: 1120 
+Frontr: 1122 1121 
+Chosen: 1121 
+Frontr: 1122 
+Chosen: 1122 
+Frontr: 1123 
+Chosen: 1123 
+Frontr: 1126 1124 
+Chosen: 1124 
+Frontr: 1126 1125 
+Chosen: 1125 
+Frontr: 1126 
+Chosen: 1126 
+Frontr: 1127 
+Chosen: 1127 
+Frontr: 1128 
+Chosen: 1128 
+Frontr: 1129 
+Chosen: 1129 
+Frontr: 1130 
+Chosen: 1130 
+Frontr: 1131 
+Chosen: 1131 
+Frontr: 1132 
+Chosen: 1132 
+Frontr: 1133 
+Chosen: 1133 
+Frontr: 1134 
+Chosen: 1134 
+Frontr: 1139 1135 
+Chosen: 1135 
+Frontr: 1139 1136 
+Chosen: 1136 
+Frontr: 1139 1137 
+Chosen: 1137 
+Frontr: 1139 1138 
+Chosen: 1138 
+Frontr: 1139 
+Chosen: 1139 
+Frontr: 1140 
+Chosen: 1140 
+Frontr: 1143 1141 
+Chosen: 1141 
+Frontr: 1143 1142 
+Chosen: 1142 
+Frontr: 1143 
+Chosen: 1143 
+Frontr: 1144 
+Chosen: 1144 
+Frontr: 1145 
+Chosen: 1145 
+Frontr: 1146 
+Chosen: 1146 
+Frontr: 1147 
+Chosen: 1147 
+Frontr: 1148 
+Chosen: 1148 
+Frontr: 1149 
+Chosen: 1149 
+Frontr: 1150 
+Chosen: 1150 
+Frontr: 1151 
+Chosen: 1151 
+Frontr: 1156 1152 
+Chosen: 1152 
+Frontr: 1156 1153 
+Chosen: 1153 
+Frontr: 1156 1154 
+Chosen: 1154 
+Frontr: 1156 1155 
+Chosen: 1155 
+Frontr: 1156 
+Chosen: 1156 
+Frontr: 1157 
+Chosen: 1157 
+Frontr: 1160 1158 
+Chosen: 1158 
+Frontr: 1160 1159 
+Chosen: 1159 
+Frontr: 1160 
+Chosen: 1160 
+Frontr: 1161 
+Chosen: 1161 
+Frontr: 1162 
+Chosen: 1162 
+Frontr: 1163 
+Chosen: 1163 
+Frontr: 1164 
+Chosen: 1164 
+Frontr: 1165 
+Chosen: 1165 
+Frontr: 1166 
+Chosen: 1166 
+Frontr: 1167 
+Chosen: 1167 
+Frontr: 1168 
+Chosen: 1168 
+Frontr: 1173 1169 
+Chosen: 1169 
+Frontr: 1173 1170 
+Chosen: 1170 
+Frontr: 1173 1171 
+Chosen: 1171 
+Frontr: 1173 1172 
+Chosen: 1172 
+Frontr: 1173 
+Chosen: 1173 
+Frontr: 1174 
+Chosen: 1174 
+Frontr: 1177 1175 
+Chosen: 1175 
+Frontr: 1177 1176 
+Chosen: 1176 
+Frontr: 1177 
+Chosen: 1177 
+Frontr: 1178 
+Chosen: 1178 
+Frontr: 1179 
+Chosen: 1179 
+Frontr: 1180 
+Chosen: 1180 
+Frontr: 1181 
+Chosen: 1181 
+Frontr: 1182 
+Chosen: 1182 
+Frontr: 1183 
+Chosen: 1183 
+Frontr: 1184 
+Chosen: 1184 
+Frontr: 1185 
+Chosen: 1185 
+Frontr: 1190 1186 
+Chosen: 1186 
+Frontr: 1190 1187 
+Chosen: 1187 
+Frontr: 1190 1188 
+Chosen: 1188 
+Frontr: 1190 1189 
+Chosen: 1189 
+Frontr: 1190 
+Chosen: 1190 
+Frontr: 1191 
+Chosen: 1191 
+Frontr: 1194 1192 
+Chosen: 1192 
+Frontr: 1194 1193 
+Chosen: 1193 
+Frontr: 1194 
+Chosen: 1194 
+Frontr: 1195 
+Chosen: 1195 
+Frontr: 1196 
+Chosen: 1196 
+Frontr: 1197 
+Chosen: 1197 
+Frontr: 1198 
+Chosen: 1198 
+Frontr: 1199 
+Chosen: 1199 
+Frontr: 1200 
+Chosen: 1200 
+Frontr: 1201 
+Chosen: 1201 
+Frontr: 1202 
+Chosen: 1202 
+Frontr: 1205 1203 
+Chosen: 1203 
+Frontr: 1205 1204 
+Chosen: 1204 
+Frontr: 1205 
+Chosen: 1205 
+Frontr: 1206 
+Chosen: 1206 
+Frontr: 1208 1207 
+Chosen: 1207 
+Frontr: 1208 
+Chosen: 1208 
+Frontr: 1210 1209 
+Chosen: 1209 1210 
+Frontr: 1211 
+Chosen: 1211 
+Frontr: 1212 
+Chosen: 1212 
+Frontr: 1213 
+Chosen: 1213 
+Frontr: 1214 
+Chosen: 1214 
+Frontr: 1215 
+Chosen: 1215 
+Frontr: 1216 
+Chosen: 1216 
+Frontr: 1221 1217 
+Chosen: 1217 
+Frontr: 1221 1218 
+Chosen: 1218 
+Frontr: 1221 1219 
+Chosen: 1219 
+Frontr: 1221 1220 
+Chosen: 1220 
+Frontr: 1221 
+Chosen: 1221 
+Frontr: 1222 
+Chosen: 1222 
+Frontr: 1225 1223 
+Chosen: 1223 1225 
+Frontr: 1226 1224 
+Chosen: 1224 1226 
+Frontr: 1227 
+Chosen: 1227 
+Frontr: 1228 
+Chosen: 1228 
+Frontr: 1229 
+Chosen: 1229 
+Frontr: 1230 
+Chosen: 1230 
+Frontr: 1231 
+Chosen: 1231 
+Frontr: 1236 1232 
+Chosen: 1232 
+Frontr: 1236 1233 
+Chosen: 1233 
+Frontr: 1236 1234 
+Chosen: 1234 
+Frontr: 1236 1235 
+Chosen: 1235 
+Frontr: 1236 
+Chosen: 1236 
+Frontr: 1237 
+Chosen: 1237 
+Frontr: 1240 1238 
+Chosen: 1238 1240 
+Frontr: 1241 1239 
+Chosen: 1239 1241 
+Frontr: 1242 
+Chosen: 1242 
+Frontr: 1243 
+Chosen: 1243 
+Frontr: 1244 
+Chosen: 1244 
+Frontr: 1245 
+Chosen: 1245 
+Frontr: 1246 
+Chosen: 1246 
+Frontr: 1251 1247 
+Chosen: 1247 
+Frontr: 1251 1248 
+Chosen: 1248 
+Frontr: 1251 1249 
+Chosen: 1249 
+Frontr: 1251 1250 
+Chosen: 1250 
+Frontr: 1251 
+Chosen: 1251 
+Frontr: 1252 
+Chosen: 1252 
+Frontr: 1255 1253 
+Chosen: 1253 1255 
+Frontr: 1256 1254 
+Chosen: 1254 1256 
+Frontr: 1257 
+Chosen: 1257 
+Frontr: 1258 
+Chosen: 1258 
+Frontr: 1259 
+Chosen: 1259 
+Frontr: 1260 
+Chosen: 1260 
+Frontr: 1261 
+Chosen: 1261 
+Frontr: 1266 1262 
+Chosen: 1262 
+Frontr: 1266 1263 
+Chosen: 1263 
+Frontr: 1266 1264 
+Chosen: 1264 
+Frontr: 1266 1265 
+Chosen: 1265 
+Frontr: 1266 
+Chosen: 1266 
+Frontr: 1267 
+Chosen: 1267 
+Frontr: 1270 1268 
+Chosen: 1268 1270 
+Frontr: 1271 1269 
+Chosen: 1269 1271 
+Frontr: 1272 
+Chosen: 1272 
+Frontr: 1273 
+Chosen: 1273 
+Frontr: 1274 
+Chosen: 1274 
+Frontr: 1275 
+Chosen: 1275 
+Frontr: 1276 
+Chosen: 1276 
+Frontr: 1281 1277 
+Chosen: 1277 
+Frontr: 1281 1278 
+Chosen: 1278 
+Frontr: 1281 1279 
+Chosen: 1279 
+Frontr: 1281 1280 
+Chosen: 1280 
+Frontr: 1281 
+Chosen: 1281 
+Frontr: 1282 
+Chosen: 1282 
+Frontr: 1285 1283 
+Chosen: 1283 1285 
+Frontr: 1286 1284 
+Chosen: 1284 1286 
+Frontr: 1287 
+Chosen: 1287 
+Frontr: 1288 
+Chosen: 1288 
+Frontr: 1289 
+Chosen: 1289 
+Frontr: 1290 
+Chosen: 1290 
+Frontr: 1291 
+Chosen: 1291 
+Frontr: 1296 1292 
+Chosen: 1292 
+Frontr: 1296 1293 
+Chosen: 1293 
+Frontr: 1296 1294 
+Chosen: 1294 
+Frontr: 1296 1295 
+Chosen: 1295 
+Frontr: 1296 
+Chosen: 1296 
+Frontr: 1297 
+Chosen: 1297 
+Frontr: 1300 1298 
+Chosen: 1298 1300 
+Frontr: 1301 1299 
+Chosen: 1299 1301 
+Frontr: 1302 
+Chosen: 1302 
+Frontr: 1303 
+Chosen: 1303 
+Frontr: 1304 
+Chosen: 1304 
+Frontr: 1305 
+Chosen: 1305 
+Frontr: 1306 
+Chosen: 1306 
+Frontr: 1311 1307 
+Chosen: 1307 
+Frontr: 1311 1308 
+Chosen: 1308 
+Frontr: 1311 1309 
+Chosen: 1309 
+Frontr: 1311 1310 
+Chosen: 1310 
+Frontr: 1311 
+Chosen: 1311 
+Frontr: 1312 
+Chosen: 1312 
+Frontr: 1315 1313 
+Chosen: 1313 1315 
+Frontr: 1316 1314 
+Chosen: 1314 1316 
+Frontr: 1317 
+Chosen: 1317 
+Frontr: 1318 
+Chosen: 1318 
+Frontr: 1319 
+Chosen: 1319 
+Frontr: 1320 
+Chosen: 1320 
+Frontr: 1321 
+Chosen: 1321 
+Frontr: 1326 1322 
+Chosen: 1322 
+Frontr: 1326 1323 
+Chosen: 1323 
+Frontr: 1326 1324 
+Chosen: 1324 
+Frontr: 1326 1325 
+Chosen: 1325 
+Frontr: 1326 
+Chosen: 1326 
+Frontr: 1327 
+Chosen: 1327 
+Frontr: 1330 1328 
+Chosen: 1328 1330 
+Frontr: 1331 1329 
+Chosen: 1329 1331 
+Frontr: 1332 
+Chosen: 1332 
+Frontr: 1333 
+Chosen: 1333 
+Frontr: 1334 
+Chosen: 1334 
+Frontr: 1335 
+Chosen: 1335 
+Frontr: 1336 
+Chosen: 1336 
+Frontr: 1337 
+Chosen: 1337 
+Frontr: 1342 1338 
+Chosen: 1338 
+Frontr: 1342 1339 
+Chosen: 1339 
+Frontr: 1342 1340 
+Chosen: 1340 
+Frontr: 1342 1341 
+Chosen: 1341 
+Frontr: 1342 
+Chosen: 1342 
+Frontr: 1343 
+Chosen: 1343 
+Frontr: 1344 
+Chosen: 1344 
+Frontr: 1347 1345 
+Chosen: 1345 1347 
+Frontr: 1348 1346 
+Chosen: 1346 1348 
+Frontr: 1349 
+Chosen: 1349 
+Frontr: 1350 
+Chosen: 1350 
+Frontr: 1351 
+Chosen: 1351 
+Frontr: 1352 
+Chosen: 1352 
+Frontr: 1353 
+Chosen: 1353 
+Frontr: 1354 
+Chosen: 1354 
+Frontr: 1359 1355 
+Chosen: 1355 
+Frontr: 1359 1356 
+Chosen: 1356 
+Frontr: 1359 1357 
+Chosen: 1357 
+Frontr: 1359 1358 
+Chosen: 1358 
+Frontr: 1359 
+Chosen: 1359 
+Frontr: 1360 
+Chosen: 1360 
+Frontr: 1361 
+Chosen: 1361 
+Frontr: 1364 1362 
+Chosen: 1362 1364 
+Frontr: 1365 1363 
+Chosen: 1363 1365 
+Frontr: 1366 
+Chosen: 1366 
+Frontr: 1367 
+Chosen: 1367 
+Frontr: 1368 
+Chosen: 1368 
+Frontr: 1369 
+Chosen: 1369 
+Frontr: 1370 
+Chosen: 1370 
+Frontr: 1371 
+Chosen: 1371 
+Frontr: 1376 1372 
+Chosen: 1372 
+Frontr: 1376 1373 
+Chosen: 1373 
+Frontr: 1376 1374 
+Chosen: 1374 
+Frontr: 1376 1375 
+Chosen: 1375 
+Frontr: 1376 
+Chosen: 1376 
+Frontr: 1377 
+Chosen: 1377 
+Frontr: 1378 
+Chosen: 1378 
+Frontr: 1381 1379 
+Chosen: 1379 1381 
+Frontr: 1382 1380 
+Chosen: 1380 1382 
+Frontr: 1383 
+Chosen: 1383 
+Frontr: 1384 
+Chosen: 1384 
+Frontr: 1385 
+Chosen: 1385 
+Frontr: 1386 
+Chosen: 1386 
+Frontr: 1387 
+Chosen: 1387 
+Frontr: 1388 
+Chosen: 1388 
+Frontr: 1393 1389 
+Chosen: 1389 
+Frontr: 1393 1390 
+Chosen: 1390 
+Frontr: 1393 1391 
+Chosen: 1391 
+Frontr: 1393 1392 
+Chosen: 1392 
+Frontr: 1393 
+Chosen: 1393 
+Frontr: 1394 
+Chosen: 1394 
+Frontr: 1395 
+Chosen: 1395 
+Frontr: 1398 1396 
+Chosen: 1396 1398 
+Frontr: 1399 1397 
+Chosen: 1397 1399 
+Frontr: 1400 
+Chosen: 1400 
+Frontr: 1401 
+Chosen: 1401 
+Frontr: 1402 
+Chosen: 1402 
+Frontr: 1403 
+Chosen: 1403 
+Frontr: 1404 
+Chosen: 1404 
+Frontr: 1405 
+Chosen: 1405 
+Frontr: 1410 1406 
+Chosen: 1406 
+Frontr: 1410 1407 
+Chosen: 1407 
+Frontr: 1410 1408 
+Chosen: 1408 
+Frontr: 1410 1409 
+Chosen: 1409 
+Frontr: 1410 
+Chosen: 1410 
+Frontr: 1411 
+Chosen: 1411 
+Frontr: 1412 
+Chosen: 1412 
+Frontr: 1415 1413 
+Chosen: 1413 1415 
+Frontr: 1416 1414 
+Chosen: 1414 1416 
+Frontr: 1417 
+Chosen: 1417 
+Frontr: 1418 
+Chosen: 1418 
+Frontr: 1419 
+Chosen: 1419 
+Frontr: 1420 
+Chosen: 1420 
+Frontr: 1421 
+Chosen: 1421 
+Frontr: 1422 
+Chosen: 1422 
+Frontr: 1427 1423 
+Chosen: 1423 
+Frontr: 1427 1424 
+Chosen: 1424 
+Frontr: 1427 1425 
+Chosen: 1425 
+Frontr: 1427 1426 
+Chosen: 1426 
+Frontr: 1427 
+Chosen: 1427 
+Frontr: 1428 
+Chosen: 1428 
+Frontr: 1429 
+Chosen: 1429 
+Frontr: 1432 1430 
+Chosen: 1430 1432 
+Frontr: 1433 1431 
+Chosen: 1431 1433 
+Frontr: 1434 
+Chosen: 1434 
+Frontr: 1435 
+Chosen: 1435 
+Frontr: 1436 
+Chosen: 1436 
+Frontr: 1437 
+Chosen: 1437 
+Frontr: 1438 
+Chosen: 1438 
+Frontr: 1439 
+Chosen: 1439 
+Frontr: 1444 1440 
+Chosen: 1440 
+Frontr: 1444 1441 
+Chosen: 1441 
+Frontr: 1444 1442 
+Chosen: 1442 
+Frontr: 1444 1443 
+Chosen: 1443 
+Frontr: 1444 
+Chosen: 1444 
+Frontr: 1445 
+Chosen: 1445 
+Frontr: 1446 
+Chosen: 1446 
+Frontr: 1449 1447 
+Chosen: 1447 1449 
+Frontr: 1450 1448 
+Chosen: 1448 1450 
+Frontr: 1451 
+Chosen: 1451 
+Frontr: 1452 
+Chosen: 1452 
+Frontr: 1453 
+Chosen: 1453 
+Frontr: 1454 
+Chosen: 1454 
+Frontr: 1455 
+Chosen: 1455 
+Frontr: 1456 
+Chosen: 1456 
+Frontr: 1461 1457 
+Chosen: 1457 
+Frontr: 1461 1458 
+Chosen: 1458 
+Frontr: 1461 1459 
+Chosen: 1459 
+Frontr: 1461 1460 
+Chosen: 1460 
+Frontr: 1461 
+Chosen: 1461 
+Frontr: 1464 1462 
+Chosen: 1462 
+Frontr: 1464 1463 
+Chosen: 1463 
+Frontr: 1464 
+Chosen: 1464 
+Frontr: 1465 
+Chosen: 1465 
+Frontr: 1468 1466 
+Chosen: 1466 1468 
+Frontr: 1469 1467 
+Chosen: 1467 1469 
+Frontr: 1470 
+Chosen: 1470 
+Frontr: 1471 
+Chosen: 1471 
+Frontr: 1472 
+Chosen: 1472 
+Frontr: 1473 
+Chosen: 1473 
+Frontr: 1474 
+Chosen: 1474 
+Frontr: 1479 1475 
+Chosen: 1475 
+Frontr: 1479 1476 
+Chosen: 1476 
+Frontr: 1479 1477 
+Chosen: 1477 
+Frontr: 1479 1478 
+Chosen: 1478 
+Frontr: 1479 
+Chosen: 1479 
+Frontr: 1480 
+Chosen: 1480 
+Frontr: 1483 1481 
+Chosen: 1481 1483 
+Frontr: 1484 1482 
+Chosen: 1482 1484 
+Frontr: 1485 
+Chosen: 1485 
+Frontr: 1486 
+Chosen: 1486 
+Frontr: 1487 
+Chosen: 1487 
+Frontr: 1488 
+Chosen: 1488 
+Frontr: 1489 
+Chosen: 1489 
+Frontr: 1494 1490 
+Chosen: 1490 
+Frontr: 1494 1491 
+Chosen: 1491 
+Frontr: 1494 1492 
+Chosen: 1492 
+Frontr: 1494 1493 
+Chosen: 1493 
+Frontr: 1494 
+Chosen: 1494 
+Frontr: 1495 
+Chosen: 1495 
+Frontr: 1498 1496 
+Chosen: 1496 1498 
+Frontr: 1499 1497 
+Chosen: 1497 1499 
+Frontr: 1500 
+Chosen: 1500 
+Frontr: 1501 
+Chosen: 1501 
+Frontr: 1502 
+Chosen: 1502 
+Frontr: 1503 
+Chosen: 1503 
+Frontr: 1504 
+Chosen: 1504 
+Frontr: 1509 1505 
+Chosen: 1505 
+Frontr: 1509 1506 
+Chosen: 1506 
+Frontr: 1509 1507 
+Chosen: 1507 
+Frontr: 1509 1508 
+Chosen: 1508 
+Frontr: 1509 
+Chosen: 1509 
+Frontr: 1510 
+Chosen: 1510 
+Frontr: 1513 1511 
+Chosen: 1511 1513 
+Frontr: 1514 1512 
+Chosen: 1512 1514 
+Frontr: 1515 
+Chosen: 1515 
+Frontr: 1516 
+Chosen: 1516 
+Frontr: 1517 
+Chosen: 1517 
+Frontr: 1518 
+Chosen: 1518 
+Frontr: 1519 
+Chosen: 1519 
+Frontr: 1524 1520 
+Chosen: 1520 
+Frontr: 1524 1521 
+Chosen: 1521 
+Frontr: 1524 1522 
+Chosen: 1522 
+Frontr: 1524 1523 
+Chosen: 1523 
+Frontr: 1524 
+Chosen: 1524 
+Frontr: 1525 
+Chosen: 1525 
+Frontr: 1528 1526 
+Chosen: 1526 1528 
+Frontr: 1529 1527 
+Chosen: 1527 1529 
+Frontr: 1530 
+Chosen: 1530 
+Frontr: 1531 
+Chosen: 1531 
+Frontr: 1532 
+Chosen: 1532 
+Frontr: 1533 
+Chosen: 1533 
+Frontr: 1534 
+Chosen: 1534 
+Frontr: 1539 1535 
+Chosen: 1535 
+Frontr: 1539 1536 
+Chosen: 1536 
+Frontr: 1539 1537 
+Chosen: 1537 
+Frontr: 1539 1538 
+Chosen: 1538 
+Frontr: 1539 
+Chosen: 1539 
+Frontr: 1540 
+Chosen: 1540 
+Frontr: 1543 1541 
+Chosen: 1541 1543 
+Frontr: 1544 1542 
+Chosen: 1542 1544 
+Frontr: 1545 
+Chosen: 1545 
+Frontr: 1546 
+Chosen: 1546 
+Frontr: 1547 
+Chosen: 1547 
+Frontr: 1548 
+Chosen: 1548 
+Frontr: 1549 
+Chosen: 1549 
+Frontr: 1554 1550 
+Chosen: 1550 
+Frontr: 1554 1551 
+Chosen: 1551 
+Frontr: 1554 1552 
+Chosen: 1552 
+Frontr: 1554 1553 
+Chosen: 1553 
+Frontr: 1554 
+Chosen: 1554 
+Frontr: 1555 
+Chosen: 1555 
+Frontr: 1558 1556 
+Chosen: 1556 1558 
+Frontr: 1559 1557 
+Chosen: 1557 1559 
+Frontr: 1560 
+Chosen: 1560 
+Frontr: 1561 
+Chosen: 1561 
+Frontr: 1562 
+Chosen: 1562 
+Frontr: 1563 
+Chosen: 1563 
+Frontr: 1564 
+Chosen: 1564 
+Frontr: 1569 1565 
+Chosen: 1565 
+Frontr: 1569 1566 
+Chosen: 1566 
+Frontr: 1569 1567 
+Chosen: 1567 
+Frontr: 1569 1568 
+Chosen: 1568 
+Frontr: 1569 
+Chosen: 1569 
+Frontr: 1570 
+Chosen: 1570 
+Frontr: 1573 1571 
+Chosen: 1571 1573 
+Frontr: 1574 1572 
+Chosen: 1572 1574 
+Frontr: 1575 
+Chosen: 1575 
+Frontr: 1576 
+Chosen: 1576 
+Frontr: 1577 
+Chosen: 1577 
+Frontr: 1578 
+Chosen: 1578 
+Frontr: 1579 
+Chosen: 1579 
+Frontr: 1582 1580 
+Chosen: 1580 
+Frontr: 1582 1581 
+Chosen: 1581 
+Frontr: 1582 
+Chosen: 1582 
+Frontr: 1583 
+Chosen: 1583 
+Frontr: 1586 1584 
+Chosen: 1584 1586 
+Frontr: 1587 1585 
+Chosen: 1585 1587 
+Frontr: 1588 
+Chosen: 1588 
+Frontr: 1589 
+Chosen: 1589 
+Frontr: 1590 
+Chosen: 1590 
+Frontr: 1591 
+Chosen: 1591 
+Frontr: 1592 
+Chosen: 1592 
+Frontr: 1593 
+Chosen: 1593 
+Frontr: 1594 
+Chosen: 1594 
+Frontr: 1599 1595 
+Chosen: 1595 
+Frontr: 1599 1596 
+Chosen: 1596 
+Frontr: 1599 1597 
+Chosen: 1597 
+Frontr: 1599 1598 
+Chosen: 1598 
+Frontr: 1599 
+Chosen: 1599 
+Frontr: 1600 
+Chosen: 1600 
+Frontr: 1601 
+Chosen: 1601 
+Frontr: 1602 
+Chosen: 1602 
+Frontr: 1605 1603 
+Chosen: 1603 1605 
+Frontr: 1606 1604 
+Chosen: 1604 1606 
+Frontr: 1607 
+Chosen: 1607 
+Frontr: 1608 
+Chosen: 1608 
+Frontr: 1609 
+Chosen: 1609 
+Frontr: 1610 
+Chosen: 1610 
+Frontr: 1611 
+Chosen: 1611 
+Frontr: 1612 
+Chosen: 1612 
+Frontr: 1613 
+Chosen: 1613 
+Frontr: 1618 1614 
+Chosen: 1614 
+Frontr: 1618 1615 
+Chosen: 1615 
+Frontr: 1618 1616 
+Chosen: 1616 
+Frontr: 1618 1617 
+Chosen: 1617 
+Frontr: 1618 
+Chosen: 1618 
+Frontr: 1619 
+Chosen: 1619 
+Frontr: 1620 
+Chosen: 1620 
+Frontr: 1621 
+Chosen: 1621 
+Frontr: 1624 1622 
+Chosen: 1622 1624 
+Frontr: 1625 1623 
+Chosen: 1623 1625 
+Frontr: 1626 
+Chosen: 1626 
+Frontr: 1627 
+Chosen: 1627 
+Frontr: 1628 
+Chosen: 1628 
+Frontr: 1629 
+Chosen: 1629 
+Frontr: 1630 
+Chosen: 1630 
+Frontr: 1631 
+Chosen: 1631 
+Frontr: 1632 
+Chosen: 1632 
+Frontr: 1637 1633 
+Chosen: 1633 
+Frontr: 1637 1634 
+Chosen: 1634 
+Frontr: 1637 1635 
+Chosen: 1635 
+Frontr: 1637 1636 
+Chosen: 1636 
+Frontr: 1637 
+Chosen: 1637 
+Frontr: 1638 
+Chosen: 1638 
+Frontr: 1639 
+Chosen: 1639 
+Frontr: 1640 
+Chosen: 1640 
+Frontr: 1643 1641 
+Chosen: 1641 1643 
+Frontr: 1644 1642 
+Chosen: 1642 1644 
+Frontr: 1645 
+Chosen: 1645 
+Frontr: 1646 
+Chosen: 1646 
+Frontr: 1647 
+Chosen: 1647 
+Frontr: 1648 
+Chosen: 1648 
+Frontr: 1649 
+Chosen: 1649 
+Frontr: 1650 
+Chosen: 1650 
+Frontr: 1651 
+Chosen: 1651 
+Frontr: 1656 1652 
+Chosen: 1652 
+Frontr: 1656 1653 
+Chosen: 1653 
+Frontr: 1656 1654 
+Chosen: 1654 
+Frontr: 1656 1655 
+Chosen: 1655 
+Frontr: 1656 
+Chosen: 1656 
+Frontr: 1657 
+Chosen: 1657 
+Frontr: 1658 
+Chosen: 1658 
+Frontr: 1659 
+Chosen: 1659 
+Frontr: 1662 1660 
+Chosen: 1660 1662 
+Frontr: 1663 1661 
+Chosen: 1661 1663 
+Frontr: 1664 
+Chosen: 1664 
+Frontr: 1665 
+Chosen: 1665 
+Frontr: 1666 
+Chosen: 1666 
+Frontr: 1667 
+Chosen: 1667 
+Frontr: 1668 
+Chosen: 1668 
+Frontr: 1669 
+Chosen: 1669 
+Frontr: 1670 
+Chosen: 1670 
+Frontr: 1675 1671 
+Chosen: 1671 
+Frontr: 1675 1672 
+Chosen: 1672 
+Frontr: 1675 1673 
+Chosen: 1673 
+Frontr: 1675 1674 
+Chosen: 1674 
+Frontr: 1675 
+Chosen: 1675 
+Frontr: 1676 
+Chosen: 1676 
+Frontr: 1677 
+Chosen: 1677 
+Frontr: 1678 
+Chosen: 1678 
+Frontr: 1681 1679 
+Chosen: 1679 1681 
+Frontr: 1682 1680 
+Chosen: 1680 1682 
+Frontr: 1683 
+Chosen: 1683 
+Frontr: 1684 
+Chosen: 1684 
+Frontr: 1685 
+Chosen: 1685 
+Frontr: 1686 
+Chosen: 1686 
+Frontr: 1687 
+Chosen: 1687 
+Frontr: 1688 
+Chosen: 1688 
+Frontr: 1689 
+Chosen: 1689 
+Frontr: 1694 1690 
+Chosen: 1690 
+Frontr: 1694 1691 
+Chosen: 1691 
+Frontr: 1694 1692 
+Chosen: 1692 
+Frontr: 1694 1693 
+Chosen: 1693 
+Frontr: 1694 
+Chosen: 1694 
+Frontr: 1695 
+Chosen: 1695 
+Frontr: 1696 
+Chosen: 1696 
+Frontr: 1697 
+Chosen: 1697 
+Frontr: 1700 1698 
+Chosen: 1698 1700 
+Frontr: 1701 1699 
+Chosen: 1699 1701 
+Frontr: 1702 
+Chosen: 1702 
+Frontr: 1703 
+Chosen: 1703 
+Frontr: 1704 
+Chosen: 1704 
+Frontr: 1705 
+Chosen: 1705 
+Frontr: 1706 
+Chosen: 1706 
+Frontr: 1707 
+Chosen: 1707 
+Frontr: 1708 
+Chosen: 1708 
+Frontr: 1713 1709 
+Chosen: 1709 
+Frontr: 1713 1710 
+Chosen: 1710 
+Frontr: 1713 1711 
+Chosen: 1711 
+Frontr: 1713 1712 
+Chosen: 1712 
+Frontr: 1713 
+Chosen: 1713 
+Frontr: 1714 
+Chosen: 1714 
+Frontr: 1715 
+Chosen: 1715 
+Frontr: 1716 
+Chosen: 1716 
+Frontr: 1719 1717 
+Chosen: 1717 1719 
+Frontr: 1720 1718 
+Chosen: 1718 1720 
+Frontr: 1721 
+Chosen: 1721 
+Frontr: 1722 
+Chosen: 1722 
+Frontr: 1723 
+Chosen: 1723 
+Frontr: 1724 
+Chosen: 1724 
+Frontr: 1725 
+Chosen: 1725 
+Frontr: 1726 
+Chosen: 1726 
+Frontr: 1727 
+Chosen: 1727 
+Frontr: 1731 1728 
+Chosen: 1728 
+Frontr: 1731 1729 
+Chosen: 1729 
+Frontr: 1731 1730 
+Chosen: 1730 
+Frontr: 1731 
+Chosen: 1731 
+Frontr: 1734 1732 
+Chosen: 1732 
+Frontr: 1734 1733 
+Chosen: 1733 
+Frontr: 1734 
+Chosen: 1734 
+Frontr: 1735 
+Chosen: 1735 
+Frontr: 1736 
+Chosen: 1736 
+Frontr: 1739 1737 
+Chosen: 1737 1739 
+Frontr: 1740 1738 
+Chosen: 1738 1740 
+Frontr: 1741 
+Chosen: 1741 
+Frontr: 1742 
+Chosen: 1742 
+Frontr: 1743 
+Chosen: 1743 
+Frontr: 1744 
+Chosen: 1744 
+Frontr: 1745 
+Chosen: 1745 
+Frontr: 1746 
+Chosen: 1746 
+Frontr: 1751 1747 
+Chosen: 1747 
+Frontr: 1751 1748 
+Chosen: 1748 
+Frontr: 1751 1749 
+Chosen: 1749 
+Frontr: 1751 1750 
+Chosen: 1750 
+Frontr: 1751 
+Chosen: 1751 
+Frontr: 1752 
+Chosen: 1752 
+Frontr: 1753 
+Chosen: 1753 
+Frontr: 1756 1754 
+Chosen: 1754 1756 
+Frontr: 1757 1755 
+Chosen: 1755 1757 
+Frontr: 1758 
+Chosen: 1758 
+Frontr: 1759 
+Chosen: 1759 
+Frontr: 1760 
+Chosen: 1760 
+Frontr: 1761 
+Chosen: 1761 
+Frontr: 1762 
+Chosen: 1762 
+Frontr: 1763 
+Chosen: 1763 
+Frontr: 1768 1764 
+Chosen: 1764 
+Frontr: 1768 1765 
+Chosen: 1765 
+Frontr: 1768 1766 
+Chosen: 1766 
+Frontr: 1768 1767 
+Chosen: 1767 
+Frontr: 1768 
+Chosen: 1768 
+Frontr: 1769 
+Chosen: 1769 
+Frontr: 1770 
+Chosen: 1770 
+Frontr: 1773 1771 
+Chosen: 1771 1773 
+Frontr: 1774 1772 
+Chosen: 1772 1774 
+Frontr: 1775 
+Chosen: 1775 
+Frontr: 1776 
+Chosen: 1776 
+Frontr: 1777 
+Chosen: 1777 
+Frontr: 1778 
+Chosen: 1778 
+Frontr: 1779 
+Chosen: 1779 
+Frontr: 1780 
+Chosen: 1780 
+Frontr: 1785 1781 
+Chosen: 1781 
+Frontr: 1785 1782 
+Chosen: 1782 
+Frontr: 1785 1783 
+Chosen: 1783 
+Frontr: 1785 1784 
+Chosen: 1784 
+Frontr: 1785 
+Chosen: 1785 
+Frontr: 1786 
+Chosen: 1786 
+Frontr: 1787 
+Chosen: 1787 
+Frontr: 1790 1788 
+Chosen: 1788 1790 
+Frontr: 1791 1789 
+Chosen: 1789 1791 
+Frontr: 1792 
+Chosen: 1792 
+Frontr: 1793 
+Chosen: 1793 
+Frontr: 1794 
+Chosen: 1794 
+Frontr: 1795 
+Chosen: 1795 
+Frontr: 1796 
+Chosen: 1796 
+Frontr: 1797 
+Chosen: 1797 
+Frontr: 1802 1798 
+Chosen: 1798 
+Frontr: 1802 1799 
+Chosen: 1799 
+Frontr: 1802 1800 
+Chosen: 1800 
+Frontr: 1802 1801 
+Chosen: 1801 
+Frontr: 1802 
+Chosen: 1802 
+Frontr: 1803 
+Chosen: 1803 
+Frontr: 1804 
+Chosen: 1804 
+Frontr: 1807 1805 
+Chosen: 1805 1807 
+Frontr: 1808 1806 
+Chosen: 1806 1808 
+Frontr: 1809 
+Chosen: 1809 
+Frontr: 1810 
+Chosen: 1810 
+Frontr: 1811 
+Chosen: 1811 
+Frontr: 1812 
+Chosen: 1812 
+Frontr: 1813 
+Chosen: 1813 
+Frontr: 1814 
+Chosen: 1814 
+Frontr: 1819 1815 
+Chosen: 1815 
+Frontr: 1819 1816 
+Chosen: 1816 
+Frontr: 1819 1817 
+Chosen: 1817 
+Frontr: 1819 1818 
+Chosen: 1818 
+Frontr: 1819 
+Chosen: 1819 
+Frontr: 1820 
+Chosen: 1820 
+Frontr: 1821 
+Chosen: 1821 
+Frontr: 1824 1822 
+Chosen: 1822 1824 
+Frontr: 1825 1823 
+Chosen: 1823 1825 
+Frontr: 1826 
+Chosen: 1826 
+Frontr: 1827 
+Chosen: 1827 
+Frontr: 1828 
+Chosen: 1828 
+Frontr: 1829 
+Chosen: 1829 
+Frontr: 1830 
+Chosen: 1830 
+Frontr: 1831 
+Chosen: 1831 
+Frontr: 1836 1832 
+Chosen: 1832 
+Frontr: 1836 1833 
+Chosen: 1833 
+Frontr: 1836 1834 
+Chosen: 1834 
+Frontr: 1836 1835 
+Chosen: 1835 
+Frontr: 1836 
+Chosen: 1836 
+Frontr: 1837 
+Chosen: 1837 
+Frontr: 1838 
+Chosen: 1838 
+Frontr: 1841 1839 
+Chosen: 1839 1841 
+Frontr: 1842 1840 
+Chosen: 1840 1842 
+Frontr: 1843 
+Chosen: 1843 
+Frontr: 1844 
+Chosen: 1844 
+Frontr: 1845 
+Chosen: 1845 
+Frontr: 1846 
+Chosen: 1846 
+Frontr: 1847 
+Chosen: 1847 
+Frontr: 1848 
+Chosen: 1848 
+Frontr: 1853 1849 
+Chosen: 1849 
+Frontr: 1853 1850 
+Chosen: 1850 
+Frontr: 1853 1851 
+Chosen: 1851 
+Frontr: 1853 1852 
+Chosen: 1852 
+Frontr: 1853 
+Chosen: 1853 
+Frontr: 1854 
+Chosen: 1854 
+Frontr: 1855 
+Chosen: 1855 
+Frontr: 1858 1856 
+Chosen: 1856 1858 
+Frontr: 1859 1857 
+Chosen: 1857 1859 
+Frontr: 1860 
+Chosen: 1860 
+Frontr: 1861 
+Chosen: 1861 
+Frontr: 1862 
+Chosen: 1862 
+Frontr: 1863 
+Chosen: 1863 
+Frontr: 1864 
+Chosen: 1864 
+Frontr: 1865 
+Chosen: 1865 
+Frontr: 1882 1866 
+Chosen: 1866 
+Frontr: 1882 1867 
+Chosen: 1867 
+Frontr: 1882 1868 
+Chosen: 1868 
+Frontr: 1882 1869 
+Chosen: 1869 1882 
+Frontr: 1885 1883 1870 
+Chosen: 1870 1883 
+Frontr: 1885 1884 1871 
+Chosen: 1884 
+Frontr: 1885 1871 
+Chosen: 1871 1885 
+Frontr: 1886 1874 1872 
+Chosen: 1872 1874 
+Frontr: 1886 1875 1873 
+Chosen: 1873 1875 
+Frontr: 1886 1876 
+Chosen: 1876 1886 
+Frontr: 1889 1887 1877 
+Chosen: 1877 1889 
+Frontr: 1890 1887 1878 
+Chosen: 1887 1890 
+Frontr: 1888 1878 
+Chosen: 1888 
+Frontr: 1891 1878 
+Chosen: 1878 1891 
+Frontr: 1892 1881 1879 
+Chosen: 1879 1881 
+Frontr: 1892 1880 
+Chosen: 1880 
+Frontr: 1892 
+Chosen: 1892 
+Frontr: 1893 
+Chosen: 1893 
+Frontr: 1894 
+Chosen: 1894 
+Frontr: 1895 
+Chosen: 1895 
+Frontr: 1900 1896 
+Chosen: 1896 
+Frontr: 1900 1897 
+Chosen: 1897 
+Frontr: 1900 1898 
+Chosen: 1898 
+Frontr: 1900 1899 
+Chosen: 1899 
+Frontr: 1900 
+Chosen: 1900 
+Frontr: 1901 
+Chosen: 1901 
+Frontr: 1904 1902 
+Chosen: 1902 1904 
+Frontr: 1905 1903 
+Chosen: 1903 1905 
+Frontr: 1906 
+Chosen: 1906 
+Frontr: 1907 
+Chosen: 1907 
+Frontr: 1908 
+Chosen: 1908 
+Frontr: 1909 
+Chosen: 1909 
+Frontr: 1910 
+Chosen: 1910 
+Frontr: 1915 1911 
+Chosen: 1911 
+Frontr: 1915 1912 
+Chosen: 1912 
+Frontr: 1915 1913 
+Chosen: 1913 
+Frontr: 1915 1914 
+Chosen: 1914 
+Frontr: 1915 
+Chosen: 1915 
+Frontr: 1916 
+Chosen: 1916 
+Frontr: 1919 1917 
+Chosen: 1917 1919 
+Frontr: 1920 1918 
+Chosen: 1918 1920 
+Frontr: 1921 
+Chosen: 1921 
+Frontr: 1922 
+Chosen: 1922 
+Frontr: 1923 
+Chosen: 1923 
+Frontr: 1924 
+Chosen: 1924 
+Frontr: 1925 
+Chosen: 1925 
+Frontr: 1930 1926 
+Chosen: 1926 
+Frontr: 1930 1927 
+Chosen: 1927 
+Frontr: 1930 1928 
+Chosen: 1928 
+Frontr: 1930 1929 
+Chosen: 1929 
+Frontr: 1930 
+Chosen: 1930 
+Frontr: 1931 
+Chosen: 1931 
+Frontr: 1934 1932 
+Chosen: 1932 1934 
+Frontr: 1935 1933 
+Chosen: 1933 1935 
+Frontr: 1936 
+Chosen: 1936 
+Frontr: 1937 
+Chosen: 1937 
+Frontr: 1938 
+Chosen: 1938 
+Frontr: 1939 
+Chosen: 1939 
+Frontr: 1940 
+Chosen: 1940 
+Frontr: 1945 1941 
+Chosen: 1941 
+Frontr: 1945 1942 
+Chosen: 1942 
+Frontr: 1945 1943 
+Chosen: 1943 
+Frontr: 1945 1944 
+Chosen: 1944 
+Frontr: 1945 
+Chosen: 1945 
+Frontr: 1946 
+Chosen: 1946 
+Frontr: 1949 1947 
+Chosen: 1947 1949 
+Frontr: 1950 1948 
+Chosen: 1948 1950 
+Frontr: 1951 
+Chosen: 1951 
+Frontr: 1952 
+Chosen: 1952 
+Frontr: 1953 
+Chosen: 1953 
+Frontr: 1954 
+Chosen: 1954 
+Frontr: 1955 
+Chosen: 1955 
+Frontr: 1960 1956 
+Chosen: 1956 
+Frontr: 1960 1957 
+Chosen: 1957 
+Frontr: 1960 1958 
+Chosen: 1958 
+Frontr: 1960 1959 
+Chosen: 1959 
+Frontr: 1960 
+Chosen: 1960 
+Frontr: 1961 
+Chosen: 1961 
+Frontr: 1964 1962 
+Chosen: 1962 1964 
+Frontr: 1965 1963 
+Chosen: 1963 1965 
+Frontr: 1966 
+Chosen: 1966 
+Frontr: 1967 
+Chosen: 1967 
+Frontr: 1968 
+Chosen: 1968 
+Frontr: 1969 
+Chosen: 1969 
+Frontr: 1970 
+Chosen: 1970 
+Frontr: 1975 1971 
+Chosen: 1971 
+Frontr: 1975 1972 
+Chosen: 1972 
+Frontr: 1975 1973 
+Chosen: 1973 
+Frontr: 1975 1974 
+Chosen: 1974 
+Frontr: 1975 
+Chosen: 1975 
+Frontr: 1976 
+Chosen: 1976 
+Frontr: 1979 1977 
+Chosen: 1977 1979 
+Frontr: 1980 1978 
+Chosen: 1978 1980 
+Frontr: 1981 
+Chosen: 1981 
+Frontr: 1982 
+Chosen: 1982 
+Frontr: 1983 
+Chosen: 1983 
+Frontr: 1984 
+Chosen: 1984 
+Frontr: 1985 
+Chosen: 1985 
+Frontr: 1990 1986 
+Chosen: 1986 
+Frontr: 1990 1987 
+Chosen: 1987 
+Frontr: 1990 1988 
+Chosen: 1988 
+Frontr: 1990 1989 
+Chosen: 1989 
+Frontr: 1990 
+Chosen: 1990 
+Frontr: 1991 
+Chosen: 1991 
+Frontr: 1994 1992 
+Chosen: 1992 1994 
+Frontr: 1995 1993 
+Chosen: 1993 1995 
+Frontr: 1996 
+Chosen: 1996 
+Frontr: 1997 
+Chosen: 1997 
+Frontr: 1998 
+Chosen: 1998 
+Frontr: 1999 
+Chosen: 1999 
+Frontr: 2000 
+Chosen: 2000 
+Frontr: 2035 2001 
+Chosen: 2001 
+Frontr: 2035 2002 
+Chosen: 2002 
+Frontr: 2035 2003 
+Chosen: 2003 
+Frontr: 2035 2004 
+Chosen: 2004 2035 
+Frontr: 2090 2036 2005 
+Chosen: 2036 
+Frontr: 2090 2005 
+Chosen: 2005 2090 
+Frontr: 2172 2091 2006 
+Chosen: 2006 2172 
+Frontr: 2173 2091 2007 
+Chosen: 2091 2173 
+Frontr: 2092 2007 
+Chosen: 2092 
+Frontr: 2007 
+Chosen: 2007 
+Frontr: 2010 2008 
+Chosen: 2008 
+Frontr: 2010 2009 
+Chosen: 2009 
+Frontr: 2010 
+Chosen: 2010 
+Frontr: 2011 
+Chosen: 2011 
+Frontr: 2012 
+Chosen: 2012 
+Frontr: 2013 
+Chosen: 2013 
+Frontr: 2014 
+Chosen: 2014 
+Frontr: 2015 
+Chosen: 2015 
+Frontr: 2016 
+Chosen: 2016 
+Frontr: 2019 2017 
+Chosen: 2017 
+Frontr: 2019 2018 
+Chosen: 2018 
+Frontr: 2019 
+Chosen: 2019 
+Frontr: 2021 2020 
+Chosen: 2020 2021 
+Frontr: 2022 
+Chosen: 2022 
+Frontr: 2023 
+Chosen: 2023 
+Frontr: 2024 
+Chosen: 2024 
+Frontr: 2025 
+Chosen: 2025 
+Frontr: 2028 2026 
+Chosen: 2026 2028 
+Frontr: 2029 2027 
+Chosen: 2027 2029 
+Frontr: 2030 
+Chosen: 2030 
+Frontr: 2031 
+Chosen: 2031 
+Frontr: 2032 
+Chosen: 2032 
+Frontr: 2034 2033 
+Chosen: 2033 2034 
+Frontr: 2037 
+Chosen: 2037 
+Frontr: 2038 
+Chosen: 2038 
+Frontr: 2039 
+Chosen: 2039 
+Frontr: 2040 
+Chosen: 2040 
+Frontr: 2041 
+Chosen: 2041 
+Frontr: 2044 2042 
+Chosen: 2042 
+Frontr: 2044 2043 
+Chosen: 2043 
+Frontr: 2044 
+Chosen: 2044 
+Frontr: 2045 
+Chosen: 2045 
+Frontr: 2046 
+Chosen: 2046 
+Frontr: 2047 
+Chosen: 2047 
+Frontr: 2048 
+Chosen: 2048 
+Frontr: 2049 
+Chosen: 2049 
+Frontr: 2050 
+Chosen: 2050 
+Frontr: 2051 
+Chosen: 2051 
+Frontr: 2052 
+Chosen: 2052 
+Frontr: 2055 2053 
+Chosen: 2053 
+Frontr: 2055 2054 
+Chosen: 2054 
+Frontr: 2055 
+Chosen: 2055 
+Frontr: 2057 2056 
+Chosen: 2056 
+Frontr: 2057 
+Chosen: 2057 
+Frontr: 2058 
+Chosen: 2058 
+Frontr: 2059 
+Chosen: 2059 
+Frontr: 2060 
+Chosen: 2060 
+Frontr: 2061 
+Chosen: 2061 
+Frontr: 2062 
+Chosen: 2062 
+Frontr: 2063 
+Chosen: 2063 
+Frontr: 2066 2064 
+Chosen: 2064 
+Frontr: 2066 2065 
+Chosen: 2065 
+Frontr: 2066 
+Chosen: 2066 
+Frontr: 2067 
+Chosen: 2067 
+Frontr: 2068 
+Chosen: 2068 
+Frontr: 2069 
+Chosen: 2069 
+Frontr: 2070 
+Chosen: 2070 
+Frontr: 2071 
+Chosen: 2071 
+Frontr: 2072 
+Chosen: 2072 
+Frontr: 2074 2073 
+Chosen: 2073 
+Frontr: 2074 
+Chosen: 2074 
+Frontr: 2076 2075 
+Chosen: 2075 2076 
+Frontr: 2077 
+Chosen: 2077 
+Frontr: 2078 
+Chosen: 2078 
+Frontr: 2079 
+Chosen: 2079 
+Frontr: 2080 
+Chosen: 2080 
+Frontr: 2083 2081 
+Chosen: 2081 2083 
+Frontr: 2084 2082 
+Chosen: 2082 2084 
+Frontr: 2085 
+Chosen: 2085 
+Frontr: 2086 
+Chosen: 2086 
+Frontr: 2087 
+Chosen: 2087 
+Frontr: 2089 2088 
+Chosen: 2088 2089 
+Frontr: 2093 
+Chosen: 2093 
+Frontr: 2094 
+Chosen: 2094 
+Frontr: 2095 
+Chosen: 2095 
+Frontr: 2096 
+Chosen: 2096 
+Frontr: 2097 
+Chosen: 2097 
+Frontr: 2098 
+Chosen: 2098 
+Frontr: 2101 2099 
+Chosen: 2099 
+Frontr: 2101 2100 
+Chosen: 2100 
+Frontr: 2101 
+Chosen: 2101 
+Frontr: 2102 
+Chosen: 2102 
+Frontr: 2103 
+Chosen: 2103 
+Frontr: 2104 
+Chosen: 2104 
+Frontr: 2105 
+Chosen: 2105 
+Frontr: 2106 
+Chosen: 2106 
+Frontr: 2107 
+Chosen: 2107 
+Frontr: 2108 
+Chosen: 2108 
+Frontr: 2109 
+Chosen: 2109 
+Frontr: 2110 
+Chosen: 2110 
+Frontr: 2111 
+Chosen: 2111 
+Frontr: 2114 2112 
+Chosen: 2112 
+Frontr: 2114 2113 
+Chosen: 2113 
+Frontr: 2114 
+Chosen: 2114 
+Frontr: 2116 2115 
+Chosen: 2115 
+Frontr: 2116 
+Chosen: 2116 
+Frontr: 2117 
+Chosen: 2117 
+Frontr: 2118 
+Chosen: 2118 
+Frontr: 2119 
+Chosen: 2119 
+Frontr: 2120 
+Chosen: 2120 
+Frontr: 2121 
+Chosen: 2121 
+Frontr: 2122 
+Chosen: 2122 
+Frontr: 2123 
+Chosen: 2123 
+Frontr: 2124 
+Chosen: 2124 
+Frontr: 2127 2125 
+Chosen: 2125 
+Frontr: 2127 2126 
+Chosen: 2126 
+Frontr: 2127 
+Chosen: 2127 
+Frontr: 2128 
+Chosen: 2128 
+Frontr: 2129 
+Chosen: 2129 
+Frontr: 2130 
+Chosen: 2130 
+Frontr: 2131 
+Chosen: 2131 
+Frontr: 2132 
+Chosen: 2132 
+Frontr: 2133 
+Chosen: 2133 
+Frontr: 2134 
+Chosen: 2134 
+Frontr: 2135 
+Chosen: 2135 
+Frontr: 2137 2136 
+Chosen: 2136 
+Frontr: 2137 
+Chosen: 2137 
+Frontr: 2139 2138 
+Chosen: 2138 
+Frontr: 2139 
+Chosen: 2139 
+Frontr: 2140 
+Chosen: 2140 
+Frontr: 2141 
+Chosen: 2141 
+Frontr: 2142 
+Chosen: 2142 
+Frontr: 2143 
+Chosen: 2143 
+Frontr: 2144 
+Chosen: 2144 
+Frontr: 2145 
+Chosen: 2145 
+Frontr: 2148 2146 
+Chosen: 2146 
+Frontr: 2148 2147 
+Chosen: 2147 
+Frontr: 2148 
+Chosen: 2148 
+Frontr: 2149 
+Chosen: 2149 
+Frontr: 2150 
+Chosen: 2150 
+Frontr: 2151 
+Chosen: 2151 
+Frontr: 2152 
+Chosen: 2152 
+Frontr: 2153 
+Chosen: 2153 
+Frontr: 2154 
+Chosen: 2154 
+Frontr: 2156 2155 
+Chosen: 2155 
+Frontr: 2156 
+Chosen: 2156 
+Frontr: 2158 2157 
+Chosen: 2157 2158 
+Frontr: 2159 
+Chosen: 2159 
+Frontr: 2160 
+Chosen: 2160 
+Frontr: 2161 
+Chosen: 2161 
+Frontr: 2162 
+Chosen: 2162 
+Frontr: 2165 2163 
+Chosen: 2163 2165 
+Frontr: 2166 2164 
+Chosen: 2164 2166 
+Frontr: 2167 
+Chosen: 2167 
+Frontr: 2168 
+Chosen: 2168 
+Frontr: 2169 
+Chosen: 2169 
+Frontr: 2171 2170 
+Chosen: 2170 2171 
+Frontr: 2174 
+Chosen: 2174 
+Frontr: 2175 
+Chosen: 2175 
+Frontr: 2176 
+Chosen: 2176 
+Frontr: 2177 
+Chosen: 2177 
+Frontr: 2178 
+Chosen: 2178 
+Frontr: 2179 
+Chosen: 2179 
+Frontr: 2180 
+Chosen: 2180 
+Frontr: 2183 2181 
+Chosen: 2181 
+Frontr: 2183 2182 
+Chosen: 2182 
+Frontr: 2183 
+Chosen: 2183 
+Frontr: 2184 
+Chosen: 2184 
+Frontr: 2185 
+Chosen: 2185 
+Frontr: 2186 
+Chosen: 2186 
+Frontr: 2187 
+Chosen: 2187 
+Frontr: 2188 
+Chosen: 2188 
+Frontr: 2189 
+Chosen: 2189 
+Frontr: 2190 
+Chosen: 2190 
+Frontr: 2191 
+Chosen: 2191 
+Frontr: 2192 
+Chosen: 2192 
+Frontr: 2193 
+Chosen: 2193 
+Frontr: 2194 
+Chosen: 2194 
+Frontr: 2195 
+Chosen: 2195 
+Frontr: 2197 2196 
+Chosen: 2196 
+Frontr: 2197 
+Chosen: 2197 
+Frontr: 2199 2198 
+Chosen: 2198 
+Frontr: 2199 
+Chosen: 2199 
+Frontr: 2200 
+Chosen: 2200 
+Frontr: 2201 
+Chosen: 2201 
+Frontr: 2202 
+Chosen: 2202 
+Frontr: 2203 
+Chosen: 2203 
+Frontr: 2204 
+Chosen: 2204 
+Frontr: 2205 
+Chosen: 2205 
+Frontr: 2206 
+Chosen: 2206 
+Frontr: 2207 
+Chosen: 2207 
+Frontr: 2208 
+Chosen: 2208 
+Frontr: 2209 
+Chosen: 2209 
+Frontr: 2212 2210 
+Chosen: 2210 
+Frontr: 2212 2211 
+Chosen: 2211 
+Frontr: 2212 
+Chosen: 2212 
+Frontr: 2213 
+Chosen: 2213 
+Frontr: 2214 
+Chosen: 2214 
+Frontr: 2215 
+Chosen: 2215 
+Frontr: 2216 
+Chosen: 2216 
+Frontr: 2217 
+Chosen: 2217 
+Frontr: 2218 
+Chosen: 2218 
+Frontr: 2219 
+Chosen: 2219 
+Frontr: 2220 
+Chosen: 2220 
+Frontr: 2221 
+Chosen: 2221 
+Frontr: 2222 
+Chosen: 2222 
+Frontr: 2224 2223 
+Chosen: 2223 
+Frontr: 2224 
+Chosen: 2224 
+Frontr: 2226 2225 
+Chosen: 2225 
+Frontr: 2226 
+Chosen: 2226 
+Frontr: 2227 
+Chosen: 2227 
+Frontr: 2228 
+Chosen: 2228 
+Frontr: 2229 
+Chosen: 2229 
+Frontr: 2230 
+Chosen: 2230 
+Frontr: 2231 
+Chosen: 2231 
+Frontr: 2232 
+Chosen: 2232 
+Frontr: 2233 
+Chosen: 2233 
+Frontr: 2234 
+Chosen: 2234 
+Frontr: 2237 2235 
+Chosen: 2235 
+Frontr: 2237 2236 
+Chosen: 2236 
+Frontr: 2237 
+Chosen: 2237 
+Frontr: 2238 
+Chosen: 2238 
+Frontr: 2239 
+Chosen: 2239 
+Frontr: 2240 
+Chosen: 2240 
+Frontr: 2241 
+Chosen: 2241 
+Frontr: 2242 
+Chosen: 2242 
+Frontr: 2243 
+Chosen: 2243 
+Frontr: 2244 
+Chosen: 2244 
+Frontr: 2245 
+Chosen: 2245 
+Frontr: 2247 2246 
+Chosen: 2246 
+Frontr: 2247 
+Chosen: 2247 
+Frontr: 2249 2248 
+Chosen: 2248 
+Frontr: 2249 
+Chosen: 2249 
+Frontr: 2250 
+Chosen: 2250 
+Frontr: 2251 
+Chosen: 2251 
+Frontr: 2252 
+Chosen: 2252 
+Frontr: 2253 
+Chosen: 2253 
+Frontr: 2254 
+Chosen: 2254 
+Frontr: 2255 
+Chosen: 2255 
+Frontr: 2258 2256 
+Chosen: 2256 
+Frontr: 2258 2257 
+Chosen: 2257 
+Frontr: 2258 
+Chosen: 2258 
+Frontr: 2259 
+Chosen: 2259 
+Frontr: 2260 
+Chosen: 2260 
+Frontr: 2261 
+Chosen: 2261 
+Frontr: 2262 
+Chosen: 2262 
+Frontr: 2263 
+Chosen: 2263 
+Frontr: 2264 
+Chosen: 2264 
+Frontr: 2266 2265 
+Chosen: 2265 
+Frontr: 2266 
+Chosen: 2266 
+Frontr: 2268 2267 
+Chosen: 2267 2268 
+Frontr: 2269 
+Chosen: 2269 
+Frontr: 2270 
+Chosen: 2270 
+Frontr: 2271 
+Chosen: 2271 
+Frontr: 2272 
+Chosen: 2272 
+Frontr: 2275 2273 
+Chosen: 2273 2275 
+Frontr: 2276 2274 
+Chosen: 2274 2276 
+Frontr: 2277 
+Chosen: 2277 
+Frontr: 2278 
+Chosen: 2278 
+Frontr: 2279 
+Chosen: 2279 
+Frontr: 2281 2280 
+Chosen: 2280 2281 

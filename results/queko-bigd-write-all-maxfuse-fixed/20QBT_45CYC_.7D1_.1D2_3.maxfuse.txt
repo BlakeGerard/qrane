@@ -1,0 +1,9 @@
+Parsing circuit
+
+Processing circuit
+
+Converting statements to qrane tuples ...  Done.
+Constructing domains of one dimension ...  Done.
+Attempting iterative merging of lower dimension domains to higher dimension domains ...  Done.
+Pluto Maxfuse chosen.
+computing schedule ...

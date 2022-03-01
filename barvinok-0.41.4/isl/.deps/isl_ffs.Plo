@@ -1,0 +1,20 @@
+isl_ffs.lo: isl_ffs.c /usr/include/stdc-predef.h isl_config.h \
+ isl_config_post.h /usr/include/strings.h /usr/include/features.h \
+ /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
+ /usr/include/bits/long-double.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/10.3.0/include/stddef.h \
+ /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h
+/usr/include/stdc-predef.h:
+isl_config.h:
+isl_config_post.h:
+/usr/include/strings.h:
+/usr/include/features.h:
+/usr/include/sys/cdefs.h:
+/usr/include/bits/wordsize.h:
+/usr/include/bits/long-double.h:
+/usr/include/gnu/stubs.h:
+/usr/include/gnu/stubs-64.h:
+/usr/lib/gcc/x86_64-pc-linux-gnu/10.3.0/include/stddef.h:
+/usr/include/bits/types/locale_t.h:
+/usr/include/bits/types/__locale_t.h:

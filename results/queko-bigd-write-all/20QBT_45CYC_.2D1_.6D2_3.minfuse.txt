@@ -1,0 +1,59 @@
+Parsing circuit
+
+Processing circuit
+
+Converting statements to qrane tuples ...  Done.
+Constructing domains of one dimension ...  Done.
+Attempting iterative merging of lower dimension domains to higher dimension domains ...  Done.
+Pluto Minfuse chosen.
+computing schedule ...Done.
+Checking
+
+Checking that all qops have been accounted for ... num_qops: 450, num_points: 450
+True
+Checking that recovered schedule respects dependences ... True
+Checking that all qubits have the same number of accesses ... 0: { cx (29) x (4) }
+1: { cx (18) x (14) }
+2: { cx (33) x (7) }
+3: { cx (27) x (10) }
+4: { cx (29) x (8) }
+5: { cx (37) x (4) }
+6: { cx (29) x (11) }
+7: { cx (31) x (7) }
+8: { cx (23) x (10) }
+9: { cx (26) x (8) }
+10: { cx (35) x (2) }
+11: { cx (36) x (1) }
+12: { cx (15) x (14) }
+13: { cx (13) x (15) }
+14: { cx (23) x (11) }
+15: { cx (32) x (9) }
+16: { cx (27) x (11) }
+17: { cx (26) x (9) }
+18: { cx (29) x (10) }
+19: { cx (22) x (15) }
+Index expression count: 720
+0: { cx (29) x (4) }
+1: { cx (18) x (14) }
+2: { cx (33) x (7) }
+3: { cx (27) x (10) }
+4: { cx (29) x (8) }
+5: { cx (37) x (4) }
+6: { cx (29) x (11) }
+7: { cx (31) x (7) }
+8: { cx (23) x (10) }
+9: { cx (26) x (8) }
+10: { cx (35) x (2) }
+11: { cx (36) x (1) }
+12: { cx (15) x (14) }
+13: { cx (13) x (15) }
+14: { cx (23) x (11) }
+15: { cx (32) x (9) }
+16: { cx (27) x (11) }
+17: { cx (26) x (9) }
+18: { cx (29) x (10) }
+19: { cx (22) x (15) }
+Index expression count: 720
+True
+Checking for isomorphism between original and recovered dependence graphs ... False
+One of the checks failed. Exiting.

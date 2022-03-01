@@ -1,0 +1,796 @@
+Parsing circuit
+
+Processing circuit
+
+Converting statements to qrane tuples ...  Done.
+Constructing domains of one dimension ... 
+Frontr: 171 165 6 0 61 67 295 301 
+Chosen: 0 6 61 67 165 171 295 301 
+Frontr: 172 166 7 1 62 68 296 302 
+Chosen: 1 7 62 68 166 172 296 302 
+Frontr: 173 167 8 2 63 69 297 303 
+Chosen: 2 8 63 69 167 173 297 303 
+Frontr: 174 168 9 3 64 70 298 304 
+Chosen: 3 9 64 70 168 174 298 304 
+Frontr: 175 169 10 4 65 71 299 305 
+Chosen: 4 10 65 71 169 175 299 305 
+Frontr: 170 5 66 300 
+Chosen: 5 66 170 300 
+Frontr: 176 11 72 306 
+Chosen: 11 72 176 306 
+Frontr: 178 177 12 13 73 74 307 308 
+Chosen: 12 13 73 74 177 178 307 308 
+Frontr: 179 14 75 309 
+Chosen: 14 75 179 309 
+Frontr: 180 15 76 310 
+Chosen: 15 76 180 310 
+Frontr: 181 16 77 311 
+Chosen: 16 77 181 311 
+Frontr: 182 17 78 312 
+Chosen: 17 78 182 312 
+Frontr: 186 183 18 21 79 82 313 316 
+Chosen: 18 21 79 82 183 186 313 316 
+Frontr: 187 184 19 22 80 83 314 317 
+Chosen: 19 22 80 83 184 187 314 317 
+Frontr: 185 20 81 315 
+Chosen: 20 81 185 315 
+Frontr: 188 23 84 318 
+Chosen: 23 84 188 318 
+Frontr: 190 189 24 25 85 86 319 320 
+Chosen: 24 25 85 86 189 190 319 320 
+Frontr: 191 26 87 321 
+Chosen: 26 87 191 321 
+Frontr: 192 27 88 322 
+Chosen: 27 88 192 322 
+Frontr: 193 28 89 323 
+Chosen: 28 89 193 323 
+Frontr: 194 29 90 324 
+Chosen: 29 90 194 324 
+Frontr: 198 195 33 30 91 94 325 328 
+Chosen: 30 33 91 94 195 198 325 328 
+Frontr: 199 196 34 31 92 95 326 329 
+Chosen: 31 34 92 95 196 199 326 329 
+Frontr: 197 32 93 327 
+Chosen: 32 93 197 327 
+Frontr: 200 35 96 330 
+Chosen: 35 96 200 330 
+Frontr: 202 201 37 36 97 98 331 332 
+Chosen: 36 37 97 98 201 202 331 332 
+Frontr: 203 38 99 333 
+Chosen: 38 99 203 333 
+Frontr: 204 39 100 334 
+Chosen: 39 100 204 334 
+Frontr: 205 40 101 335 
+Chosen: 40 101 205 335 
+Frontr: 206 41 102 336 
+Chosen: 41 102 206 336 
+Frontr: 207 155 51 42 103 285 337 448 
+Chosen: 42 51 103 155 207 285 337 448 
+Frontr: 208 156 52 43 104 286 338 449 
+Chosen: 43 52 104 156 208 286 338 449 
+Frontr: 209 157 53 44 105 287 339 450 
+Chosen: 44 53 105 157 209 287 339 450 
+Frontr: 210 158 54 45 106 288 340 451 
+Chosen: 45 54 106 158 210 288 340 451 
+Frontr: 211 159 55 46 107 289 341 452 
+Chosen: 46 55 107 159 211 289 341 452 
+Frontr: 212 160 56 47 108 290 342 453 
+Chosen: 47 56 108 160 212 290 342 453 
+Frontr: 213 161 57 48 109 291 343 454 
+Chosen: 48 57 109 161 213 291 343 454 
+Frontr: 214 162 58 49 110 292 344 455 
+Chosen: 49 58 110 162 214 292 344 455 
+Frontr: 215 163 50 59 111 293 345 456 
+Chosen: 50 59 111 163 215 293 345 456 
+Frontr: 164 60 294 457 
+Chosen: 60 164 294 457 
+Frontr: 216 112 346 458 
+Chosen: 112 216 346 
+Frontr: 218 217 113 114 347 348 458 
+Chosen: 113 114 217 218 347 348 
+Frontr: 219 115 349 458 
+Chosen: 115 219 349 
+Frontr: 220 116 350 458 
+Chosen: 116 220 350 
+Frontr: 221 117 351 458 
+Chosen: 117 221 351 
+Frontr: 222 118 352 458 
+Chosen: 118 222 352 
+Frontr: 226 223 119 122 353 356 458 
+Chosen: 119 122 223 226 353 356 
+Frontr: 227 224 120 123 354 357 458 
+Chosen: 120 123 224 227 354 357 
+Frontr: 225 121 355 458 
+Chosen: 121 225 355 
+Frontr: 228 124 358 458 
+Chosen: 124 228 358 
+Frontr: 230 229 125 126 359 360 458 
+Chosen: 125 126 229 230 359 360 
+Frontr: 231 127 361 458 
+Chosen: 127 231 361 
+Frontr: 232 128 362 458 
+Chosen: 128 232 362 
+Frontr: 233 129 363 458 
+Chosen: 129 233 363 
+Frontr: 234 130 364 458 
+Chosen: 130 234 364 
+Frontr: 238 235 134 131 365 368 458 
+Chosen: 131 134 235 238 365 368 
+Frontr: 239 236 135 132 366 369 458 
+Chosen: 132 135 236 239 366 369 
+Frontr: 237 133 367 458 
+Chosen: 133 237 367 
+Frontr: 240 136 370 458 
+Chosen: 136 240 370 
+Frontr: 242 241 138 137 371 372 458 
+Chosen: 137 138 241 242 371 372 
+Frontr: 243 139 373 458 
+Chosen: 139 243 373 
+Frontr: 244 140 374 458 
+Chosen: 140 244 374 
+Frontr: 245 141 375 458 
+Chosen: 141 245 375 
+Frontr: 246 142 376 458 
+Chosen: 142 246 376 
+Frontr: 247 149 143 279 377 442 458 
+Chosen: 143 149 247 279 377 442 
+Frontr: 248 150 144 280 378 443 458 
+Chosen: 144 150 248 280 378 443 
+Frontr: 249 151 145 281 379 444 458 
+Chosen: 145 151 249 281 379 444 
+Frontr: 250 152 146 282 380 445 458 
+Chosen: 146 152 250 282 380 445 
+Frontr: 251 153 147 283 381 446 458 
+Chosen: 147 153 251 283 381 446 
+Frontr: 252 154 148 284 382 447 458 
+Chosen: 148 154 252 284 382 447 
+Frontr: 253 383 458 
+Chosen: 458 383 
+Frontr: 253 384 385 459 460 
+Chosen: 459 384 
+Frontr: 253 385 460 
+Chosen: 385 460 
+Frontr: 253 386 461 
+Chosen: 386 461 
+Frontr: 253 387 462 
+Chosen: 462 387 
+Frontr: 253 388 463 
+Chosen: 463 388 
+Frontr: 253 389 464 
+Chosen: 464 389 
+Frontr: 253 390 393 465 467 
+Chosen: 465 390 
+Frontr: 253 391 393 466 467 
+Chosen: 466 391 
+Frontr: 253 392 393 467 
+Chosen: 392 393 
+Frontr: 253 394 467 
+Chosen: 394 467 
+Frontr: 253 395 468 
+Chosen: 395 468 
+Frontr: 253 396 469 
+Chosen: 469 
+Frontr: 253 396 470 
+Chosen: 470 396 
+Frontr: 253 397 398 471 472 
+Chosen: 471 397 
+Frontr: 253 398 472 
+Chosen: 398 472 
+Frontr: 253 399 473 
+Chosen: 399 473 
+Frontr: 253 400 474 
+Chosen: 474 400 
+Frontr: 253 401 475 
+Chosen: 475 401 
+Frontr: 253 402 476 
+Chosen: 476 402 
+Frontr: 253 403 439 477 479 
+Chosen: 477 403 
+Frontr: 253 404 439 478 479 
+Chosen: 478 404 
+Frontr: 253 405 439 479 
+Chosen: 405 439 
+Frontr: 253 440 479 
+Chosen: 440 479 
+Frontr: 253 441 480 
+Chosen: 441 480 
+Frontr: 253 481 
+Chosen: 481 
+Frontr: 253 482 
+Chosen: 482 253 
+Frontr: 255 254 483 484 
+Chosen: 483 255 
+Frontr: 254 484 
+Chosen: 254 484 
+Frontr: 256 485 
+Chosen: 256 485 
+Frontr: 257 486 
+Chosen: 486 257 
+Frontr: 258 487 
+Chosen: 487 258 
+Frontr: 259 488 
+Chosen: 488 259 
+Frontr: 604 260 263 489 
+Chosen: 489 604 
+Frontr: 605 260 263 490 
+Chosen: 490 605 
+Frontr: 606 260 263 491 
+Chosen: 491 606 
+Frontr: 607 260 263 492 
+Chosen: 492 607 
+Frontr: 608 260 263 493 
+Chosen: 493 608 
+Frontr: 609 260 263 494 
+Chosen: 494 609 
+Frontr: 610 260 263 495 
+Chosen: 260 263 
+Frontr: 610 261 264 495 
+Chosen: 261 264 
+Frontr: 610 262 265 495 
+Chosen: 262 265 
+Frontr: 610 266 495 
+Chosen: 495 610 
+Frontr: 612 611 266 496 497 
+Chosen: 496 612 
+Frontr: 611 266 497 
+Chosen: 497 611 
+Frontr: 613 266 498 
+Chosen: 498 613 
+Frontr: 614 266 499 
+Chosen: 499 614 
+Frontr: 615 266 500 
+Chosen: 500 615 
+Frontr: 616 266 501 
+Chosen: 501 616 
+Frontr: 620 617 266 502 505 
+Chosen: 502 620 
+Frontr: 621 617 266 503 505 
+Chosen: 503 621 
+Frontr: 622 617 266 504 505 
+Chosen: 504 622 
+Frontr: 617 266 505 
+Chosen: 505 617 
+Frontr: 618 266 506 
+Chosen: 506 618 
+Frontr: 619 266 507 
+Chosen: 507 619 
+Frontr: 623 266 508 
+Chosen: 508 623 
+Frontr: 625 624 266 509 510 
+Chosen: 509 625 
+Frontr: 624 266 510 
+Chosen: 510 624 
+Frontr: 626 266 511 
+Chosen: 511 266 
+Frontr: 626 267 268 512 
+Chosen: 512 267 
+Frontr: 626 268 513 
+Chosen: 513 268 
+Frontr: 626 269 514 
+Chosen: 514 269 
+Frontr: 626 270 515 518 
+Chosen: 515 270 
+Frontr: 626 271 516 518 
+Chosen: 516 271 
+Frontr: 626 272 517 518 
+Chosen: 517 518 
+Frontr: 626 272 519 
+Chosen: 519 
+Frontr: 626 272 520 
+Chosen: 520 
+Frontr: 626 272 
+Chosen: 272 626 
+Frontr: 627 273 276 
+Chosen: 273 627 
+Frontr: 628 274 276 
+Chosen: 274 628 
+Frontr: 629 275 276 
+Chosen: 275 276 
+Frontr: 629 277 521 
+Chosen: 277 
+Frontr: 629 278 521 
+Chosen: 278 
+Frontr: 629 406 521 
+Chosen: 521 629 
+Frontr: 755 630 406 522 523 
+Chosen: 522 755 
+Frontr: 756 630 406 523 
+Chosen: 523 756 
+Frontr: 757 630 406 524 
+Chosen: 630 757 
+Frontr: 758 631 406 524 
+Chosen: 631 
+Frontr: 758 632 406 524 
+Chosen: 632 
+Frontr: 758 633 406 524 
+Chosen: 406 633 
+Frontr: 758 635 634 407 408 524 
+Chosen: 407 408 634 635 
+Frontr: 758 636 409 524 
+Chosen: 524 636 
+Frontr: 758 637 409 525 
+Chosen: 525 637 
+Frontr: 758 638 409 526 
+Chosen: 526 638 
+Frontr: 758 639 409 527 
+Chosen: 527 409 
+Frontr: 758 639 410 528 531 
+Chosen: 528 410 
+Frontr: 758 639 411 529 531 
+Chosen: 529 411 
+Frontr: 758 639 412 530 531 
+Chosen: 530 531 
+Frontr: 758 639 412 532 
+Chosen: 532 
+Frontr: 758 639 412 533 
+Chosen: 533 
+Frontr: 758 639 412 534 
+Chosen: 534 639 
+Frontr: 758 643 640 412 535 536 
+Chosen: 535 643 
+Frontr: 758 644 640 412 536 
+Chosen: 536 644 
+Frontr: 758 645 640 412 537 
+Chosen: 640 645 
+Frontr: 758 641 412 537 
+Chosen: 641 
+Frontr: 758 642 412 537 
+Chosen: 642 
+Frontr: 758 646 412 537 
+Chosen: 537 646 
+Frontr: 758 648 647 412 538 
+Chosen: 538 648 
+Frontr: 758 647 412 539 
+Chosen: 539 647 
+Frontr: 758 649 412 540 
+Chosen: 540 412 
+Frontr: 758 649 547 541 413 416 
+Chosen: 541 547 
+Frontr: 758 649 548 542 413 416 
+Chosen: 542 548 
+Frontr: 758 649 549 543 413 416 
+Chosen: 543 549 
+Frontr: 758 649 550 544 413 416 
+Chosen: 544 550 
+Frontr: 758 649 551 545 413 416 
+Chosen: 545 551 
+Frontr: 758 649 552 546 413 416 
+Chosen: 546 552 
+Frontr: 758 649 553 413 416 
+Chosen: 553 413 
+Frontr: 758 649 414 416 
+Chosen: 414 416 
+Frontr: 758 649 415 417 
+Chosen: 415 417 
+Frontr: 758 649 418 
+Chosen: 418 
+Frontr: 758 649 419 
+Chosen: 758 419 
+Frontr: 760 759 649 420 421 
+Chosen: 759 760 
+Frontr: 761 649 420 421 
+Chosen: 420 421 
+Frontr: 761 649 422 
+Chosen: 422 649 
+Frontr: 761 650 423 
+Chosen: 423 650 
+Frontr: 761 651 424 
+Chosen: 424 651 
+Frontr: 761 652 425 
+Chosen: 425 652 
+Frontr: 761 748 653 426 432 
+Chosen: 426 432 653 748 
+Frontr: 761 749 654 427 433 
+Chosen: 427 433 654 749 
+Frontr: 761 750 655 428 434 
+Chosen: 428 434 655 750 
+Frontr: 761 751 656 429 435 
+Chosen: 429 435 656 751 
+Frontr: 761 752 657 430 436 
+Chosen: 430 436 657 752 
+Frontr: 761 753 658 431 437 
+Chosen: 431 437 658 753 
+Frontr: 761 754 554 438 
+Chosen: 438 754 
+Frontr: 761 659 554 
+Chosen: 554 659 
+Frontr: 761 661 660 556 555 
+Chosen: 555 556 660 661 
+Frontr: 761 662 557 
+Chosen: 557 662 
+Frontr: 761 663 558 
+Chosen: 558 663 
+Frontr: 761 664 559 
+Chosen: 559 664 
+Frontr: 761 665 560 
+Chosen: 560 665 
+Frontr: 761 669 666 564 561 
+Chosen: 561 564 666 669 
+Frontr: 761 670 667 565 562 
+Chosen: 562 565 667 670 
+Frontr: 761 668 563 
+Chosen: 563 668 
+Frontr: 761 671 566 
+Chosen: 566 671 
+Frontr: 761 673 672 568 567 
+Chosen: 567 568 672 673 
+Frontr: 761 674 569 
+Chosen: 569 674 
+Frontr: 761 675 570 
+Chosen: 570 675 
+Frontr: 761 676 571 
+Chosen: 571 676 
+Frontr: 761 677 572 
+Chosen: 572 677 
+Frontr: 761 681 678 576 573 
+Chosen: 573 576 678 681 
+Frontr: 761 682 679 577 574 
+Chosen: 574 577 679 682 
+Frontr: 761 680 575 
+Chosen: 575 680 
+Frontr: 761 683 578 
+Chosen: 578 683 
+Frontr: 761 685 684 580 579 
+Chosen: 579 580 684 685 
+Frontr: 761 686 581 
+Chosen: 581 686 
+Frontr: 761 687 582 
+Chosen: 582 687 
+Frontr: 761 688 583 
+Chosen: 583 688 
+Frontr: 761 689 584 
+Chosen: 584 689 
+Frontr: 761 738 690 594 585 
+Chosen: 585 594 690 738 
+Frontr: 761 739 691 595 586 
+Chosen: 586 595 691 739 
+Frontr: 761 740 692 596 587 
+Chosen: 587 596 692 740 
+Frontr: 761 741 693 597 588 
+Chosen: 588 597 693 741 
+Frontr: 761 742 694 598 589 
+Chosen: 589 598 694 742 
+Frontr: 761 743 695 599 590 
+Chosen: 590 599 695 743 
+Frontr: 761 744 696 600 591 
+Chosen: 591 600 696 744 
+Frontr: 761 745 697 601 592 
+Chosen: 592 601 697 745 
+Frontr: 761 746 698 602 593 
+Chosen: 593 602 698 746 
+Frontr: 761 747 603 
+Chosen: 603 747 
+Frontr: 761 699 
+Chosen: 699 761 
+Frontr: 762 701 700 
+Chosen: 762 701 
+Frontr: 763 700 
+Chosen: 763 700 
+Frontr: 764 702 
+Chosen: 764 702 
+Frontr: 768 765 703 
+Chosen: 765 768 
+Frontr: 769 766 703 
+Chosen: 766 769 
+Frontr: 770 767 703 
+Chosen: 767 770 
+Frontr: 771 703 
+Chosen: 703 
+Frontr: 771 704 
+Chosen: 704 
+Frontr: 771 705 
+Chosen: 771 705 
+Frontr: 773 772 709 706 
+Chosen: 772 773 
+Frontr: 774 709 706 
+Chosen: 706 709 
+Frontr: 774 710 707 
+Chosen: 707 710 
+Frontr: 774 708 
+Chosen: 708 
+Frontr: 774 711 
+Chosen: 711 774 
+Frontr: 775 713 712 
+Chosen: 775 713 
+Frontr: 776 712 
+Chosen: 776 712 
+Frontr: 777 714 
+Chosen: 777 714 
+Frontr: 874 778 715 
+Chosen: 778 874 
+Frontr: 875 779 715 
+Chosen: 779 875 
+Frontr: 876 780 715 
+Chosen: 780 876 
+Frontr: 877 781 715 
+Chosen: 781 877 
+Frontr: 878 782 715 
+Chosen: 782 878 
+Frontr: 879 783 715 
+Chosen: 783 879 
+Frontr: 880 784 715 
+Chosen: 784 715 
+Frontr: 880 785 716 
+Chosen: 716 
+Frontr: 880 785 717 
+Chosen: 785 880 
+Frontr: 882 881 787 786 717 
+Chosen: 786 882 
+Frontr: 881 787 717 
+Chosen: 787 881 
+Frontr: 883 788 717 
+Chosen: 788 717 
+Frontr: 883 789 721 718 
+Chosen: 789 721 
+Frontr: 883 790 722 718 
+Chosen: 790 722 
+Frontr: 883 791 718 
+Chosen: 718 
+Frontr: 883 791 719 
+Chosen: 719 
+Frontr: 883 791 720 
+Chosen: 720 
+Frontr: 883 791 723 
+Chosen: 791 723 
+Frontr: 883 795 792 725 724 
+Chosen: 792 795 
+Frontr: 883 796 793 725 724 
+Chosen: 793 796 
+Frontr: 883 794 725 724 
+Chosen: 794 725 
+Frontr: 883 797 724 
+Chosen: 724 
+Frontr: 883 797 726 
+Chosen: 797 726 
+Frontr: 883 799 798 727 
+Chosen: 798 799 
+Frontr: 883 800 727 
+Chosen: 727 
+Frontr: 883 800 728 
+Chosen: 728 
+Frontr: 883 800 729 
+Chosen: 800 729 
+Frontr: 883 801 734 730 
+Chosen: 801 734 
+Frontr: 883 802 735 730 
+Chosen: 802 735 
+Frontr: 883 803 736 730 
+Chosen: 730 736 
+Frontr: 883 803 737 731 
+Chosen: 731 737 
+Frontr: 883 803 732 
+Chosen: 732 
+Frontr: 883 803 733 
+Chosen: 733 
+Frontr: 883 803 
+Chosen: 803 883 
+Frontr: 884 807 804 
+Chosen: 804 884 
+Frontr: 885 807 805 
+Chosen: 805 885 
+Frontr: 886 807 806 
+Chosen: 806 807 
+Frontr: 886 808 
+Chosen: 808 
+Frontr: 886 809 
+Chosen: 809 886 
+Frontr: 890 887 811 810 
+Chosen: 810 890 
+Frontr: 891 887 811 
+Chosen: 811 891 
+Frontr: 887 812 
+Chosen: 887 
+Frontr: 888 812 
+Chosen: 888 
+Frontr: 889 812 
+Chosen: 889 
+Frontr: 892 812 
+Chosen: 812 892 
+Frontr: 894 893 813 
+Chosen: 813 894 
+Frontr: 893 814 
+Chosen: 814 893 
+Frontr: 895 815 
+Chosen: 815 895 
+Frontr: 896 825 816 
+Chosen: 816 896 
+Frontr: 897 825 817 
+Chosen: 817 897 
+Frontr: 898 825 818 
+Chosen: 818 825 
+Frontr: 898 826 819 
+Chosen: 819 826 
+Frontr: 898 827 820 
+Chosen: 820 827 
+Frontr: 898 828 821 
+Chosen: 821 828 
+Frontr: 898 829 822 
+Chosen: 822 829 
+Frontr: 898 830 823 
+Chosen: 823 830 
+Frontr: 898 831 824 
+Chosen: 824 831 
+Frontr: 898 832 
+Chosen: 832 
+Frontr: 898 833 
+Chosen: 833 
+Frontr: 898 834 
+Chosen: 834 
+Frontr: 898 835 
+Chosen: 835 898 
+Frontr: 902 899 837 836 
+Chosen: 836 902 
+Frontr: 903 899 837 
+Chosen: 837 903 
+Frontr: 899 838 
+Chosen: 899 
+Frontr: 900 838 
+Chosen: 900 
+Frontr: 901 838 
+Chosen: 901 
+Frontr: 904 838 
+Chosen: 838 904 
+Frontr: 906 905 839 
+Chosen: 839 906 
+Frontr: 905 840 
+Chosen: 840 905 
+Frontr: 907 841 
+Chosen: 841 907 
+Frontr: 908 845 842 
+Chosen: 842 908 
+Frontr: 909 845 843 
+Chosen: 843 909 
+Frontr: 910 845 844 
+Chosen: 844 845 
+Frontr: 910 846 
+Chosen: 846 
+Frontr: 910 847 
+Chosen: 847 910 
+Frontr: 959 911 849 848 
+Chosen: 848 959 
+Frontr: 960 911 849 
+Chosen: 849 960 
+Frontr: 961 911 850 
+Chosen: 911 961 
+Frontr: 962 912 850 
+Chosen: 912 962 
+Frontr: 963 913 850 
+Chosen: 913 963 
+Frontr: 964 914 850 
+Chosen: 914 964 
+Frontr: 965 915 850 
+Chosen: 915 965 
+Frontr: 966 916 850 
+Chosen: 916 966 
+Frontr: 967 917 850 
+Chosen: 917 967 
+Frontr: 968 918 850 
+Chosen: 918 968 
+Frontr: 969 919 850 
+Chosen: 919 
+Frontr: 969 920 850 
+Chosen: 850 920 
+Frontr: 969 922 921 851 
+Chosen: 851 922 
+Frontr: 969 921 852 
+Chosen: 852 921 
+Frontr: 969 923 853 
+Chosen: 853 923 
+Frontr: 969 924 857 854 
+Chosen: 854 924 
+Frontr: 969 925 857 855 
+Chosen: 855 925 
+Frontr: 969 926 857 856 
+Chosen: 856 857 
+Frontr: 969 926 858 
+Chosen: 858 
+Frontr: 969 926 859 
+Chosen: 859 926 
+Frontr: 969 930 927 861 860 
+Chosen: 860 930 
+Frontr: 969 931 927 861 
+Chosen: 861 931 
+Frontr: 969 927 862 
+Chosen: 927 
+Frontr: 969 928 862 
+Chosen: 928 
+Frontr: 969 929 862 
+Chosen: 929 
+Frontr: 969 932 862 
+Chosen: 862 932 
+Frontr: 969 934 933 863 
+Chosen: 863 934 
+Frontr: 969 933 864 
+Chosen: 864 933 
+Frontr: 969 935 865 
+Chosen: 865 935 
+Frontr: 969 936 870 866 
+Chosen: 866 936 
+Frontr: 969 937 870 867 
+Chosen: 867 937 
+Frontr: 969 938 870 868 
+Chosen: 868 870 
+Frontr: 969 938 871 869 
+Chosen: 869 871 
+Frontr: 969 938 872 
+Chosen: 872 
+Frontr: 969 938 873 
+Chosen: 873 
+Frontr: 969 938 
+Chosen: 969 938 
+Frontr: 971 970 942 939 
+Chosen: 939 942 971 
+Frontr: 970 943 940 
+Chosen: 970 943 
+Frontr: 972 940 
+Chosen: 940 
+Frontr: 972 941 
+Chosen: 941 
+Frontr: 972 944 
+Chosen: 944 972 
+Frontr: 973 946 945 
+Chosen: 973 946 
+Frontr: 974 945 
+Chosen: 974 945 
+Frontr: 975 947 
+Chosen: 975 947 
+Frontr: 978 976 948 
+Chosen: 976 978 
+Frontr: 979 977 948 
+Chosen: 977 979 
+Frontr: 980 948 
+Chosen: 948 980 
+Frontr: 981 949 
+Chosen: 949 
+Frontr: 981 950 
+Chosen: 981 950 
+Frontr: 983 982 955 951 
+Chosen: 951 955 983 
+Frontr: 982 956 952 
+Chosen: 982 956 
+Frontr: 984 957 952 
+Chosen: 952 957 
+Frontr: 984 958 953 
+Chosen: 953 958 
+Frontr: 984 954 
+Chosen: 954 
+Frontr: 984 
+Chosen: 984 
+Frontr: 985 
+Chosen: 985 
+Frontr: 986 
+Chosen: 986 
+Frontr: 987 
+Chosen: 987 
+Frontr: 990 988 
+Chosen: 988 990 
+Frontr: 991 989 
+Chosen: 989 991 
+Frontr: 992 
+Chosen: 992 
+Frontr: 993 
+Chosen: 993 
+Frontr: 995 994 
+Chosen: 994 995 
+Frontr: 996 
+Chosen: 996 
+Frontr: 997 
+Chosen: 997 
+Frontr: 998 
+Chosen: 998 
+Frontr: 999 
+Chosen: 999 
+Frontr: 1004 1000 
+Chosen: 1000 1004 
+Frontr: 1005 1001 
+Chosen: 1001 1005 
+Frontr: 1006 1002 
+Chosen: 1002 1006 
+Frontr: 1007 1003 
+Chosen: 1003 1007 
+ Done.
+Attempting iterative merging of lower dimension domains to higher dimension domains ...  Done.
+Pluto Maxfuse chosen.
+computing schedule ...Done.
+Checking
+

@@ -1,0 +1,24 @@
+lib/get-errno.o: lib/get-errno.c /usr/include/stdc-predef.h lib/config.h \
+ lib/get-errno.h /usr/include/errno.h /usr/include/features.h \
+ /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
+ /usr/include/bits/long-double.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h /usr/include/bits/errno.h \
+ /usr/include/linux/errno.h /usr/include/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ /usr/include/bits/types/error_t.h
+/usr/include/stdc-predef.h:
+lib/config.h:
+lib/get-errno.h:
+/usr/include/errno.h:
+/usr/include/features.h:
+/usr/include/sys/cdefs.h:
+/usr/include/bits/wordsize.h:
+/usr/include/bits/long-double.h:
+/usr/include/gnu/stubs.h:
+/usr/include/gnu/stubs-64.h:
+/usr/include/bits/errno.h:
+/usr/include/linux/errno.h:
+/usr/include/asm/errno.h:
+/usr/include/asm-generic/errno.h:
+/usr/include/asm-generic/errno-base.h:
+/usr/include/bits/types/error_t.h:

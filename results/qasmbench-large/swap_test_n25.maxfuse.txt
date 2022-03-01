@@ -1,0 +1,215 @@
+Parsing circuit
+
+Processing circuit
+
+Converting statements to qrane tuples ...  Done.
+Constructing domains of one dimension ... 
+Frontr: 211 193 175 157 139 49 31 12 11 10 9 8 7 6 5 4 3 2 1 0 13 67 85 103 121 
+Chosen: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 31 49 67 85 103 121 139 157 175 193 211 
+Frontr: 212 194 176 158 140 50 32 14 68 86 104 122 
+Chosen: 14 32 50 68 86 104 122 140 158 176 194 212 
+Frontr: 213 195 177 159 141 51 33 15 69 87 105 123 
+Chosen: 15 33 51 69 87 105 123 141 159 177 195 213 
+Frontr: 214 196 178 160 142 52 34 16 70 88 106 124 
+Chosen: 16 34 52 70 88 106 124 142 160 178 196 214 
+Frontr: 215 197 179 161 143 53 35 17 71 89 107 125 
+Chosen: 17 35 53 71 89 107 125 143 161 179 197 215 
+Frontr: 18 
+Chosen: 18 
+Frontr: 19 
+Chosen: 19 
+Frontr: 20 
+Chosen: 20 
+Frontr: 21 22 
+Chosen: 21 22 
+Frontr: 23 24 
+Chosen: 24 23 
+Frontr: 25 26 28 
+Chosen: 25 26 
+Frontr: 36 27 28 
+Chosen: 28 
+Frontr: 36 29 27 
+Chosen: 29 
+Frontr: 36 27 
+Chosen: 27 36 
+Frontr: 37 30 
+Chosen: 37 
+Frontr: 38 30 
+Chosen: 30 38 
+Frontr: 43 39 
+Chosen: 43 39 
+Frontr: 44 40 
+Chosen: 44 40 
+Frontr: 46 45 41 
+Chosen: 45 46 
+Frontr: 54 47 41 
+Chosen: 41 
+Frontr: 54 47 42 
+Chosen: 42 
+Frontr: 54 47 
+Chosen: 47 54 
+Frontr: 55 48 
+Chosen: 55 
+Frontr: 56 48 
+Chosen: 48 56 
+Frontr: 57 61 
+Chosen: 61 57 
+Frontr: 58 62 
+Chosen: 62 58 
+Frontr: 59 63 64 
+Chosen: 63 59 
+Frontr: 60 64 72 
+Chosen: 64 
+Frontr: 60 65 72 
+Chosen: 60 
+Frontr: 65 72 
+Chosen: 65 72 
+Frontr: 66 73 
+Chosen: 73 
+Frontr: 66 74 
+Chosen: 66 74 
+Frontr: 75 79 
+Chosen: 79 75 
+Frontr: 76 80 
+Chosen: 80 76 
+Frontr: 77 81 82 
+Chosen: 81 77 
+Frontr: 78 82 90 
+Chosen: 82 
+Frontr: 78 83 90 
+Chosen: 78 
+Frontr: 83 90 
+Chosen: 83 90 
+Frontr: 84 91 
+Chosen: 91 
+Frontr: 84 92 
+Chosen: 84 92 
+Frontr: 93 97 
+Chosen: 97 93 
+Frontr: 94 98 
+Chosen: 98 94 
+Frontr: 95 99 100 
+Chosen: 99 95 
+Frontr: 96 100 108 
+Chosen: 100 
+Frontr: 96 101 108 
+Chosen: 96 
+Frontr: 101 108 
+Chosen: 101 108 
+Frontr: 102 109 
+Chosen: 109 
+Frontr: 102 110 
+Chosen: 102 110 
+Frontr: 111 115 
+Chosen: 115 111 
+Frontr: 112 116 
+Chosen: 116 112 
+Frontr: 113 117 118 
+Chosen: 117 113 
+Frontr: 114 118 126 
+Chosen: 118 
+Frontr: 114 119 126 
+Chosen: 114 
+Frontr: 119 126 
+Chosen: 119 126 
+Frontr: 127 120 
+Chosen: 127 
+Frontr: 128 120 
+Chosen: 120 128 
+Frontr: 133 129 
+Chosen: 133 129 
+Frontr: 134 130 
+Chosen: 134 130 
+Frontr: 136 135 131 
+Chosen: 135 136 
+Frontr: 144 137 131 
+Chosen: 131 
+Frontr: 144 137 132 
+Chosen: 132 
+Frontr: 144 137 
+Chosen: 137 144 
+Frontr: 145 138 
+Chosen: 145 
+Frontr: 146 138 
+Chosen: 138 146 
+Frontr: 151 147 
+Chosen: 151 147 
+Frontr: 152 148 
+Chosen: 152 148 
+Frontr: 154 153 149 
+Chosen: 153 154 
+Frontr: 162 155 149 
+Chosen: 149 
+Frontr: 162 155 150 
+Chosen: 150 
+Frontr: 162 155 
+Chosen: 155 162 
+Frontr: 163 156 
+Chosen: 163 
+Frontr: 164 156 
+Chosen: 156 164 
+Frontr: 169 165 
+Chosen: 169 165 
+Frontr: 170 166 
+Chosen: 170 166 
+Frontr: 172 171 167 
+Chosen: 171 172 
+Frontr: 180 173 167 
+Chosen: 167 
+Frontr: 180 173 168 
+Chosen: 168 
+Frontr: 180 173 
+Chosen: 173 180 
+Frontr: 181 174 
+Chosen: 181 
+Frontr: 182 174 
+Chosen: 174 182 
+Frontr: 184 183 
+Chosen: 183 184 
+Frontr: 186 185 
+Chosen: 186 185 
+Frontr: 190 188 187 
+Chosen: 187 190 
+Frontr: 198 191 188 
+Chosen: 188 
+Frontr: 198 191 189 
+Chosen: 191 
+Frontr: 198 189 
+Chosen: 189 198 
+Frontr: 199 192 
+Chosen: 199 
+Frontr: 200 192 
+Chosen: 192 200 
+Frontr: 202 201 
+Chosen: 201 202 
+Frontr: 204 203 
+Chosen: 204 203 
+Frontr: 208 206 205 
+Chosen: 205 208 
+Frontr: 216 209 206 
+Chosen: 206 
+Frontr: 216 209 207 
+Chosen: 209 
+Frontr: 216 207 
+Chosen: 207 216 
+Frontr: 217 210 
+Chosen: 217 
+Frontr: 218 210 
+Chosen: 210 218 
+Frontr: 220 219 
+Chosen: 219 220 
+Frontr: 222 221 
+Chosen: 222 221 
+Frontr: 227 224 223 
+Chosen: 223 224 227 
+Frontr: 228 225 
+Chosen: 228 
+Frontr: 225 
+Chosen: 225 
+Frontr: 229 226 
+Chosen: 226 
+Frontr: 229 
+Chosen: 229 
+ Done.
+Attempting iterative merging of lower dimension domains to higher dimension domains ...  Done.
+Scheduling ... Done.

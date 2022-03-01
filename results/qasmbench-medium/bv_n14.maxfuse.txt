@@ -1,0 +1,112 @@
+Parsing circuit
+
+Processing circuit
+
+Converting statements to qrane tuples ...  Done.
+Constructing domains of one dimension ... 
+Frontr: 12 11 10 9 8 7 6 5 4 3 2 1 0 13 
+Chosen: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 
+Frontr: 14 
+Chosen: 14 
+Frontr: 15 
+Chosen: 15 
+Frontr: 16 28 
+Chosen: 28 
+Frontr: 16 
+Chosen: 16 
+Frontr: 29 17 
+Chosen: 29 
+Frontr: 17 
+Chosen: 17 
+Frontr: 33 18 
+Chosen: 33 
+Frontr: 18 
+Chosen: 18 
+Frontr: 34 19 
+Chosen: 34 
+Frontr: 19 
+Chosen: 19 
+Frontr: 35 20 
+Chosen: 35 
+Frontr: 20 
+Chosen: 20 
+Frontr: 36 21 
+Chosen: 36 
+Frontr: 21 
+Chosen: 21 
+Frontr: 37 22 
+Chosen: 37 
+Frontr: 22 
+Chosen: 22 
+Frontr: 38 23 
+Chosen: 38 
+Frontr: 23 
+Chosen: 23 
+Frontr: 39 24 
+Chosen: 39 
+Frontr: 24 
+Chosen: 24 
+Frontr: 40 25 
+Chosen: 40 
+Frontr: 25 
+Chosen: 25 
+Frontr: 30 26 
+Chosen: 30 
+Frontr: 26 
+Chosen: 26 
+Frontr: 31 27 
+Chosen: 31 
+Frontr: 27 
+Chosen: 27 
+Frontr: 32 
+Chosen: 32 
+ Done.
+Attempting iterative merging of lower dimension domains to higher dimension domains ...  Done.
+Pluto Maxfuse chosen.
+computing schedule ...Done.
+Checking
+
+Domain := { S3[0]; S0[i0, 0] : 0 < i0 <= 9; S0[0, i1] : 0 <= i1 <= 13; S2[i0, 0] : 0 <= i0 <= 12; S1[0]; S23[i0, 0] : 0 <= i0 <= 2 }
+
+Read := { S23[i0, i1 = 0] -> q[10 + i0] : 0 <= i0 <= 2; S3[i0 = 0] -> q[0]; S0[i0, i1 = 0] -> q[i0] : 0 < i0 <= 9; S0[i0 = 0, i1] -> q[i1] : 0 <= i1 <= 13; S2[i0, i1 = 0] -> q[13] : 0 <= i0 <= 12; S2[i0, i1 = 0] -> q[i0] : 0 <= i0 <= 12; S1[i0 = 0] -> q[13] }
+
+Write := { S23[i0, i1 = 0] -> q[10 + i0] : 0 <= i0 <= 2; S3[i0 = 0] -> q[0]; S0[i0, i1 = 0] -> q[i0] : 0 < i0 <= 9; S0[i0 = 0, i1] -> q[i1] : 0 <= i1 <= 13; S2[i0, i1 = 0] -> q[13] : 0 <= i0 <= 12; S1[i0 = 0] -> q[13] }
+
+Call := { S3[i0 = 0] -> [0]; S0[i0, i1 = 0] -> [i0] : 0 < i0 <= 9; S0[i0 = 0, i1] -> [i1] : 0 <= i1 <= 13; S23[i0, i1 = 0] -> [10 + i0] : 0 <= i0 <= 2; S2[i0, i1 = 0] -> [i0, 13] : 0 <= i0 <= 12; S1[i0 = 0] -> [13] }
+
+DataDependencies := { S0[0, 13] -> S1[0]; S2[i0, 0] -> S23[-10 + i0, 0] : 10 <= i0 <= 12; S0[0, 0] -> S3[0]; S1[0] -> S2[0, 0]; S0[0, i1] -> S2[i1, 0] : 0 <= i1 <= 12; S0[0, i1] -> S23[-10 + i1, 0] : 10 <= i1 <= 12; S0[0, i1] -> S0[i1, 0] : 0 < i1 <= 9; S2[0, 0] -> S3[0]; S2[i0, 0] -> S2[1 + i0, 0] : 0 <= i0 <= 11; S2[i0, 0] -> S0[i0, 0] : 0 < i0 <= 9 }
+
+RecoveredSchedule := { S3[0] -> [0, 0, 4]; S23[i0, 0] -> [0, 10 + i0, 3] : 0 <= i0 <= 2; S1[0] -> [0, 0, 0]; S2[i0, 0] -> [0, i0, 2] : 0 <= i0 <= 12; S0[i0, 0] -> [i0, i0, 1] : 0 < i0 <= 9; S0[0, i1] -> [0, -i1, 1] : 0 <= i1 <= 13 }
+
+--- Stats ---
+Qops: 41
+Lookahead Breadth Limit: 2
+Search Limit: 0
+Domains: 
+1D: 2 domains, 2 points.
+2D: 3 domains, 39 points.
+Total: 5 domains, 41 points.
+-------------
+--- Substr ---
+Num substr             : 0
+Max substr size        : 0
+Avg substr size        : 0
+Avg substr occurrences : 0
+--------------
+--- Domain Size Breakdown ---
+Domain Size : Domain Count
+1 : 2
+3 : 1
+13 : 1
+23 : 1
+-----------------------------
+--- Reconstruction Profile ---
+Dimension -> {Cardinality:Count}
+1 -> {1:2,}
+2 -> {3:1,13:1,23:1,}
+------------------------------
+--- Timing ---
+Reconstruction: 15ms
+Scheduling: 2ms
+Total execution time: 17ms
+-------------

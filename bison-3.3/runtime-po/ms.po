@@ -1,0 +1,73 @@
+# Bison-runtime Bahasa Melayu (Malay) (ms).
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# This file is distributed under the same license as the Bison-runtime package.
+# Sharuzzaman Ahmat Raslan <sharuzzaman@myrealbox.com>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: bison-runtime 2.1\n"
+"Report-Msgid-Bugs-To: bug-bison@gnu.org\n"
+"POT-Creation-Date: 2019-01-26 11:33+0100\n"
+"PO-Revision-Date: 2005-10-10 10:50+0800\n"
+"Last-Translator: Sharuzzaman Ahmat Raslan <sharuzzaman@myrealbox.com>\n"
+"Language-Team: Malay <translation-team-ms@lists.sourceforge.net>\n"
+"Language: ms\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: KBabel 0.9.5\n"
+
+#: data/skeletons/glr.c:861 data/skeletons/yacc.c:639
+msgid "syntax error: cannot back up"
+msgstr "ralat sintaks: tidak dapat mengundur"
+
+#: data/skeletons/glr.c:1758
+msgid "syntax is ambiguous"
+msgstr "sintaks adalah kabur"
+
+#: data/skeletons/glr.c:2052 data/skeletons/glr.c:2134
+#: data/skeletons/glr.c:2175 data/skeletons/glr.c:2412
+#: data/skeletons/lalr1.cc:1169 data/skeletons/lalr1.cc:1190
+#: data/skeletons/yacc.c:1209 data/skeletons/yacc.c:1715
+#: data/skeletons/yacc.c:1721
+msgid "syntax error"
+msgstr "ralat sintaks"
+
+#: data/skeletons/glr.c:2135 data/skeletons/lalr1.cc:1170
+#: data/skeletons/yacc.c:1210
+#, c-format
+msgid "syntax error, unexpected %s"
+msgstr "ralat sintaks, tidak menjangka %s"
+
+#: data/skeletons/glr.c:2136 data/skeletons/lalr1.cc:1171
+#: data/skeletons/yacc.c:1211
+#, c-format
+msgid "syntax error, unexpected %s, expecting %s"
+msgstr "ralat sintaks, tidak menjangka %s, menjangka %s"
+
+#: data/skeletons/glr.c:2137 data/skeletons/lalr1.cc:1172
+#: data/skeletons/yacc.c:1212
+#, c-format
+msgid "syntax error, unexpected %s, expecting %s or %s"
+msgstr "ralat sintaks, tidak menjangka %s, menjangka %s atau %s"
+
+#: data/skeletons/glr.c:2138 data/skeletons/lalr1.cc:1173
+#: data/skeletons/yacc.c:1213
+#, c-format
+msgid "syntax error, unexpected %s, expecting %s or %s or %s"
+msgstr "ralat sintaks, tidak menjangka %s, menjangka %s atau %s atau %s"
+
+#: data/skeletons/glr.c:2139 data/skeletons/lalr1.cc:1174
+#: data/skeletons/yacc.c:1214
+#, c-format
+msgid "syntax error, unexpected %s, expecting %s or %s or %s or %s"
+msgstr ""
+"ralat sintaks, tidak menjangka %s, menjangka %s atau %s atau %s atau %s"
+
+#: data/skeletons/glr.c:2471 data/skeletons/yacc.c:1292
+#: data/skeletons/yacc.c:1294 data/skeletons/yacc.c:1479
+#: data/skeletons/yacc.c:1871
+msgid "memory exhausted"
+msgstr "kehabisan memori"

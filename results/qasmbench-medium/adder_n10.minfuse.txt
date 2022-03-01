@@ -1,0 +1,272 @@
+Parsing circuit
+
+Processing circuit
+
+Converting statements to qrane tuples ...  Done.
+Constructing domains of one dimension ... 
+Frontr: 55 37 0 19 
+Chosen: 0 19 37 55 
+Frontr: 56 38 1 20 
+Chosen: 1 
+Frontr: 56 38 2 20 
+Chosen: 2 20 38 
+Frontr: 56 3 
+Chosen: 3 56 
+Frontr: 4 
+Chosen: 4 
+Frontr: 5 
+Chosen: 5 
+Frontr: 6 
+Chosen: 6 
+Frontr: 7 
+Chosen: 7 
+Frontr: 8 
+Chosen: 8 
+Frontr: 9 
+Chosen: 9 
+Frontr: 10 
+Chosen: 10 
+Frontr: 11 
+Chosen: 11 
+Frontr: 12 
+Chosen: 12 
+Frontr: 13 
+Chosen: 13 
+Frontr: 14 
+Chosen: 14 
+Frontr: 15 
+Chosen: 15 
+Frontr: 16 
+Chosen: 16 
+Frontr: 17 
+Chosen: 17 
+Frontr: 18 
+Chosen: 18 
+Frontr: 21 
+Chosen: 21 
+Frontr: 22 
+Chosen: 22 
+Frontr: 23 
+Chosen: 23 
+Frontr: 24 
+Chosen: 24 
+Frontr: 25 
+Chosen: 25 
+Frontr: 26 
+Chosen: 26 
+Frontr: 27 
+Chosen: 27 
+Frontr: 28 
+Chosen: 28 
+Frontr: 29 
+Chosen: 29 
+Frontr: 30 
+Chosen: 30 
+Frontr: 31 
+Chosen: 31 
+Frontr: 32 
+Chosen: 32 
+Frontr: 33 
+Chosen: 33 
+Frontr: 35 34 
+Chosen: 34 35 
+Frontr: 36 
+Chosen: 36 
+Frontr: 39 
+Chosen: 39 
+Frontr: 40 
+Chosen: 40 
+Frontr: 41 
+Chosen: 41 
+Frontr: 42 
+Chosen: 42 
+Frontr: 43 
+Chosen: 43 
+Frontr: 44 
+Chosen: 44 
+Frontr: 45 
+Chosen: 45 
+Frontr: 46 
+Chosen: 46 
+Frontr: 47 
+Chosen: 47 
+Frontr: 48 
+Chosen: 48 
+Frontr: 49 
+Chosen: 49 
+Frontr: 50 
+Chosen: 50 
+Frontr: 51 
+Chosen: 51 
+Frontr: 53 52 
+Chosen: 52 53 
+Frontr: 54 
+Chosen: 54 
+Frontr: 57 
+Chosen: 57 
+Frontr: 58 
+Chosen: 58 
+Frontr: 59 
+Chosen: 59 
+Frontr: 60 
+Chosen: 60 
+Frontr: 61 
+Chosen: 61 
+Frontr: 62 
+Chosen: 62 
+Frontr: 63 
+Chosen: 63 
+Frontr: 64 
+Chosen: 64 
+Frontr: 65 
+Chosen: 65 
+Frontr: 66 
+Chosen: 66 
+Frontr: 67 
+Chosen: 67 
+Frontr: 68 
+Chosen: 68 
+Frontr: 69 
+Chosen: 69 
+Frontr: 70 71 
+Chosen: 70 71 
+Frontr: 72 
+Chosen: 72 
+Frontr: 73 
+Chosen: 73 
+Frontr: 74 
+Chosen: 74 
+Frontr: 75 
+Chosen: 75 
+Frontr: 76 
+Chosen: 76 
+Frontr: 77 
+Chosen: 77 
+Frontr: 78 
+Chosen: 78 
+Frontr: 79 
+Chosen: 79 
+Frontr: 80 
+Chosen: 80 
+Frontr: 81 
+Chosen: 81 
+Frontr: 82 
+Chosen: 82 
+Frontr: 83 
+Chosen: 83 
+Frontr: 84 
+Chosen: 84 
+Frontr: 85 
+Chosen: 85 
+Frontr: 86 87 
+Chosen: 86 87 
+Frontr: 88 
+Chosen: 88 
+Frontr: 89 
+Chosen: 89 
+Frontr: 90 
+Chosen: 90 
+Frontr: 91 
+Chosen: 91 
+Frontr: 92 
+Chosen: 92 
+Frontr: 93 
+Chosen: 93 
+Frontr: 94 
+Chosen: 94 
+Frontr: 95 
+Chosen: 95 
+Frontr: 96 
+Chosen: 96 
+Frontr: 97 
+Chosen: 97 
+Frontr: 98 
+Chosen: 98 
+Frontr: 99 
+Chosen: 99 
+Frontr: 100 
+Chosen: 100 
+Frontr: 101 
+Chosen: 101 
+Frontr: 102 
+Chosen: 102 
+Frontr: 103 104 
+Chosen: 103 104 
+Frontr: 105 
+Chosen: 105 
+Frontr: 106 
+Chosen: 106 
+Frontr: 107 
+Chosen: 107 
+Frontr: 108 
+Chosen: 108 
+Frontr: 109 
+Chosen: 109 
+Frontr: 110 
+Chosen: 110 
+Frontr: 111 
+Chosen: 111 
+Frontr: 112 
+Chosen: 112 
+Frontr: 113 
+Chosen: 113 
+Frontr: 114 
+Chosen: 114 
+Frontr: 115 
+Chosen: 115 
+Frontr: 116 
+Chosen: 116 
+Frontr: 117 
+Chosen: 117 
+Frontr: 118 
+Chosen: 118 
+Frontr: 119 
+Chosen: 119 
+Frontr: 120 121 
+Chosen: 120 121 
+Frontr: 122 
+Chosen: 122 
+Frontr: 123 
+Chosen: 123 
+Frontr: 124 
+Chosen: 124 
+Frontr: 125 
+Chosen: 125 
+Frontr: 126 
+Chosen: 126 
+Frontr: 127 
+Chosen: 127 
+Frontr: 128 
+Chosen: 128 
+Frontr: 129 
+Chosen: 129 
+Frontr: 130 
+Chosen: 130 
+Frontr: 131 
+Chosen: 131 
+Frontr: 132 
+Chosen: 132 
+Frontr: 133 
+Chosen: 133 
+Frontr: 134 
+Chosen: 134 
+Frontr: 135 
+Chosen: 135 
+Frontr: 136 
+Chosen: 136 
+Frontr: 137 
+Chosen: 137 
+Frontr: 138 
+Chosen: 138 
+Frontr: 139 
+Chosen: 139 
+Frontr: 140 
+Chosen: 140 
+Frontr: 141 
+Chosen: 141 
+ Done.
+Attempting iterative merging of lower dimension domains to higher dimension domains ...  Done.
+Pluto Minfuse chosen.
+computing schedule ...Done.
+Checking
+

@@ -1,0 +1,81 @@
+Parsing circuit
+
+Processing circuit
+
+Converting statements to qrane tuples ...  Done.
+Constructing domains of one dimension ...  Done.
+Attempting iterative merging of lower dimension domains to higher dimension domains ...  Done.
+Pluto Minfuse chosen.
+computing schedule ...Done.
+Checking
+
+Checking that all qops have been accounted for ... num_qops: 45, num_points: 45
+True
+Checking that recovered schedule respects dependences ... True
+Checking that all qubits have the same number of accesses ... 6: { cx (25) }
+7: { cx (5) }
+8: { cx (3) }
+9: { cx (13) }
+10: { cx (22) }
+11: { cx (6) }
+12: { cx (13) }
+13: { cx (2) }
+15: { cx (1) }
+Index expression count: 90
+6: { cx (25) }
+7: { cx (5) }
+8: { cx (3) }
+9: { cx (13) }
+10: { cx (22) }
+11: { cx (6) }
+12: { cx (13) }
+13: { cx (2) }
+15: { cx (1) }
+Index expression count: 90
+True
+Checking for isomorphism between original and recovered dependence graphs ... True
+Domain := { S3[i0, i1] : i0 <= 1 and 0 <= i1 <= i0; S28[i0, 0] : 0 <= i0 <= 1; S18[i0, i1, i2] : i0 >= 0 and 0 <= i1 <= 1 and 0 <= i2 <= 1 - i0; S0[i0, i1] : i0 <= 1 and 0 <= i1 <= i0; S6[i0, i1] : i0 <= 1 and 0 <= i1 <= i0; S2[i0, i1, i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S21[i0, 0] : 0 <= i0 <= 1; S14[i0, i1] : i0 <= 1 and 0 <= i1 <= i0; S4[i0, i1, i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S7[i0, i1, i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S15[i0, i1, i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S1[i0, i1] : i0 <= 1 and 0 <= i1 <= i0 }
+
+Read := { S28[i0, i1 = 0] -> q[12] : 0 <= i0 <= 1; S28[i0, i1 = 0] -> q[10] : 0 <= i0 <= 1; S4[i0, i1, i2] -> q[7 + 5i0 + i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S4[i0, i1, i2] -> q[6 + 3i0 + 5i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S15[i0, i1, i2] -> q[12 - 6i1] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S15[i0, i1, i2] -> q[9 + i0 + 3i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S7[i0, i1, i2] -> q[10 - 4i0 + 3i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S7[i0, i1, i2] -> q[6 + 5i0 + i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S18[i0, i1, i2] -> q[9 + i0 + i2] : i0 >= 0 and 0 <= i1 <= 1 and 0 <= i2 <= 1 - i0; S18[i0, i1, i2] -> q[6 + 3i0] : i0 >= 0 and 0 <= i1 <= 1 and 0 <= i2 <= 1 - i0; S21[i0, i1 = 0] -> q[10] : 0 <= i0 <= 1; S21[i0, i1 = 0] -> q[9 - 3i0] : 0 <= i0 <= 1; S3[i0, i1] -> q[10 - 4i0 + 4i1] : i0 <= 1 and 0 <= i1 <= i0; S3[i0, i1] -> q[6 + 5i0 + i1] : i0 <= 1 and 0 <= i1 <= i0; S1[i0, i1] -> q[12 - 6i0 + 4i1] : i0 <= 1 and 0 <= i1 <= i0; S1[i0, i1] -> q[6 + 5i0 + i1] : i0 <= 1 and 0 <= i1 <= i0; S14[i0, i1] -> q[13 - 4i0 - 3i1] : i0 <= 1 and 0 <= i1 <= i0; S14[i0, i1] -> q[9 + i0 + 2i1] : i0 <= 1 and 0 <= i1 <= i0; S6[i0, i1] -> q[10 - 3i0 + 3i1] : i0 <= 1 and 0 <= i1 <= i0; S6[i0, i1] -> q[6 + 9i0 - 9i1] : i0 <= 1 and 0 <= i1 <= i0; S0[i0, i1] -> q[12 - 4i0 - 2i1] : i0 <= 1 and 0 <= i1 <= i0; S0[i0, i1] -> q[9 - 2i0 + 3i1] : i0 <= 1 and 0 <= i1 <= i0; S2[i0, i1, i2] -> q[8 - 2i0 + 3i1 + i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S2[i0, i1, i2] -> q[6 + 4i0 + 4i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1 }
+
+Write := { S28[i0, i1 = 0] -> q[10] : 0 <= i0 <= 1; S4[i0, i1, i2] -> q[6 + 3i0 + 5i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S15[i0, i1, i2] -> q[9 + i0 + 3i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S7[i0, i1, i2] -> q[10 - 4i0 + 3i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S18[i0, i1, i2] -> q[9 + i0 + i2] : i0 >= 0 and 0 <= i1 <= 1 and 0 <= i2 <= 1 - i0; S21[i0, i1 = 0] -> q[10] : 0 <= i0 <= 1; S3[i0, i1] -> q[10 - 4i0 + 4i1] : i0 <= 1 and 0 <= i1 <= i0; S1[i0, i1] -> q[12 - 6i0 + 4i1] : i0 <= 1 and 0 <= i1 <= i0; S14[i0, i1] -> q[9 + i0 + 2i1] : i0 <= 1 and 0 <= i1 <= i0; S6[i0, i1] -> q[10 - 3i0 + 3i1] : i0 <= 1 and 0 <= i1 <= i0; S0[i0, i1] -> q[9 - 2i0 + 3i1] : i0 <= 1 and 0 <= i1 <= i0; S2[i0, i1, i2] -> q[6 + 4i0 + 4i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1 }
+
+Call := { S21[i0, i1 = 0] -> [9 - 3i0, 10] : 0 <= i0 <= 1; S0[i0, i1] -> [12 - 4i0 - 2i1, 9 - 2i0 + 3i1] : i0 <= 1 and 0 <= i1 <= i0; S3[i0, i1] -> [6 + 5i0 + i1, 10 - 4i0 + 4i1] : i0 <= 1 and 0 <= i1 <= i0; S6[i0, i1] -> [6 + 9i0 - 9i1, 10 - 3i0 + 3i1] : i0 <= 1 and 0 <= i1 <= i0; S18[i0, i1, i2] -> [6 + 3i0, 9 + i0 + i2] : i0 >= 0 and 0 <= i1 <= 1 and 0 <= i2 <= 1 - i0; S28[i0, i1 = 0] -> [12, 10] : 0 <= i0 <= 1; S2[i0, i1, i2] -> [8 - 2i0 + 3i1 + i2, 6 + 4i0 + 4i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S1[i0, i1] -> [6 + 5i0 + i1, 12 - 6i0 + 4i1] : i0 <= 1 and 0 <= i1 <= i0; S14[i0, i1] -> [13 - 4i0 - 3i1, 9 + i0 + 2i1] : i0 <= 1 and 0 <= i1 <= i0; S7[i0, i1, i2] -> [6 + 5i0 + i2, 10 - 4i0 + 3i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S15[i0, i1, i2] -> [12 - 6i1, 9 + i0 + 3i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S4[i0, i1, i2] -> [7 + 5i0 + i2, 6 + 3i0 + 5i2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1 }
+
+DataDependencies := { S2[0, i1, i2] -> S3[i1, i2] : i1 <= 1 and 0 <= i2 <= i1; S4[0, i1, 0] -> S6[i1, o1] : i1 <= 1 and 0 <= o1 <= i1; S1[i0, 0] -> S2[0, o1, -i0 + o1] : i0 >= 0 and i0 <= o1 <= 1; S1[1, 1] -> S2[0, 1, 1]; S3[i0, 0] -> S4[0, i0, o2] : i0 <= 1 and 0 <= o2 <= i0; S0[i0, i0] -> S1[i0, 0] : 0 <= i0 <= 1; S7[0, 0, 0] -> S1[1, o1] : 0 <= o1 <= 1; S18[0, 0, i2] -> S7[1, 0, 0] : 0 <= i2 <= 1; S4[0, 1, 0] -> S14[1, 1]; S18[0, 1, 0] -> S2[1, 1, 0]; S0[1, 0] -> S4[0, 1, 0]; S7[1, 1, 0] -> S15[1, 1, 0]; S14[1, 1] -> S7[1, 0, 0]; S4[1, 0, 0] -> S4[1, 1, 0]; S21[0, 0] -> S21[1, 0]; S15[0, 1, 1] -> S28[o0, 0] : 0 <= o0 <= 1; S15[0, 1, i2] -> S7[1, 0, 0] : 0 <= i2 <= 1; S7[1, 1, 0] -> S2[1, 0, 0]; S1[0, 0] -> S3[1, 1]; S7[1, 1, 0] -> S18[0, 1, o2] : 0 <= o2 <= 1; S1[0, 0] -> S15[0, 0, 0]; S6[0, 0] -> S1[1, 0]; S15[1, 1, 0] -> S2[1, 0, 0]; S28[1, 0] -> S15[1, 0, 0]; S3[1, 1] -> S6[1, 1]; S14[1, 0] -> S18[0, 0, 1]; S0[1, i1] -> S6[1 - i1, 0] : 0 <= i1 <= 1; S4[0, 0, 0] -> S1[1, 0]; S14[i0, i1] -> S15[0, i0, i1] : i0 <= 1 and 0 <= i1 <= i0; S21[i0, 0] -> S18[0, 1, i0] : 0 <= i0 <= 1; S2[1, 0, 0] -> S2[1, 1, 0]; S3[0, 0] -> S0[1, 1]; S18[i0, 1 - i0, i2] -> S18[1, o1, 0] : i0 >= 0 and i2 >= 0 and i0 <= o1 <= 1 - i2; S21[1, 0] -> S7[1, 0, 0]; S15[0, 0, 0] -> S14[1, o1] : 0 <= o1 <= 1; S7[i0, 1 - i0, 0] -> S7[1, i0, 0] : 0 <= i0 <= 1; S28[0, 0] -> S28[1, 0]; S0[0, 0] -> S14[0, 0]; S7[0, 1, i2] -> S14[1 - i2, 0] : 0 <= i2 <= 1; S15[0, 1, 1] -> S4[1, o1, 0] : 0 <= o1 <= 1; S4[0, i1, i2] -> S7[o0, o1, 0] : i1 <= 1 and i2 <= i1 and i2 <= o0 <= 1 and o0 <= i1 + i2 and i1 - o0 <= o1 <= 1 + i2 - o0 and o1 <= i1; S1[0, 0] -> S1[1, 1]; S15[0, 1, 0] -> S18[0, 0, 0]; S4[i0, 1, 0] -> S21[1 - i0, 0] : 0 <= i0 <= 1; S1[i0, i0] -> S14[1, 1] : 0 <= i0 <= 1; S18[0, 0, 0] -> S4[1, 0, 0]; S4[i0, 1, 0] -> S18[0, i0, o2] : i0 >= 0 and 0 <= o2 <= 1 - i0; S3[1, 1] -> S14[1, 1]; S18[1, 1, 0] -> S28[0, 0]; S4[0, 1, 0] -> S15[0, 1, o2] : 0 <= o2 <= 1; S2[0, 1, 1] -> S14[1, 1]; S15[i0, i1, i1] -> S15[i0 + i1, 1 - i1, 0] : i0 >= 0 and 0 <= i1 <= 1 - i0; S2[0, i1, 0] -> S4[0, i1, i1] : 0 <= i1 <= 1; S1[1, 0] -> S4[0, 1, 1]; S4[0, 0, 0] -> S0[1, o1] : 0 <= o1 <= 1; S18[0, 0, 1] -> S21[0, 0]; S6[i0, i1] -> S7[o0, i0 - o0, i0 - i1] : i0 <= 1 and i1 <= i0 and 0 <= o0 <= i1 }
+
+RecoveredSchedule := { S14[i0, i1] -> [1, 0, 1, i0, 1, i1, 0, 0] : i0 <= 1 and 0 <= i1 <= i0; S0[i0, i1] -> [i0, 0, 0, 1, 0, i1, 4 - 5i1, 7] : i0 <= 1 and 0 <= i1 <= i0; S3[i0, i1] -> [1, 0, 0, i0, 0, 1 + i1, 4, 10] : i0 <= 1 and 0 <= i1 <= i0; S28[i0, 0] -> [1 + i0, 1 - i0, 1, 1, 0, 1, 1, 9] : 0 <= i0 <= 1; S6[i0, i1] -> [1, 0, 0, 1 + i0, 0, 1 - i1, 0, 6] : i0 <= 1 and 0 <= i1 <= i0; S18[i0, i1, i2] -> [1, 1, i0, 1 - i0 + i1, 0, i1 + i2, 2 - 2i0, 8] : i0 >= 0 and 0 <= i1 <= 1 and 0 <= i2 <= 1 - i0; S21[i0, 0] -> [1, 1, 0, 1, 0, 1 + i0, 6 - 6i0, 4] : 0 <= i0 <= 1; S15[i0, i1, i2] -> [1 + i0, i1, 1 - i1, 1 - i1, 0, 1 + i2, 2, 1] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S1[i0, i1] -> [i0, 0, 0, 1, 0, 1 + i1, 2, 0] : i0 <= 1 and 0 <= i1 <= i0; S2[i0, i1, i2] -> [1 + i0, i0, 0, i1, 0, 1 + i2, 3, 5] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S4[i0, i1, i2] -> [1, i0, 0, 1 + i2, 0, i1, 3 + 2i1, 3] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1; S7[i0, i1, i2] -> [1, i0, 0, 1 + i1, 0, 1 + i0 - i1 + i2, 1, 2] : i0 >= 0 and i1 <= 1 and 0 <= i2 <= 1 - i0 and i2 <= i1 }
+
+--- Stats ---
+Qops: 45
+Lookahead Breadth Limit: 2
+Search Limit: 0
+Domains: 
+2D: 7 domains, 19 points.
+3D: 5 domains, 26 points.
+Total: 12 domains, 45 points.
+-------------
+--- Substr ---
+Num substr             : 0
+Max substr size        : 0
+Avg substr size        : 0
+Avg substr occurrences : 0
+--------------
+--- Domain Size Breakdown ---
+Domain Size : Domain Count
+2 : 2
+3 : 5
+5 : 4
+6 : 1
+-----------------------------
+--- Reconstruction Profile ---
+Dimension -> {Cardinality:Count}
+2 -> {2:2,3:5,}
+3 -> {5:4,6:1,}
+------------------------------
+--- Timing ---
+Reconstruction: 150ms
+Scheduling: 267ms
+Verification: 3486ms
+Total execution time: 3919ms
+-------------

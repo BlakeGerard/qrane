@@ -1,0 +1,60 @@
+Parsing circuit
+
+Processing circuit
+
+Converting statements to qrane tuples ...  Done.
+Constructing domains of one dimension ...  Done.
+Attempting iterative merging of lower dimension domains to higher dimension domains ...  Done.
+Pluto Minfuse chosen.
+computing schedule ...Done.
+Checking
+
+Checking that all qops have been accounted for ... num_qops: 90, num_points: 90
+True
+Checking that recovered schedule respects dependences ... True
+Checking that all qubits have the same number of accesses ... 0: { cx (9) }
+1: { cx (9) }
+2: { cx (3) }
+3: { cx (12) }
+4: { cx (6) }
+5: { cx (10) }
+6: { cx (19) }
+7: { cx (4) }
+8: { cx (14) }
+9: { cx (10) }
+10: { cx (20) }
+11: { cx (5) }
+12: { cx (3) }
+13: { cx (10) }
+14: { cx (8) }
+15: { cx (9) }
+16: { cx (6) }
+17: { cx (9) }
+18: { cx (1) }
+19: { cx (13) }
+Index expression count: 180
+0: { cx (9) }
+1: { cx (9) }
+2: { cx (3) }
+3: { cx (12) }
+4: { cx (6) }
+5: { cx (10) }
+6: { cx (19) }
+7: { cx (4) }
+8: { cx (14) }
+9: { cx (10) }
+10: { cx (20) }
+11: { cx (5) }
+12: { cx (3) }
+13: { cx (10) }
+14: { cx (8) }
+15: { cx (9) }
+16: { cx (6) }
+17: { cx (9) }
+18: { cx (1) }
+19: { cx (13) }
+Index expression count: 180
+True
+Checking for isomorphism between original and recovered dependence graphs ... Failed to read NetworkX output to result file.
+False
+One of the checks failed. Exiting.
