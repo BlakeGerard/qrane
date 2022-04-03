@@ -1,8 +1,0 @@
-hq[0] hq[0]
-xq[1] hq[1]
-hq[1] hq[1]
-xq[2] hq[2]
-hq[2] yq[2]
-hq[0] yq[0]
-hq[1] yq[1]
-yq[0] hq[0]
