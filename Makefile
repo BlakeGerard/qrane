@@ -1,32 +1,31 @@
-SCANNER = qrane-scanner
-GRAMMAR = qrane-parser
 
-# Binary target
+# Targets
 BIN = qrane
-
-# Library target
+SCANNER = qrane_scanner
+GRAMMAR = qrane_parser
 TLIB = libqrane.so
 
-#ISL = ./lib/isl
-#ISL_LIBS = $(ISL)/lib
-#ISL_INCL = $(ISL)/include
-
+# Barvinok
 BARVINOK = ./lib/barvinok
 BARVINOK_LIBS = $(BARVINOK)/lib
 BARVINOK_INCL = $(BARVINOK)/include
 
+# NTL
 NTL = ./lib/ntl
 NTL_LIBS = $(NTL)/lib
 NTL_INCL = $(NTL)/include
 
+# Bison
 BISON = ./lib/bison
 BISON_LIBS = $(BISON)/lib
 BISON_BIN = $(BISON)/bin/bison
 
+# Python
 PYTHON_HOME = $(QRANE_CONDA_BASE)/lib
 PYTHON_INCL = $(QRANE_CONDA_BASE)/include/python3.9
 PYTHON_HEAD = /usr/include/python3.9/
 
+# Aquma
 AQUMA_INCL = $(AQUMA_HOME)
 
 INCL = -I. -I./include -I$(AQUMA_INCL) -I$(PYTHON_HEAD) -I$(PYTHON_INCL) -I$(PYTHON_HOME) -I$(BARVINOK_INCL) -I$(NTL_INCL)
@@ -36,8 +35,8 @@ SRCS = qrane_driver.cpp $(SCANNER).c $(GRAMMAR).c ./src/*
 LIBSRCS = qrane_api.cpp $(SCANNER).c $(GRAMMAR).c ./src/*
 
 FLEX_BIN = flex
-CXX = clang++
-CXXFLAGS = -Wall -g -O3 -fopenmp -std=c++11 -pthread -march=native
+CXX = g++
+CXXFLAGS = -Wall -O3 -fopenmp -std=c++11 -pthread -march=native
 CXXLIBFLAGS = -shared -fpic
 
 all: scanner grammar bin lib
@@ -55,4 +54,4 @@ lib: $(SRCS)
 	$(CXX) -o $(TLIB) $(CXXFLAGS) $(CXXLIBFLAGS) $(INCL) $(LIBSRCS) $(LIBS)
 
 clean: 
-	rm qrane
+	rm -rf qrane libqrane.so ${SCANNER}.c ${GRAMMER}.c ${GRAMMAR}.h ${GRAMMER}.output location.hh compile_commands.json
