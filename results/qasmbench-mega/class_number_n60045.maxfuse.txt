@@ -1,3 +1,0 @@
-Parsing circuit
-
-Something went wrong in the parser. Exiting.
