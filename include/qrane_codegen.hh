@@ -18,6 +18,11 @@
 
 namespace qrane_codegen {
 
+	// fprintf_domain
+	isl_stat qrane_build_domain_key(__isl_take isl_ast_expr * ae, void * usr);
+	__isl_give isl_printer* qrane_stmt_print_user_fprintf_domain(__isl_take isl_printer* prt, __isl_take isl_ast_print_options* options,
+											              __isl_keep isl_ast_node* node, void* usr);
+
 	// fprintf_qasm
 	isl_stat qrane_build_gate_operation_fprintf_qasm(__isl_take isl_ast_expr * ae, void * usr);
 	__isl_give isl_printer* qrane_stmt_print_user_fprintf_qasm(__isl_take isl_printer* prt, __isl_take isl_ast_print_options* options,

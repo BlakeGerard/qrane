@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "isl/union_map.h"
 #include <assert.h>
 #include <string.h>
 #include <algorithm>
@@ -39,48 +40,68 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   Default constructor. Initialize isl context and the AST.
 */
 qrane_mainprogram::qrane_mainprogram() {
-  ctx = isl_ctx_alloc();
-  scop = new t_qrane_scop();
-  stmtlist = nullptr;
-  num_points = 0;
-  num_qops = -1;
-  num_qubit_exprs = 0;
-  qreg_seen = false;
+  	ctx = isl_ctx_alloc();
+  	scop = new t_qrane_scop();
+  	this->substr_repetition = false;
+	this->id = -1;
 };
 
 qrane_mainprogram::qrane_mainprogram(const qrane_options* opt) {
-  ctx = isl_ctx_alloc();
-  scop = new t_qrane_scop();
-  this->opt = opt;
-  stmtlist = nullptr;
-  num_points = 0;
-  num_qops = -1;
-  num_qubit_exprs = 0;
-  qreg_seen = false;
+  	ctx = isl_ctx_alloc();
+  	scop = new t_qrane_scop();
+  	this->opt = opt;
+  	this->substr_repetition = false;
+	this->id = -1;
+};
+
+qrane_mainprogram::qrane_mainprogram(const qrane_options* opt, circuit_id subcircuit_num) {
+  	ctx = isl_ctx_alloc();
+  	scop = new t_qrane_scop();
+  	this->opt = opt;
+  	this->substr_repetition = false;
+ 	this->id = subcircuit_num;
 };
 
 /*
   Default destructor. Free the isl context.
 */
 qrane_mainprogram::~qrane_mainprogram() {
-  //delete scop;
-  //isl_printer_free(printer);
-  //isl_ctx_free(ctx);
+};
+
+void qrane_mainprogram::mark_as_substr_repetition() {
+	this->substr_repetition = true;
+};
+
+bool qrane_mainprogram::is_substr_repetition() const {
+	return this->substr_repetition;
+};
+
+circuit_id qrane_mainprogram::get_id() const {
+	return this->id;
+};
+
+bool qrane_mainprogram::operator==(const qrane_mainprogram& mp) {
+	bool c0 = this->id == mp.get_id();
+	return c0;
 };
 
 /*
   Retrieve the stmtlist for debugging purposes.
 */
-qrane_stmtlist* qrane_mainprogram::get_stmtlist() {
-  	return this->stmtlist;
+qrane_statementlist qrane_mainprogram::get_statementlist() {
+  	return this->statements;
 };
 
-std::vector<qrane_statement*> qrane_mainprogram::get_1Q_gates() {
-	return this->stmtlist->get_1Q_gates();
+qrane_statementlist qrane_mainprogram::get_qops() {
+	return this->statements.get_qops();
 };
 
-std::vector<qrane_statement*> qrane_mainprogram::get_2Q_gates() {
-	return this->stmtlist->get_2Q_gates();
+qrane_statementlist qrane_mainprogram::get_1Q_gates() {
+	return this->statements.get_1Q_gates();
+};
+
+qrane_statementlist qrane_mainprogram::get_2Q_gates() {
+	return this->statements.get_2Q_gates();
 };
 
 unsigned int qrane_mainprogram::get_num_qops() {
@@ -88,7 +109,6 @@ unsigned int qrane_mainprogram::get_num_qops() {
 };
 
 unsigned int qrane_mainprogram::get_num_domains() {
-	assert(!scop->final_domain_list.empty());
 	return scop->final_domain_list.size();
 };
 
@@ -96,24 +116,28 @@ void qrane_mainprogram::set_unchanged_domains(std::vector<qrane_domain> doms) {
 	this->unchanged_domains = doms;
 };
 
+unsigned int qrane_mainprogram::substr_recurrences() {
+	return this->substrs.size();
+};
+
+std::vector<qrane_statementlist> qrane_mainprogram::get_substrs() {
+	return this->substrs;
+};
+
 qrane_deps qrane_mainprogram::get_deps() {
 	return this->deps;
 };
-	
+
 void qrane_mainprogram::set_deps(qrane_deps deps) {
 	this->deps = deps;
 };
 
-time_dependence_graph qrane_mainprogram::get_ddg() {
-	return this->deps.ddg;
-};
-
-void qrane_mainprogram::set_ddg(time_dependence_graph ddg) {
-	this->deps.ddg = ddg;
-};
-
 void qrane_mainprogram::set_membership(membership_map membership) {
 	this->deps.membership = membership;
+};
+
+std::string qrane_mainprogram::get_membership_map_reverse_str() {
+	return this->deps.get_membership_map_reverse_str();
 };
 
 unsigned long long qrane_mainprogram::get_num_points() {
@@ -129,38 +153,16 @@ void qrane_mainprogram::compute_num_points() {
 	}
 };
 
-unsigned int qrane_mainprogram::get_time_min() const {
-	const membership_map& membership = deps.get_membership();
-	unsigned int min = std::numeric_limits<unsigned int>::max();
-	for (const auto& entry : membership) {
-		if (entry.first < min) {
-			min = entry.first;
-		}
-	}
-	return min;
-};
-
-unsigned int qrane_mainprogram::get_time_max() const {
-	const membership_map& membership = deps.get_membership();
-	unsigned int max = std::numeric_limits<unsigned int>::min();
-	for (const auto& entry : membership) {
-		if (entry.first > max) {
-			max = entry.first;
-		}
-	}
-	return max;
-};
-
 void qrane_mainprogram::increment_num_qops() {
 	this->num_qops += 1;
 }
 
-void qrane_mainprogram::set_subcircuit_num(unsigned int num) {
-	this->subcircuit_num = num;
-}
+qrane_graph<qop_id> qrane_mainprogram::get_dependence_graph() {
+	return this->deps.get_dependence_graph();
+};
 
-void qrane_mainprogram::set_substrs(std::vector<qrane_stmtlist*> stmts) {
-	this->substrs = stmts;
+void qrane_mainprogram::set_substrs(std::vector<qrane_statementlist> substrs) {
+	this->substrs = substrs;
 }
 
 void qrane_mainprogram::set_num_qops(unsigned int num_qops) {
@@ -173,26 +175,47 @@ unsigned long long qrane_mainprogram::get_num_qubit_exprs() {
 
 bool qrane_mainprogram::check_all_qops_accounted() {
 	compute_num_points();
-	if (opt->chunk > 1 || opt->substr) { this->num_qops += 1; }
 	std::cout << "num_qops: " << this->num_qops << ", " << "num_points: " << this->num_points << std::endl;
 	return this->num_qops == this->num_points;
+};
+
+unsigned int qrane_mainprogram::get_time_min() {
+	membership_map membership = deps.get_membership();
+	unsigned int min = std::numeric_limits<unsigned int>::max();
+	for (const auto& entry : membership) {
+		if (entry.first < min) {
+			min = entry.first;
+		}
+	}
+	return min;
+};
+
+unsigned int qrane_mainprogram::get_time_max() {
+	membership_map membership = deps.get_membership();
+	unsigned int max = std::numeric_limits<unsigned int>::min();
+	for (const auto& entry : membership) {
+		if (entry.first > max) {
+			max = entry.first;
+		}
+	}
+	return max;
 };
 
 t_qrane_scop* qrane_mainprogram::get_scop() {
 	return this->scop;
 }
-	
-bool vec_size_compare(const std::vector<unsigned int>&a, const std::vector<unsigned int>&b) {
+
+bool vec_size_compare(const std::vector<qop_id>&a, const std::vector<qop_id>&b) {
 	return a.size() < b.size();
 };
 
-bool id_vec_size_compare(const std::pair<std::string, std::vector<unsigned int>>&a, 
-						 const std::pair<std::string, std::vector<unsigned int>>&b) {
+bool id_vec_size_compare(const std::pair<std::string, std::vector<qop_id>>&a,
+						 const std::pair<std::string, std::vector<qop_id>>&b) {
 	return a.second.size() < b.second.size();
 };
 
-bool rg_compare(const std::pair<std::pair<unsigned int, float>, std::deque<unsigned int>>&a, 
-				const std::pair<std::pair<unsigned int, float>, std::deque<unsigned int>>&b) {
+bool rg_compare(const std::pair<std::pair<qop_id, float>, std::deque<qop_id>>&a,
+				const std::pair<std::pair<qop_id, float>, std::deque<qop_id>>&b) {
 	return a.second.size() < b.second.size();
 }
 
@@ -201,177 +224,91 @@ void qrane_mainprogram::set_scop(t_qrane_scop* new_scop) {
 	this->deps.membership = scop->membership;
 }
 
-/*
-    Add the provided stmtlist to this object. If the stmtlist contains 
-  no qrane_statements of statement_type::QOP, then we exit the program.
-  Otherwise, program proceeds to parse the stmtlist to build the
-  qrane_domain objects that partition the qops into distinct groups.
-
-  Params:
-    stmtlist: qrane_stmtlist object that holds all statements in the file.
-  Return:
-    none
-*/
-void qrane_mainprogram::add_stmtlist(qrane_stmtlist *stmtlist) {
-  this->stmtlist = stmtlist;
-  if (this->stmtlist->get_qops().empty()) {
-    std::cout << "No qops to work with." << std::endl;
-    exit(1);
-  }
-  //num_qops = this->stmtlist->get_qops().size();
+void qrane_mainprogram::initialize(qrane_statementlist statements, unsigned int qreg_size) {
+  	if (statements.get_qops().empty()) {
+    	std::cout << "No qops to work with." << std::endl;
+    	exit(1);
+  	}
+  	this->statements = statements;
+  	this->qops = qrane_qop_map(this->statements.get_qops());
+	this->deps = qrane_deps(opt, this->qops);
+	this->num_qops = qops.size();
+	this->qreg_size = qreg_size;
 };
-
-
 
 void qrane_mainprogram::parse_domains() {
 
-	// Started counting at -1, so increment here so num_qops represents max
-	// of range 0, (n-1)
-	num_qops += 1; 
-
-	this->deps = qrane_deps(this->stmtlist->get_qops());
-
-	if (!opt->quiet) { std::cout << "Converting statements to qrane tuples ... "; }
-	convert_stmtlist_to_vector_form();
-	if (!opt->quiet) { std::cout << " Done.\n";}
-
 	if (!opt->quiet) { std::cout << "Constructing domains of one dimension ... "; }
-	if (opt->process_mode == PROCESS_DDG) { process_ddg(); }
-	else { process_circuit(); }
+	switch(opt->process_mode) {
+		case PROCESS_DDG:
+			process_ddg();
+			break;
+		case PROCESS_GRID:
+			process_circuit();
+			break;
+		default:
+			process_ddg();
+	}
 	if (!opt->quiet) { std::cout << " Done.\n";}
 
-	if (!opt->quiet) { std::cout << "Attempting iterative merging of lower dimension domains to higher dimension domains ... "; }
+	if (!opt->quiet) { std::cout << "Constructing domains of N dimensions ... "; }
 	combine_domains();
 	if (!opt->quiet) { std::cout << " Done.\n"; }
 
 	// Solve all domain access relations
 	for (auto& dom : unchanged_domains) {
 		dom.back_substitution(ctx);
-		//this->num_points += dom.stmt_count;
 	}
 };
 
-void qrane_mainprogram::build_dependence_graph() {
-	std::vector<qrane_statement*> qops = stmtlist->get_qops();
-	qrane_qop* qop;
-
-	for (std::size_t i = 0; i < qops.size(); ++i) {
-		qop = (qrane_qop*) qops[i];
-		add_dependence_vertex(qop);
-	}
-}
-
-void qrane_mainprogram::convert_vector_form_to_plinko_grid() {
-	for (std::size_t i = 0; i < qreg_size; ++i) { circuit.push_back(std::deque<unsigned int>()); }
-	std::size_t i;
-	for (auto& elem : qops_list) {
-		unsigned int global = std::get<QOP_NUM_GLOBAL>(elem.second);
-		auto args = std::get<ARGS>(elem.second);
-
-		for (i = 0; i < args.size(); ++i) {
-			circuit[args[i]].push_back(global);
-		}
-	};
-};
-
-bool circuit_is_empty(plinko_grid& circ) {
-	for (std::size_t i = 0; i < circ.size(); ++i) {
-		if (circ[i].size() > 0) {
-			return false;
-		}
-	}
-	return true;
-};
-
-std::vector<unsigned int> qrane_mainprogram::get_ones_from_level(std::vector<unsigned int>& level) {
-	std::vector<unsigned int> ones;
+std::vector<qop_id> qrane_mainprogram::get_ones_from_level(std::vector<qop_id>& level) {
+	std::vector<qop_id> ones;
 	for (std::size_t i = 0; i < level.size(); ++i) {
-		if (std::get<ARGS>(qops_list[level[i]]).size() == 1) {
+		if (qops[level[i]]->is_1Q_gate()) {
 			ones.push_back(level[i]);
 		}
 	}
 	return ones;
 };
 
-std::vector<unsigned int> qrane_mainprogram::get_twos_from_level(std::vector<unsigned int>& level) {
-	std::vector<unsigned int> seen = std::vector<unsigned int>();
-	std::vector<unsigned int> twos;
+std::vector<qop_id> qrane_mainprogram::get_twos_from_level(std::vector<qop_id>& level) {
+	std::vector<qop_id> twos;
 	for (std::size_t i = 0; i < level.size(); ++i) {
-		std::vector<int> args = std::get<ARGS>(qops_list[level[i]]);
-		if (args.size() == 2 && std::find(seen.begin(), seen.end(), level[i]) == seen.end()) {
+		if (qops[level[i]]->is_2Q_gate()) {
 			twos.push_back(level[i]);
-			seen.push_back(level[i]);
 		}
 	}
 	return twos;
 };
 
-void qrane_mainprogram::create_fresh_domain(isl_ctx* ctx, std::vector<unsigned int>& path) {
+/*
+	This function must be in a critical section
+*/
+void qrane_mainprogram::create_fresh_domain(isl_ctx* ctx, std::vector<qop_id>& path) {
 	// Construct the domain object
-	std::string gate_id = std::get<GATE_TYPE>(qops_list[path[0]]);
-	unsigned int args = std::get<ARGS>(qops_list[path[0]]).size();
-	qrane_domain dom = qrane_domain(ctx, num_domains, gate_id, args, this->qops_list, path);
+	std::string gate_id = qops[path[0]]->get_operation();
+	unsigned int num_args = qops[path[0]]->num_args();
+	qrane_domain dom = qrane_domain(ctx, num_domains, gate_id, num_args, qops, path);
 	this->domain_map[num_domains] = dom;
-	this->deps.update_membership_graph_1D_phase(path, num_domains); 
-	this->deps.decrement_in_degrees_of_path_neighbors(path);
+	this->deps.update_membership_graph_1D_phase(path, num_domains);
+	this->deps.remove_frontier_subset(path);
 	num_domains += 1;
-};
-
-// CIRCUIT with ITERATIVE BUILDING
-void qrane_mainprogram::process_circuit() {
-	if (!opt->quiet) { std::cout << "Building circuit form ... " << std::flush; }
-	convert_vector_form_to_plinko_grid();
-	if (!opt->quiet) { std::cout << " Done.\n" << std::flush; }
-
-	std::vector<std::vector<unsigned int>> all_paths;
-	std::vector<unsigned int> chosen_path;
-	std::vector<bool> grouped = std::vector<bool>(num_qops, false);
-	unsigned int points_processed = 0;
-
-	// Do the processing
-	while (points_processed != num_qops) {
-		std::vector<unsigned int> frontier = get_next_grid_row(circuit, grouped, qreg_size);
-		if (frontier.empty()) { break; }
-
-		chosen_path = one_qubit_clearing_policy(frontier);
-		//chosen_path = look_ahead_policy(frontier, opt->breadth_limit);
-
-		#pragma omp critical
-		create_fresh_domain(ctx, chosen_path);
-
-		for (unsigned int val : chosen_path) { grouped[val] = true; }
-
-		points_processed += chosen_path.size();
-	}
 };
 
 // DEPENDENCE GRAPH with ITERATIVE BUILDING
 void qrane_mainprogram::process_ddg() {
 	deps.initialize_frontier_processing();
-	std::vector<std::vector<unsigned int>> all_paths;
-	std::vector<unsigned int> chosen_path;
+	std::vector<std::vector<qop_id>> all_paths;
+	std::vector<qop_id> chosen_path;
 	unsigned int points_processed = 0;
-	std::cout << std::endl;
 
 	// Do the processing
 	while (points_processed != num_qops) {
-		std::vector<unsigned int> frontier = deps.get_dependence_frontier();
+		std::vector<qop_id> frontier = deps.get_dependence_frontier();
 		if (frontier.empty()) { break; }
-
-		std::cout << "Frontr: ";
-		for (auto val : frontier) {
-			std::cout << val << " ";
-		}
-		std::cout << std::endl;
 
 		chosen_path = one_qubit_clearing_policy(frontier);
 		//chosen_path = look_ahead_policy(frontier, opt->breadth_limit);
-
-		std::cout << "Chosen: ";
-		for (auto val : chosen_path) {
-			std::cout << val << " ";
-		}
-		std::cout << std::endl;
 
 		// Create the new domain and store it in the domain_map
 		#pragma omp critical
@@ -381,9 +318,79 @@ void qrane_mainprogram::process_ddg() {
 	}
 };
 
-std::vector<unsigned int> qrane_mainprogram::one_qubit_clearing_policy(std::vector<unsigned int>& level) {
-	std::vector<unsigned int> ones = get_ones_from_level(level);
-	std::vector<unsigned int> twos = get_twos_from_level(level);
+void qrane_mainprogram::process_circuit() {
+	qrane_grid P = generate_circuit_grid();
+	auto grouped = std::unordered_set<qop_id>();
+
+	std::vector<std::vector<qop_id>> all_paths;
+	std::vector<qop_id> chosen_path;
+	unsigned int points_processed = 0;
+	
+	// Do the processing
+	while (points_processed != num_qops) {
+		std::vector<qop_id> frontier = get_next_grid_row(P, grouped);
+		if (frontier.empty()) { break; }
+
+		//std::cout << "Path: { ";
+		//for (const auto id : frontier) {
+		//	std::cout << id << " ";
+		//}
+		//std::cout << "}\n";
+
+		chosen_path = one_qubit_clearing_policy(frontier);
+		//chosen_path = look_ahead_policy(frontier, opt->breadth_limit);
+
+		//std::cout << "Chosen: { ";
+		//for (const auto id : chosen_path) {
+		//	std::cout << id << " ";
+		//}
+		//std::cout << "}\n";
+
+		#pragma omp critical
+		create_fresh_domain(ctx, chosen_path);
+
+		for (qop_id id : chosen_path) { grouped.insert(id); }
+		points_processed += chosen_path.size();
+	}
+};
+
+qrane_grid qrane_mainprogram::generate_circuit_grid() {
+	auto grid = qrane_grid();
+	for (qubit_id i = 0; i < this->qreg_size; ++i) {
+		grid[i] = std::queue<qop_id>();
+	}
+	for (const auto& qop : this->qops) {
+		for (const auto& arg : qop.second->get_arguments()) {
+			grid[arg->get_index()].push(qop.first);
+		}
+	}
+	return grid;
+};
+
+std::vector<qop_id> qrane_mainprogram::get_next_grid_row(qrane_grid& P, std::unordered_set<qop_id>& grouped) {
+
+	// First pop any ids that have already been grouped
+	for (auto& lane : P) {
+		while (!lane.second.empty() && grouped.count(lane.second.front())) {
+			lane.second.pop();
+		}
+	}
+
+    // Grab a COPY of the bottom row
+	auto ret_set = std::set<qop_id>();
+	for (const auto& lane : P) {
+		if (lane.second.empty()) continue;
+		ret_set.insert(lane.second.front());
+	}
+
+	auto ret = std::vector<qop_id>();
+	ret.insert(ret.end(), ret_set.begin(), ret_set.end());
+	return ret;
+};
+
+std::vector<qop_id> qrane_mainprogram::one_qubit_clearing_policy(std::vector<qop_id>& level) {
+	std::vector<qop_id> ones = get_ones_from_level(level);
+	std::vector<qop_id> twos = get_twos_from_level(level);
 	if (!ones.empty()) {
 		return find_longest_ones_path(ones, qreg_size);
 	} else {
@@ -391,9 +398,9 @@ std::vector<unsigned int> qrane_mainprogram::one_qubit_clearing_policy(std::vect
 	}
 };
 
-std::vector<unsigned int> qrane_mainprogram::look_ahead_policy(std::vector<unsigned int>& level, unsigned int depth) {
-	std::vector<unsigned int> ones = get_ones_from_level(level);
-	std::vector<unsigned int> twos = get_twos_from_level(level);
+std::vector<qop_id> qrane_mainprogram::look_ahead_policy(std::vector<qop_id>& level, unsigned int depth) {
+	std::vector<qop_id> ones = get_ones_from_level(level);
+	std::vector<qop_id> twos = get_twos_from_level(level);
 	if (depth == 0) {
 		if (ones.size() > twos.size()) {
 			return find_longest_ones_path(ones, qreg_size);
@@ -403,7 +410,7 @@ std::vector<unsigned int> qrane_mainprogram::look_ahead_policy(std::vector<unsig
 			return find_longest_ones_path(twos, qreg_size);
 		}
 	}
-	std::array<unsigned int, 2> forecast = deps.dependence_graph_lookahead_breadth(level, depth, num_qops, qops_list);
+	std::array<unsigned int, 2> forecast = deps.dependence_graph_lookahead_breadth(level, depth, num_qops, qops);
 	if (twos.empty()) {
 		return find_longest_ones_path(ones, qreg_size);
 	} else if (ones.empty()) {
@@ -426,23 +433,25 @@ std::vector<unsigned int> qrane_mainprogram::look_ahead_policy(std::vector<unsig
            2. Find longest path for each gate type
 		   3. Return the longest one
 */
-std::vector<unsigned int> qrane_mainprogram::find_longest_ones_path(std::vector<unsigned int>& ones, std::size_t qreg_size) {
-	
+std::vector<qop_id> qrane_mainprogram::find_longest_ones_path(
+	std::vector<qop_id>& ones, std::size_t qreg_size) {
+
 	// Get the points of the most frequently occurring gate type on this level
-	std::vector<unsigned int> freq_gate_points = get_most_frequent_gate_type(ones);
+	std::vector<qop_id> freq_gate_points = get_most_frequent_gate_type(ones);
 
 	// Find the longest path and store it
 	stride_graph sg = generate_stride_graph(freq_gate_points, qreg_size, 0);
-	std::vector<unsigned int> ordering = qrane_utils::adj_list_topological_ordering(sg);
-	std::vector<unsigned int> longest_path = longest_valid_path_search(sg, ordering);
+	std::vector<qop_id> ordering = qrane_utils::adj_list_topological_ordering(sg);
+	std::vector<qop_id> longest_path = longest_valid_path_search(sg, ordering);
 
 	return longest_path;
 };
 
-std::vector<unsigned int> qrane_mainprogram::find_longest_twos_path(std::vector<unsigned int>& twos, std::size_t qreg_size) {
+std::vector<qop_id> qrane_mainprogram::find_longest_twos_path(
+	std::vector<qop_id>& twos, std::size_t qreg_size) {
 
 	// Get the points of the most frequently occurring gate type on this level
-	std::vector<unsigned int> freq_gate_points = get_most_frequent_gate_type(twos);
+	std::vector<qop_id> freq_gate_points = get_most_frequent_gate_type(twos);
 
 	ray_graph rg = generate_ray_graph(freq_gate_points, qreg_size);
 	//while (true) {
@@ -452,7 +461,7 @@ std::vector<unsigned int> qrane_mainprogram::find_longest_twos_path(std::vector<
 		auto max_it = std::max_element(rg.begin(), rg.end(), rg_compare);
 
 		// Convert the deque to a vector
-		auto level = std::vector<unsigned int>(); level.reserve(max_it->second.size());
+		auto level = std::vector<qop_id>(); level.reserve(max_it->second.size());
 		std::copy(max_it->second.begin(), max_it->second.end(), std::back_inserter(level));
 
 		// Remove the level from the ray graph
@@ -461,7 +470,7 @@ std::vector<unsigned int> qrane_mainprogram::find_longest_twos_path(std::vector<
 		// Generate stride graph from the level
 		stride_graph G = generate_stride_graph(level, qreg_size, 0);
 		auto ordering = qrane_utils::adj_list_topological_ordering(G);
-		auto selected_path = longest_valid_path_search(G, ordering);
+		std::vector<qop_id> selected_path = longest_valid_path_search(G, ordering);
 
 		//if (!selected_path.empty()) { gate_type_paths.push_back(selected_path); break;}
 	//}
@@ -469,69 +478,30 @@ std::vector<unsigned int> qrane_mainprogram::find_longest_twos_path(std::vector<
 	return selected_path;
 };
 
-std::vector<unsigned int> qrane_mainprogram::get_most_frequent_gate_type(const std::vector<unsigned int>& level) {
-	std::unordered_map<std::string, std::vector<unsigned int>> separated_points;
+std::vector<qop_id> qrane_mainprogram::get_most_frequent_gate_type(const std::vector<qop_id>& level) {
+	std::unordered_map<std::string, std::vector<qop_id>> separated_points;
 	for (const auto point : level) {
-		std::string gate_type = std::get<GATE_TYPE>(qops_list[point]);
+		std::string gate_type = qops[point]->get_operation();
 		separated_points[gate_type].push_back(point);
 	}
 	return std::max_element(separated_points.begin(), separated_points.end(), id_vec_size_compare)->second;
 };
 
-plinko_grid qrane_mainprogram::generate_plinko_grid(qasm_ops_list& qops, unsigned int qreg_size) {
-	plinko_grid ret = plinko_grid(qreg_size);
-	/*
-	ret.reserve(qreg_size);
-	for (auto &qop : qops) {
-		if (std::get<ARGS>(qop)[0] > qreg_size) {
-			std::cout << "Qubit accessed outside register range\n";
-			exit(1);
-		}
-		ret[std::get<ARGS>(qop)[0]].push_back(std::get<QOP_NUM_GLOBAL>(qop));
-	}
-	*/
-	return ret;
-};
-
-std::vector<unsigned int> qrane_mainprogram::get_next_grid_row(plinko_grid& P, std::vector<bool>& grouped, unsigned int qreg_size) {
-	std::size_t i;
-
-	// First ensure that the front has no elements that have been grouped already
-	for (i = 0; i < P.size(); ++i) {
-		if (!P[i].empty()) {
-			while (grouped[P[i].front()]) {
-				P[i].pop_front();
-				if (P[i].empty()){ break; }
-			}
-		}
-	}
-
-    // Then we can grab a COPY of the entire bottom row
-	std::vector<unsigned int> ret = std::vector<unsigned int>();
-	ret.reserve(qreg_size);
-	for (i = 0; i < P.size(); ++i) {
-		if (!P[i].empty()) {
-			ret.push_back(P[i].front());
-		}
-	}
-	return ret;
-}
-
 /*
 
 */
-stride_graph qrane_mainprogram::generate_stride_graph(const std::vector<unsigned int>& qop_ids, unsigned int qreg_size, unsigned int args) {
+stride_graph qrane_mainprogram::generate_stride_graph(const std::vector<qop_id>& qop_ids, unsigned int qreg_size, unsigned int args) {
 	stride_graph G;
 	G.reserve(qreg_size);
 
 	// This is for determining which index of 2Qubit gates to use.
 	// If either argument is constant, the other argument is chosen.
 	unsigned int index;
-	if (std::get<ARGS>(qops_list[qop_ids[0]]).size() == 2 && qop_ids.size() > 1) {
-		auto args_0 = std::get<ARGS>(qops_list[qop_ids[0]]);
-		auto args_1 = std::get<ARGS>(qops_list[qop_ids[1]]);
-		if (args_1[1] - args_0[1] != 0) { index = 1; }
-		else if (args_1[0] - args_0[0] != 0) { index = 0; }
+	if (qops[qop_ids[0]]->is_2Q_gate() && qop_ids.size() > 1) {
+		qrane_argumentlist args_0 = qops[qop_ids[0]]->get_arguments();
+		qrane_argumentlist args_1 = qops[qop_ids[1]]->get_arguments();
+		if (args_1.at(1)->get_index() - args_0.at(1)->get_index() != 0) { index = 1; }
+		else if (args_1.at(0)->get_index() - args_0.at(0)->get_index() != 0) { index = 0; }
 		else { index = 0; }
 	} else {
 		index = 0;
@@ -540,42 +510,42 @@ stride_graph qrane_mainprogram::generate_stride_graph(const std::vector<unsigned
 	// For each qop
 	for (std::size_t i = 0; i < qop_ids.size(); ++i) {
 		// Prepare strides list and initialize qop i's adjacency_list
-		G[qop_ids[i]] = std::vector<std::pair<unsigned int, int>>();
+		G[qop_ids[i]] = std::vector<std::pair<qop_id, int>>();
 
 		// For each other qop
 		for (std::size_t j = 0; j < qop_ids.size(); ++j) {
 			int stride;
-			int i_op = std::get<ARGS>(qops_list[qop_ids[i]])[index];
-			int j_op = std::get<ARGS>(qops_list[qop_ids[j]])[index];
+			int i_op = qops[qop_ids[i]]->arg(index)->get_index();
+			int j_op = qops[qop_ids[j]]->arg(index)->get_index();
 			stride = j_op - i_op;
 
 			// Create the neighbor as (global_id, [strides]) and push to j's adjacency list
 			if (stride > 0) {
-				auto v = std::pair<unsigned int, int>(qop_ids[j], stride);
+				auto v = std::pair<qop_id, int>(qop_ids[j], stride);
 				G[qop_ids[i]].push_back(v);
 			}
-			
+
 		}
 	}
 	return G;
 };
 
-std::vector<unsigned int> qrane_mainprogram::longest_valid_path_search(stride_graph G, std::vector<unsigned int> ordering) {
-	std::vector<std::vector<unsigned int>> paths;
+std::vector<qop_id> qrane_mainprogram::longest_valid_path_search(stride_graph G, std::vector<qop_id> ordering) {
+	std::vector<std::vector<qop_id>> paths;
 
 	// While we can still pick a source vertex
 	while (!ordering.empty()) {
 
 		// Grab the first zero in-degree vertex in the topological ordering
-		unsigned int src = ordering.front();
+		qop_id src = ordering.front();
 
 		// Initialize local stack for perform DFS from src and longest_path variable
 		frame_stack stack = frame_stack();
-		std::vector<unsigned int> longest_path = std::vector<unsigned int>();
-		
+		std::vector<qop_id> longest_path = std::vector<qop_id>();
+
 		// Generate and push a start frame that only labels the src
 		auto start_frame = std::make_tuple(src, 0, LEX_POS,
-	                           std::unordered_map<unsigned int, bool>(), std::vector<unsigned int>());
+	                           std::unordered_map<qop_id, bool>(), std::vector<qop_id>());
 		stack.push(start_frame);
 
 		// Begin DFS
@@ -593,17 +563,17 @@ std::vector<unsigned int> qrane_mainprogram::longest_valid_path_search(stride_gr
 			// For each neighbor
 			bool frame_pushed = false;
 			for (auto i = G[curr_id].begin(); i != G[curr_id].end(); ++i) {
-				
+
 				// If the vertex is unvisited, we have two possibilities
 				if (!std::get<VISITED>(curr_frame)[(*i).first]) {
 
 					// If we are at the first branch from the search, then we have yet to establish a stride
 					// Compute the stride and lexicographic order, then build the new frame
 					if (std::get<STRIDE>(curr_frame) == 0) {
-						int diff = i->first - std::get<PATH>(curr_frame).back();
+						int time_space_diff = i->first - std::get<PATH>(curr_frame).back();
 						lex_type lex;
-						if (diff > 0) { lex = LEX_POS; }
-						else if (diff < 0) { lex = LEX_NEG; }
+						if (time_space_diff > 0) { lex = LEX_POS; }
+						else if (time_space_diff < 0) { lex = LEX_NEG; } // ADDED CONTINUE
 						auto new_frame = std::make_tuple(i->first, i->second, lex,
 							                             std::get<VISITED>(curr_frame), std::get<PATH>(curr_frame));
 						stack.push(new_frame);
@@ -611,10 +581,10 @@ std::vector<unsigned int> qrane_mainprogram::longest_valid_path_search(stride_gr
 
 					// Otherwise, we only push a new frame when the path stride (weight) equals the established stride
 					} else {
-						int diff = i->first - std::get<PATH>(curr_frame).back();
+						int time_space_diff = i->first - std::get<PATH>(curr_frame).back();
 						lex_type lex;
-						if (diff > 0) { lex = LEX_POS; }
-						else if (diff < 0) { lex = LEX_NEG; }
+						if (time_space_diff > 0) { lex = LEX_POS; }
+						else if (time_space_diff < 0) { lex = LEX_NEG; } // ADDED CONTINUE
 
 						if (i->second == std::get<STRIDE>(curr_frame) && lex == std::get<LEX_TYPE>(curr_frame)) {
 							auto new_frame = std::make_tuple((*i).first, (*i).second, lex,
@@ -628,12 +598,12 @@ std::vector<unsigned int> qrane_mainprogram::longest_valid_path_search(stride_gr
 
 			// If we frames were pushed at the current source, then we have completed a path
 			if (!frame_pushed) {
-				
+
 				// Store it if it the largest path so far.
 				if (std::get<PATH>(curr_frame).size() >= longest_path.size()) {
 					longest_path = std::get<PATH>(curr_frame);
 				}
-			} 
+			}
 		}
 
 		for (auto val : longest_path) {
@@ -642,74 +612,55 @@ std::vector<unsigned int> qrane_mainprogram::longest_valid_path_search(stride_gr
 		}
 		paths.push_back(longest_path);
 	}
-	std::vector<unsigned int> safety_path = {(*G.begin()).first};
+	std::vector<qop_id> safety_path = {(*G.begin()).first};
 	paths.push_back(safety_path);
 	return get_longest_valid_path(paths);
 };
 
-std::vector<unsigned int> qrane_mainprogram::get_longest_valid_path(std::vector<std::vector<unsigned int>> paths) {
-	std::vector<unsigned int> selected_path;
-	//bool disrespects_dependences;
-	//bool cycle_introduced;
-	//bool lexico_negative;
-	//bool cannot_carry;
+std::vector<qop_id> qrane_mainprogram::get_longest_valid_path(std::vector<std::vector<qop_id>> paths) {
+	std::vector<qop_id> selected_path;
 
 	while (true) {
-		if (paths.empty()) { return std::vector<unsigned int>(); }
+		if (paths.empty()) { return std::vector<qop_id>(); }
 
 		auto max_path_it = std::max_element(paths.begin(), paths.end(), vec_size_compare);
 		selected_path = *max_path_it;
 		paths.erase(max_path_it);
-		
-		//for (auto val : selected_path) { std::cout << val << " "; } std::cout << std::endl;
-		//qrane_domain test = create_fresh_domain(ctx, this->num_domains, selected_path);
-
-		//cannot_carry = deps.path_violates_dependences(ctx, selected_path, test, this->domain_map, this->num_domains, true);
-		//if (cannot_carry) { continue; }
-		
-		//lexico_negative = deps.path_violates_lexico_positivity(ctx, selected_path, this->domain_map, this->num_domains, this->num_qops, true);
-		//if (lexico_negative) { continue; }
-
-		//disrespects_dependences = deps.path_disrespects_dependences(selected_path, num_qops);
-		//if (disrespects_dependences) { continue; }
-
-		//cycle_introduced = deps.path_introduces_dependence_cycle(selected_path, num_qops);
-		//if (cycle_introduced) { continue; }
 
 		return selected_path;
 	}
 };
 
-ray_graph qrane_mainprogram::generate_ray_graph(const std::vector<unsigned int>& level, unsigned int qreg_size) {
+ray_graph qrane_mainprogram::generate_ray_graph(const std::vector<qop_id>& level, unsigned int qreg_size) {
 	ray_graph rg = ray_graph();
 
 	// For each qop_identifier
 	for (auto i = level.begin(); i != level.end(); ++i) {
-		auto i_args = std::get<ARGS>(qops_list[*i]);
-		auto key = std::pair<unsigned int, float>();
-		key.first = std::get<QOP_NUM_GLOBAL>(qops_list[*i]);
+		qrane_argumentlist i_args = qops[*i]->get_arguments();
+		auto key = std::pair<qop_id, float>();
+		key.first = qops[*i]->get_id();
 
-		std::vector<std::vector<int>> point_dups = std::vector<std::vector<int>>();
+		std::vector<qrane_argumentlist> point_dups = std::vector<qrane_argumentlist>();
 
 		// Look at all subsequent identifiers
 		for (auto j = i+1; j != level.end(); ++j) {
-			auto j_args = std::get<ARGS>(qops_list[*j]);
+			qrane_argumentlist j_args = qops[*j]->get_arguments();
 
 			if (std::find(point_dups.begin(), point_dups.end(), j_args) != point_dups.end()) { continue; }
 
-			float rise = static_cast<float>(j_args[1] - i_args[1]);
-			float run = static_cast<float>(j_args[0] - i_args[0]);
+			float rise = static_cast<float>(j_args.at(1)->get_index() - i_args.at(1)->get_index());
+			float run = static_cast<float>(j_args.at(0)->get_index() - i_args.at(0)->get_index());
 
-			//if (run == 0) { continue; } 
-			if (run == 0) { 
-				key.second = std::numeric_limits<float>::infinity(); 
+			//if (run == 0) { continue; }
+			if (run == 0) {
+				key.second = std::numeric_limits<float>::infinity();
 			} else {
 				key.second = rise / run;
 			}
-			//if (key.second == 0) { continue; }	
+			//if (key.second == 0) { continue; }
 
 			if (rg[key].size() <= qreg_size) {
-				rg[key].push_back(std::get<QOP_NUM_GLOBAL>(qops_list[*j]));
+				rg[key].push_back(qops[*j]->get_id());
 			}
 			point_dups.push_back(j_args);
 		}
@@ -717,7 +668,7 @@ ray_graph qrane_mainprogram::generate_ray_graph(const std::vector<unsigned int>&
 		// For each i, we also add a singleton entry to ensure all points can be covered.
 		key.second = 0;
 		if (rg.count(key) == 0) {
-			rg[key] = std::deque<unsigned int>();
+			rg[key] = std::deque<qop_id>();
 		}
 	}
 
@@ -727,107 +678,12 @@ ray_graph qrane_mainprogram::generate_ray_graph(const std::vector<unsigned int>&
 	return rg;
 };
 
-std::array<unsigned int, 2> qrane_mainprogram::look_ahead(plinko_grid circuit, unsigned int depth) {
-	std::array<unsigned int, 2> counts = {0,0};
-
-	// For each lane in the circuit
-	for (unsigned int i = 0; i < circuit.size(); ++i) {
-
-        // If the lane size is 1, then there are no more elements to look ahead at
-		if (circuit[i].size() == 1) { continue; }
-		
-		// Otherwise, skip the first element (the row from which we are looking ahead)
-		// and track argument count until empty
-		for (unsigned int j = 1; j <= depth && j < circuit[i].size(); ++j) {
-			std::size_t args = std::get<ARGS>(qops_list[circuit[i][j]]).size();
-			counts[args - 1] += 1;
-		}
-	}
-	return counts;
-};
-
-/*
-	Convert qrane_statement objects into qop_identifier list
-*/
-void qrane_mainprogram::convert_stmtlist_to_vector_form() {
-	std::vector<qrane_statement*> stmts = stmtlist->get_qops();
-  	qrane_qop* qop;
-
-	// First do the dependence graph construction
-	for (std::size_t i = 0; i < stmts.size(); ++i) {
-		qop = (qrane_qop*) stmts[i];
-		if (qop->get_arglist()->size() > 2) {
-			std::cout << "Gates with more than three arguments must first be decomposed.\n";
-			exit(1);
-		}
-		add_dependence_vertex(qop);
-	}
-
-	std::unordered_map<std::string, unsigned long> gate_type_ctr;
-	for (std::size_t i = 0; i < stmts.size(); ++i) {
-		qop = (qrane_qop*) stmts[i];
-		std::string gate_id = qop->get_id();
-		if (gate_type_ctr.count(gate_id) == 0) {gate_type_ctr[gate_id] = 0;}
-		qop_identifier id = generate_qop_identifier(qop, gate_type_ctr[gate_id]);
-		gate_type_ctr[gate_id] += 1;
-		this->qops_list[std::get<QOP_NUM_GLOBAL>(id)] = id;
-	}
-
-	// Separate the qops into their respective gate types
-	//for (std::size_t i = 0; i < qops_list.size(); ++i) {
-	//	this->qops[std::get<GATE_TYPE>(qops_list[i])].push_back(qops_list[i]);
-	//}
-}
-
-/*
-<arg(0), ..., arg(n-1), in_degree, out_degree, qop_num_type, qop_num_global>
-Reserve(num_args + 4);
-*/
-qop_identifier qrane_mainprogram::generate_qop_identifier(qrane_qop* qop, std::size_t qop_num_type) {
-	qop_identifier id;
-
-	std::vector<int> qop_args;
-	for (std::size_t i = 0; i < qop->num_args(); ++i) {		// args
-		qop_args.push_back(qop->at(i));
-	}
-
-	unsigned int in_degree = 0; //deps.qop_in_degree(qop);
-	unsigned int out_degree = 0; //deps.qop_out_degree(qop);
-	std::string gate_type = qop->get_id();
-	unsigned int qop_num_global = qop->get_dim1_qop_num();
-
-	id = std::make_tuple(qop_args, in_degree, out_degree, gate_type, qop_num_type, qop_num_global);
-	return id;
-}
-
-
-void qrane_mainprogram::gate_map_store_domain(qrane_domain dom) {
-    gate_domain_map[dom.gate_id].push_back(dom);
-};
-
-void qrane_mainprogram::add_dependence_vertex(qrane_qop* qop) {
-	char type;
-	for (unsigned int j = 0; j < qop->num_args(); ++j) {
-		num_qubit_exprs += 1;
-		if (opt->write_all) {
-			type = 'w';
-		} else {
-			if (j < qop->num_args() - 1) {type = 'r';}
-        	else {type = 'w';}
-		}
-        deps.add_vertex(qop->get_dim1_qop_num(), qop->at(j), type, qop->get_id());
-		deps.add_write_all_vertex(qop->get_dim1_qop_num(), qop->at(j), 'w', qop->get_id());
-    }
-};
-
-//bool is_mergee(const qrane_domain& dom) { return dom.is_mergee; }
-
 bool domain_match_by_num(const qrane_domain& dom, const unsigned int& search_num) {
 	return dom.domain_num == search_num;
 }
 
-bool comparator_access_graph_domain_size(const std::pair<const std::vector<int>, std::pair<lex_type, std::deque<unsigned int>>>& i, 
-                                         const std::pair<const std::vector<int>, std::pair<lex_type, std::deque<unsigned int>>>& j, 
+bool comparator_access_graph_domain_size(const std::pair<const std::vector<int>, std::pair<lex_type, std::deque<unsigned int>>>& i,
+                                         const std::pair<const std::vector<int>, std::pair<lex_type, std::deque<unsigned int>>>& j,
                                          domain_map_t& dmp) {
 	unsigned int i_size = 0;
 	unsigned int j_size = 0;
@@ -842,8 +698,8 @@ bool comparator_access_graph_domain_size(const std::pair<const std::vector<int>,
 };
 
 
-bool comparator_candidate_list_domain_size(const std::pair<lex_type, std::vector<unsigned int>>& lhs, 
-                                     const std::pair<lex_type, std::vector<unsigned int>>& rhs, 
+bool comparator_candidate_list_domain_size(const std::pair<lex_type, std::vector<unsigned int>>& lhs,
+                                     const std::pair<lex_type, std::vector<unsigned int>>& rhs,
                                      domain_map_t& dmp) {
 	unsigned int i_size = 0;
 	unsigned int j_size = 0;
@@ -859,7 +715,7 @@ bool comparator_candidate_list_domain_size(const std::pair<lex_type, std::vector
 
 /*
 This is the big search one. Doesn't seem to do as well.
-
+*/
 void qrane_mainprogram::combine_domains() {
 	unsigned int current_dim = 2;
 
@@ -877,37 +733,37 @@ void qrane_mainprogram::combine_domains() {
 			// This block sets the search limit as an iterator
 			domain_map_t::iterator lim_it;
 			auto remaining = std::distance(i, std::end(this->domain_map));
-			if (remaining < opt->search_limit) { lim_it = std::next(i, remaining); } 
+			if (remaining < opt->search_limit) { lim_it = std::next(i, remaining); }
 			else { lim_it = std::next(i, opt->search_limit); }
 
 			// For search_limit other domains in the set
 			for (domain_map_t::iterator j = std::next(i, 1); j != std::end(this->domain_map) && j != lim_it; ++j) {
 
-				unsigned int limit;
-				if (opt->search_limit == 0) { limit = opt->search_limit + 1; } 
-				else { limit = 0; }
-				for (auto& pair : my_combinations) {
-					if (limit == opt->search_limit) { break; }
-
-					if (j->first == pair.second.back()) { continue; }
+				auto rit = my_combinations.rbegin();
+				long dist_to_rend = std::distance(rit, my_combinations.rend());
+				long dist_to_rlimit = opt->search_limit;
+				if (opt->search_limit == 0) { dist_to_rlimit = dist_to_rend; }
+				long winner = std::min(dist_to_rlimit, dist_to_rend);
+				auto rlimit = std::next(rit, winner);
+			
+				for (; rit != rlimit; ++rit) {
+					if (j->first == rit->second.back()) { continue; }
 
 					// Disqualified if domains have differing gate types
-					if (domains_have_different_gate_type(j->first, pair.second.back())) { continue; }
+					if (domains_have_different_gate_type(j->first, rit->second.back())) { continue; }
 
 					// Disqualified if domains have different lex type
-					if (j->second.lex != domain_map[pair.second.back()].lex) { continue; }
+					if (domains_lex_mismatch(j->first, rit->second.back())) { continue; }
 
-					// Disqualified if established lex order is disobeyed 
-					// Think of lhs as "established" and rhs as "mergee"
-					if (domains_lex_order(pair.second.back(), j->first) != pair.first) { continue; }
+					// Disqualified if established lex order is disobeyed
+					if (domains_lex_order(rit->second.back(), j->first) != rit->first) { continue; }
 
-					bool res;
-					res = extended_domain_inconsistent(j->first, pair.second, current_dim);
-					if (res) { continue; }
+					// Disqualified if domains are inconsistent
+					if (extended_domain_inconsistent(j->first, rit->second, current_dim)) { continue; }
 
-					pair.second.push_back(j->first);
-					++limit;
+					rit->second.push_back(j->first);
 				}
+				
 				// Disqualified if domains have differing gate types
 				if (domains_have_different_gate_type(i->first, j->first)) { continue; }
 
@@ -915,9 +771,7 @@ void qrane_mainprogram::combine_domains() {
 				if (domains_lex_mismatch(i->first, j->first)) { continue; }
 
 				// Disqualified if domains are inconsistent
-				bool res;
-				res = extended_domain_inconsistent(i->first, j->first, current_dim);
-				if (res) { continue; }
+				if (extended_domain_inconsistent(i->first, j->first, current_dim)) { continue; }
 
 				lex_type lex = domains_lex_order(i->first, j->first);
 				if (lex == LEX_SUBSET) { continue; }
@@ -946,13 +800,12 @@ void qrane_mainprogram::combine_domains() {
 		current_dim += 1;
 	}
 }
-*/
 
 /*
-	You know what you could do. 
+	You know what you could do.
 	Construct an isl_mat* matrix within each thread, and pass that pointer
 	to extended_domain_inconsistent
-*/
+
 void qrane_mainprogram::combine_domains() {
 	unsigned int current_dim = 2;
 
@@ -964,10 +817,9 @@ void qrane_mainprogram::combine_domains() {
 
 			std::vector<std::pair<lex_type, std::vector<unsigned int>>> my_combinations;
 
-#if 0
 			// First look through all_combinations to see if we can extend the domain path
             //if (opt->search_limit > 0) { std::shuffle(all_combinations.begin(), all_combinations.end(), std::default_random_engine()); }
-			
+
 			unsigned int limit;
 			if (opt->search_limit == 0) {
 				limit = opt->search_limit + 1;
@@ -985,7 +837,7 @@ void qrane_mainprogram::combine_domains() {
 				// Disqualified if domains have different lex type
 				if (i->second.lex != domain_map[pair.second.back()].lex) { continue; }
 
-				// Disqualified if established lex order is disobeyed 
+				// Disqualified if established lex order is disobeyed
 				// Think of lhs as "established" and rhs as "mergee"
 				if (domains_lex_order(pair.second.back(), i->first) != pair.first) { continue; }
 
@@ -997,7 +849,6 @@ void qrane_mainprogram::combine_domains() {
 				pair.second.push_back(i->first);
 				++limit;
 			}
-#endif
 
 			// Then we can look through the rest of the domains and make a two-domain path
 			domain_map_t::iterator lim_it;
@@ -1021,7 +872,7 @@ void qrane_mainprogram::combine_domains() {
 				if (res) { continue; }
 
 				lex_type lex = domains_lex_order(i->first, j->first);
-				if (lex == LEX_SUBSET) { continue; }
+				if (lex == LEX_SUBSET || lex == LEX_NEG) { continue; }
 
 				std::vector<unsigned int> new_path = {i->first, j->first};
 				my_combinations.push_back(std::make_pair(lex, new_path));
@@ -1031,7 +882,6 @@ void qrane_mainprogram::combine_domains() {
 			all_combinations.insert(all_combinations.end(), my_combinations.begin(), my_combinations.end());
 		}
 
-/*
 		std::cout << "---\n";
 		for (auto& elem : all_combinations) {
 			for(auto key : elem.second) {
@@ -1039,8 +889,6 @@ void qrane_mainprogram::combine_domains() {
 			}
 			std::cout << std::endl;
 		}
-*/
-
 		domain_map_t new_domain_map = greedy_domain_selection(all_combinations, current_dim);
 
 		// Erase chosen domains
@@ -1057,8 +905,17 @@ void qrane_mainprogram::combine_domains() {
 
 		this->domain_map = new_domain_map;
 		current_dim += 1;
+
+		if (current_dim == 4) { 
+			for (auto& pair : new_domain_map) {
+				this->unchanged_domains.push_back(pair.second);
+			}
+			break;
+		}
+		
 	}
 }
+*/
 
 bool qrane_mainprogram::domains_have_different_gate_type(unsigned int lhs, unsigned int rhs) {
 	return this->domain_map[lhs].gate_id != this->domain_map[rhs].gate_id;
@@ -1071,7 +928,7 @@ bool qrane_mainprogram::domains_lex_mismatch(unsigned int lhs, unsigned int rhs)
 	if (i.lex == j.lex) { return false; }
 	else {
 		if (i.lex == LEX_SINGLE || j.lex == LEX_SINGLE) { return false; }
-		else { return true; } // true LEX_POS vs LEX_NEG mismatch		
+		else { return true; } // true LEX_POS vs LEX_NEG mismatch
 	}
 };
 
@@ -1081,43 +938,9 @@ lex_type qrane_mainprogram::domains_lex_order(unsigned int lhs, unsigned int rhs
 
 	// This stays in no matter what
 	if ( (i.get_time_min() > j.get_time_min() && i.get_time_max() < j.get_time_max()) ||
-		 (j.get_time_min() > i.get_time_min() && j.get_time_max() < i.get_time_max())) { 
-		return LEX_SUBSET; 
+		 (j.get_time_min() > i.get_time_min() && j.get_time_max() < i.get_time_max())) {
+		return LEX_SUBSET;
 	}
-
-	/* This is the partial overlap version
-	// This version fails BIGD 20qbt_7d1_1d2_9.qasm
-	if (i.stmt_count == 1 && j.stmt_count > 1) {
-		if (i.get_time_max() < j.get_time_min()) {
-			return LEX_POS;
-		} else if (i.get_time_min() > j.get_time_min()) {
-			return LEX_NEG;
-		} else {
-			return LEX_SUBSET;
-		}
-
-	} else if (i.stmt_count > 1 && j.stmt_count == 1) {
-		if (i.get_time_min() < j.get_time_min()) {
-			return LEX_POS;
-		} else if (i.get_time_min() > j.get_time_max()) {
-			return LEX_NEG;
-		} else {
-			return LEX_SUBSET;
-		}
-
-	} else {
-		if ((i.get_time_min() < j.get_time_min() && i.get_time_max() < j.get_time_min()) ||
-		    (i.get_time_min() < j.get_time_min() && j.get_time_max() < j.get_time_max() && i.get_time_min() > j.get_time_min())) {
-				return LEX_POS;
-		}
-		else if ((i.get_time_min() > j.get_time_max() && i.get_time_max() > j.get_time_max()) ||
-				 (i.get_time_min() > j.get_time_min() && i.get_time_min() < j.get_time_max() && j.get_time_max() < i.get_time_max())) {
-				return LEX_NEG;	 
-		} else {
-			    return LEX_SUBSET;
-		}
-	}
-	*/
 
 	if (i.stmt_count == 1 && j.stmt_count > 1) {
 		if (i.get_time_max() < j.get_time_min()) {
@@ -1150,7 +973,7 @@ lex_type qrane_mainprogram::domains_lex_order(unsigned int lhs, unsigned int rhs
 	} else {
 		if (i.lex == LEX_POS) {
 			if ( (i.get_time_max() < j.get_time_min()) //||
-		             /*(i.get_time_min() < j.get_time_min() && j.get_time_min() < i.get_time_max() && i.get_time_max() < j.get_time_max())*/) {
+		            /* (i.get_time_min() < j.get_time_min() && j.get_time_min() < i.get_time_max() && i.get_time_max() < j.get_time_max())*/ ) {
 				return LEX_POS;
 			} else {
 				return LEX_SUBSET;
@@ -1179,7 +1002,7 @@ bool qrane_mainprogram::extended_domain_inconsistent(unsigned int new_dom, std::
 	else { return true; } // Otherwise, return true
 };
 
-bool qrane_mainprogram::extended_domain_inconsistent(unsigned int lhs, unsigned int rhs, 
+bool qrane_mainprogram::extended_domain_inconsistent(unsigned int lhs, unsigned int rhs,
                                                      unsigned int current_dim) {
 	std::vector<unsigned int> combined = {lhs, rhs};
 	isl_mat* my_system = combine_access_matrices(combined, current_dim);
@@ -1198,7 +1021,7 @@ domain_map_t qrane_mainprogram::greedy_domain_selection(candidate_list candidate
 	//bool disrespects_dependences;
 
 	while(!candidates.empty()) {
-		auto max_it = std::max_element(candidates.begin(), candidates.end(), 
+		auto max_it = std::max_element(candidates.begin(), candidates.end(),
 		              std::bind(comparator_candidate_list_domain_size, std::placeholders::_1, std::placeholders::_2,
 					  this->domain_map));
 
@@ -1216,11 +1039,11 @@ domain_map_t qrane_mainprogram::greedy_domain_selection(candidate_list candidate
 			for (auto val : pair.second) {
 				if (std::find(path.begin(), path.end(), val) != path.end()) {
 					pair.first = LEX_REMOVE;
-					break;          
+					break;
 				}
 			}
 		}
-		candidates.erase(std::remove_if(candidates.begin(), candidates.end(), 
+		candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
 		[](std::pair<lex_type, std::vector<unsigned int>>& it) { return it.first == LEX_REMOVE; }), candidates.end());
 	}
 	return new_domain_map;
@@ -1238,7 +1061,7 @@ domain_map_t qrane_mainprogram::greedy_domain_selection(access_graph& G, unsigne
 	bool invalid_matrix;
 
 	while (!G.empty()) {
-		auto max_it = std::max_element(G.begin(), G.end(), 
+		auto max_it = std::max_element(G.begin(), G.end(),
 		              std::bind(comparator_access_graph_domain_size, std::placeholders::_1, std::placeholders::_2,
 					  this->domain_map));
 		std::vector<unsigned int> collection;
@@ -1265,7 +1088,7 @@ domain_map_t qrane_mainprogram::greedy_domain_selection(access_graph& G, unsigne
 
 		// then do the deletion routine
 		G.erase(max_it);
-		
+
 		auto to_remove = std::vector<access_graph::iterator>();
 		for (auto it = G.begin(); it != G.end(); ++it) {
 			for (auto val : it->second.second) {
@@ -1284,7 +1107,7 @@ bool qrane_mainprogram::inconsistent_or_rational_matrix(const std::vector<unsign
 	isl_mat* mat = combine_access_matrices(domains, current_dim);
 	mat = compute_access_relations(mat);
 
-	if (!check_consistency(mat, current_dim, domain_map[domains.front()].args)) { 
+	if (!check_consistency(mat, current_dim, domain_map[domains.front()].args)) {
 		//printf("Inconsistent\n");
 		//printf("----------------\n");
 		isl_mat_free(mat);
@@ -1336,7 +1159,7 @@ __isl_give isl_set* qrane_mainprogram::combine_isl_local_domains(const std::vect
     }
 
     std::string domain_name = "S" + std::to_string(domains.front());
-    isl_id* id = isl_id_alloc(ctx, domain_name.c_str(), nullptr); 
+    isl_id* id = isl_id_alloc(ctx, domain_name.c_str(), nullptr);
     ret_set = isl_set_set_tuple_id(ret_set, id);
     ret_set = isl_set_coalesce(ret_set);
     return ret_set;
@@ -1357,12 +1180,12 @@ __isl_give isl_mat* qrane_mainprogram::combine_access_matrices(const std::vector
 
 
 
-bool dom_compare(const qrane_domain& a, 
+bool dom_compare(const qrane_domain& a,
                  const qrane_domain& b) {
     return a.component_qops.size() < b.component_qops.size();
 };
 
-bool is_overlapping(const qrane_domain& a, 
+bool is_overlapping(const qrane_domain& a,
                  	const std::vector<unsigned int>& subdomains) {
 	for (const auto elem : subdomains) {
 		if (std::find(a.subdomains.begin(), a.subdomains.end(), elem) != a.subdomains.end()) {
@@ -1405,16 +1228,16 @@ __isl_give isl_set* qrane_mainprogram::build_ND_domain_from_sets(std::vector<qra
     };
 
     std::string domain_name = "S" + std::to_string(mergees.front().domain_num);
-    isl_id* id = isl_id_alloc(ctx, domain_name.c_str(), nullptr); 
+    isl_id* id = isl_id_alloc(ctx, domain_name.c_str(), nullptr);
     ret_set = isl_set_set_tuple_id(ret_set, id);
     ret_set = isl_set_coalesce(ret_set);
     return ret_set;
 };
 
 /*
-	Due to isl's reverse Gaussian elimination, we have to 
+	Due to isl's reverse Gaussian elimination, we have to
 	build the access matrix backwards:
-	
+
 	mergees[n-1] n-1
 	mergees[n-2] n-2
 	...
@@ -1427,7 +1250,7 @@ __isl_give isl_mat* qrane_mainprogram::compute_access_relations(isl_mat* mat) {
 	mat = isl_mat_row_basis(mat);
 	//std::cout << "Reduced:" << std::endl << std::flush;
 	//isl_mat_dump(mat);
-	
+
 	return mat;
 };
 
@@ -1451,8 +1274,8 @@ __isl_give isl_mat* qrane_mainprogram::concat_matrices_dimwise(std::vector<qrane
 			for (int row = 0; row < isl_mat_rows(mergee_mat); ++row) {
         		mergee_mat = isl_mat_set_element_si(mergee_mat, row, isl_mat_cols(mergee_mat)-1, i);
     		}
-		//} 
-		
+		//}
+
 		merger_mat = isl_mat_concat(merger_mat, mergee_mat);
 	}
 	return merger_mat;
@@ -1473,10 +1296,10 @@ bool qrane_mainprogram::integral_matrix(isl_mat* mat, std::size_t dim, std::size
 		for (int j = 0; j < cols; ++j) {
 			val = isl_mat_get_element_val(solved, i, j);
 			int den = isl_val_get_den_si(val);
-			if (den != 1) { 
-				isl_val_free(val); 
+			if (den != 1) {
+				isl_val_free(val);
 				isl_mat_free(solved);
-				return false; 
+				return false;
 			}
 		}
 	}
@@ -1485,7 +1308,7 @@ bool qrane_mainprogram::integral_matrix(isl_mat* mat, std::size_t dim, std::size
 };
 
 /*
-	This is weird. The output isl_mat_row_basis is going to be 
+	This is weird. The output isl_mat_row_basis is going to be
 	the normal rref version of the matrix but upside down, i.e.:
 	[[d1 1 b1 1 1 1]
 	 [c1 1 a1 1 0 1]
@@ -1500,7 +1323,7 @@ __isl_keep bool qrane_mainprogram::check_consistency(isl_mat* mat, std::size_t d
 	isl_val* left_val;
 
 	// First check that the last dim columns of the first row are zero
-	for (std::size_t i = 0; i < dim; ++i) {
+	for (int i = 0; i < dim; ++i) {
 		right_val = isl_mat_get_element_val(mat, 0, (cols-1)-i);
 		if (!isl_val_is_zero(right_val)) {
 			//std::cout << "Consistent" << std::endl << std::flush;
@@ -1510,7 +1333,7 @@ __isl_keep bool qrane_mainprogram::check_consistency(isl_mat* mat, std::size_t d
 	}
 
 	// Then, go left two columns at a time and check right is zero and left is non-zero
-	for (std::size_t i = args; i-- > 0;) {
+	for (int i = args; i-- > 0;) {
 		int right_val_index = 2*i+1;
 		int left_val_index = 2*i;
 		right_val = isl_mat_get_element_val(mat, 0, right_val_index);
@@ -1567,6 +1390,8 @@ void qrane_mainprogram::build_isl_domain_read_write_schedule() {
 
   scop->dependence = deps.generate_validity_map(ctx);
 
+  isl_union_set_dump(scop->domain);
+
   scop->arguments = initialize_arguments_map();
   scop->membership = deps.get_membership();
   scop->qubit_access_profile = deps.get_qubit_access_profile_map();
@@ -1603,13 +1428,13 @@ __isl_give isl_union_set* qrane_mainprogram::initialize_domain() {
 };
 
 __isl_give isl_union_map* qrane_mainprogram::initialize_recovered_schedule() {
-	isl_union_map* default_schedule = deps.build_implicit_schedule(ctx, this->subcircuit_num);
+	isl_union_map* default_schedule = deps.build_implicit_schedule(ctx);
 	return default_schedule;
 };
 
 __isl_give isl_union_map* qrane_mainprogram::initialize_read_relations() {
 	isl_union_map* ret = isl_union_map_read_from_str(ctx, build_union_read_str().c_str());
-	ret = isl_union_map_intersect_domain(ret, isl_union_set_copy(scop->domain));
+	ret = isl_union_map_intersect_domain_union_set(ret, isl_union_set_copy(scop->domain));
 	return isl_union_map_coalesce(ret);
 };
 
@@ -1771,25 +1596,24 @@ std::string qrane_mainprogram::generate_codegen_c_str() {
 	// Set the print options
 	isl_options_set_ast_always_print_block(ctx, 1);
 	isl_ast_print_options* options = isl_ast_print_options_alloc(ctx);
-    options = isl_ast_print_options_set_print_user (options, &qrane_codegen::qrane_stmt_print_user_fprintf_qasm, (void*)(this));
-	
+    options = isl_ast_print_options_set_print_user (options, &qrane_codegen::qrane_stmt_print_user_fprintf_domain, (void*)(this));
+
     // Allocate the ast build
   	isl_ast_build* build = isl_ast_build_alloc(ctx);
-	
+
 	// Set function hook at each domain
 	t_qrane_scop* my_scop = scop;
 	build = isl_ast_build_set_at_each_domain(build, &qrane_codegen::qrane_at_each_domain, (void*)(my_scop));
 
 	// Build the schedule
 	isl_ast_node* node = isl_ast_build_node_from_schedule_map(build, isl_union_map_copy(my_scop->schedule));
-
+	
 	// Print
   	printer = isl_printer_to_str(ctx);
   	printer = isl_printer_set_output_format(printer, ISL_FORMAT_C);
-  	printer = isl_ast_node_print(node, printer, options);
+	printer = isl_ast_node_print(node, printer, options);
   	str = isl_printer_get_str(printer);
   	ret = std::string(str);
-	this->codegen_c_str = ret;
 	isl_ast_print_options_free(options);
   	return ret;
 };
@@ -1812,7 +1636,7 @@ bool is_lexico_positive (__isl_keep isl_set * set)
     isl_val_free (val);
   }
   // The single point in the set is lexico positive if it doesn't have
-  // any negative component, or if it has one, but we have a strictly 
+  // any negative component, or if it has one, but we have a strictly
   // positive component before it.
   ret = (first_neg == -1) or (first_neg >= 0 and first_pos < first_neg);
   return ret;
@@ -1872,6 +1696,7 @@ void qrane_mainprogram::compute_transformation() {
         isl_options_set_schedule_serialize_sccs(ctx, 1);
 		if (!opt->quiet) { std::cout << "Pluto Minfuse chosen.\n"; }
         break;
+
       case SCHEDULE_MAXFUSE:
         assert (isl_options_set_schedule_algorithm(ctx, ISL_SCHEDULE_ALGORITHM_ISL) == isl_stat_ok);
         isl_options_set_schedule_whole_component(ctx, 1);
@@ -1883,11 +1708,11 @@ void qrane_mainprogram::compute_transformation() {
         //isl_options_set_schedule_split_scaled (m_ctx, 1);
 		if (!opt->quiet) { std::cout << "Feautrier chosen.\n"; }
         break;
-    } 
-	
+    }
+
     isl_schedule_constraints* cons = isl_schedule_constraints_on_domain(isl_union_set_copy(scop->domain));
     cons = isl_schedule_constraints_set_validity(cons, isl_union_map_copy(scop->dependence));
-    
+
 	if (!opt->quiet) { std::cout << "computing schedule ..." << std::flush; }
     isl_schedule* sched = isl_schedule_constraints_compute_schedule(cons);
 	if (!opt->quiet) { std::cout << "Done.\n" << std::flush; }
@@ -1907,19 +1732,108 @@ qrane_output_scop* qrane_mainprogram::get_output_scop() {
 	return ret;
 };
 
+void qrane_mainprogram::modify_substrs(std::vector<qrane_mainprogram>& subcircuits) {
+	// For each substr of the given mainprogram
+	for (auto& circ : subcircuits) {
+
+		substr_new_id_map old_to_new_domains = create_old_to_new_domain_map();
+		substr_new_id_map old_to_new_qops = create_old_to_new_qop_map(circ.get_qops());
+
+		// 4. For each domain in unchanged_domains:
+		//		- Update the domain nums
+		//		- Replace the id in the local domain
+		std::vector<qrane_domain> new_doms = this->scop->final_domain_list;
+		for (auto& dom : new_doms) {
+			unsigned int new_id = old_to_new_domains[dom.domain_num];
+			dom.domain_num = new_id;
+			std::string new_id_str = "S" + std::to_string(new_id);
+
+			isl_set* local_domain = dom.get_local_domain_copy();
+			isl_set_free(dom.local_domain);
+			local_domain = isl_set_set_tuple_name(local_domain, new_id_str.c_str());
+			dom.set_local_domain(local_domain);
+		}
+		circ.set_unchanged_domains(new_doms);
+
+		// 6. For each relation in membership:
+		//		- use map1 and map2 to edit both the lhs and rhs
+		membership_map new_membership;
+		for (const auto& relation : this->scop->membership) {
+			new_membership[old_to_new_qops[relation.first]] = relation.second;
+			new_membership[old_to_new_qops[relation.first]].first = old_to_new_domains[relation.second.first];
+		}
+		circ.set_membership(new_membership);
+
+		circ.build_isl_domain_read_write_schedule();
+	}
+};
+
+substr_new_id_map qrane_mainprogram::create_old_to_new_domain_map() {
+	std::vector<qrane_domain> old_domains = this->scop->final_domain_list;
+	substr_new_id_map ret;
+	ret.reserve(old_domains.size());
+
+	for (std::size_t i = 0; i < old_domains.size(); ++i) {
+		ret[old_domains[i].domain_num] = num_domains;
+		++num_domains;
+	}
+	return ret;
+}
+
+substr_new_id_map qrane_mainprogram::create_old_to_new_qop_map(qrane_statementlist stmts) {
+	assert(this->statements.size() == stmts.size());
+	substr_new_id_map ret;
+	ret.reserve(stmts.size());
+
+	for (std::size_t i = 0; i < stmts.size(); ++i) {
+		auto lhs = std::dynamic_pointer_cast<qrane_qop>(this->statements.at(i));
+		auto rhs = std::dynamic_pointer_cast<qrane_qop>(stmts.at(i));
+		ret[lhs->get_id()] = rhs->get_id();
+	}
+	return ret;
+}
+
+
 	// -----------------------------
 	// Printing and String Retrieval
 	// -----------------------------
 
-std::string qrane_mainprogram::get_registers() {
-  std::ostringstream qreg_decls;
-  std::vector<qrane_statement*> qregs = stmtlist->get_qregs();
+std::string qrane_mainprogram::get_qasm_string() {
+	std::ostringstream strm;
+	strm << "OPENQASM 2.0;\n";
+	strm << "include \"qelib1.inc\";\n";
+	strm << "qreg q[" << qreg_size << "];\n";
+	for (auto& stmt : statements) {
+		if (stmt->is_qop()) {
+			strm << stmt->to_string() << std::endl;
+		}
+	}
+	return strm.str();
+};
 
-  for (std::size_t i = 0; i < qregs.size(); ++i) {
-    qrane_qreg* qreg = (qrane_qreg*) qregs[i];
-    qreg_decls << "qreg " << qreg->get_id() << "[" << std::to_string(qreg->get_size()) << "];\\n";
+std::string qrane_mainprogram::get_qasm_string(std::vector<qop_id> ordering) {
+	std::ostringstream strm;
+	strm << "OPENQASM 2.0;\n";
+	strm << "include \"qelib1.inc\";\n";
+	strm << "qreg q[" << qreg_size << "];\n";
+	for (qop_id id : ordering) {
+		strm << this->qops[id]->to_string() << std::endl;
+	}
+	return strm.str();
+};
+
+std::string qrane_mainprogram::get_registers() {
+  std::ostringstream strm;
+  qrane_statementlist regs = this->statements.get_registers();
+
+  unsigned int i = 0;
+  for (const auto& statement : regs) {
+    auto reg = std::dynamic_pointer_cast<qrane_reg>(statement);
+    strm << reg->to_string();
+	strm << "\\n";
+	++i;
   }
-  return qreg_decls.str();
+  return strm.str();
 };
 
 std::string qrane_mainprogram::get_domain_profile_str() {
@@ -1934,7 +1848,7 @@ std::string qrane_mainprogram::get_domain_profile_str() {
 		dims_info[scop->final_domain_list[i].dimensionality].first += 1;
 		dims_info[scop->final_domain_list[i].dimensionality].second += dom_card;
 	}
-	
+
 	for (auto &entry : dims_info) {
 		strm << entry.first << "D: " << entry.second.first << " domains, " << entry.second.second << " points.\n";
 	}
@@ -1953,7 +1867,7 @@ std::string qrane_mainprogram::get_reconstruction_histogram_str() {
 
 std::string qrane_mainprogram::get_networkx_edge_list_str() {
 	//return deps.get_networkx_edge_list_str();
-	return deps.get_gates_networkx_edge_list_str(stmtlist->get_qops());
+	return deps.get_gates_networkx_edge_list_str(this->qops);
 };
 
 std::string qrane_mainprogram::get_qubit_access_profile_str() {
@@ -1991,7 +1905,7 @@ std::string qrane_mainprogram::print_reconstruction_histogram(std::vector<qrane_
 			strm << pair.first << ":" << pair.second << ",";
 		}
 		strm << "}\n";
-	} 
+	}
 	strm << "------------------------------" << std::endl;
 	return strm.str();
 }
@@ -2007,7 +1921,7 @@ std::string qrane_mainprogram::print_domain_size_histogram(std::vector<qrane_dom
 	strm << "Domain Size : Domain Count" << std::endl;
 	for (auto bucket : hist) {
 		strm << bucket.first << " : " << bucket.second << std::endl;
-	} 
+	}
 	strm << "-----------------------------" << std::endl;
 	return strm.str();
 }

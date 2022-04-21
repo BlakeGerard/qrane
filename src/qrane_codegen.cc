@@ -1,7 +1,50 @@
 #include "qrane_codegen.hh"
+#include "isl/aff.h"
+#include "isl/id.h"
+#include "isl/union_map.h"
+#include "cstdlib"
 
 int cnt;
 int limit;
+
+isl_stat qrane_codegen::qrane_build_domain_key(__isl_take isl_ast_expr * ae, void * usr) {
+	std::string* key = (std::string*)(usr);
+	std::string expr = std::string(isl_ast_expr_to_C_str(ae));
+	expr.erase(remove(expr.begin(), expr.end(), '['), expr.end());
+	expr.erase(remove(expr.begin(), expr.end(), ']'), expr.end());
+	key->append(expr);
+	key->append(", ");
+	cnt += 1;
+	return isl_stat_ok;
+};
+
+__isl_give isl_printer* qrane_codegen::qrane_stmt_print_user_fprintf_domain(__isl_take isl_printer* prt, 
+																	      __isl_take isl_ast_print_options* options,
+											  				              __isl_keep isl_ast_node* node, void* usr) {
+  	isl_id* id = isl_ast_node_get_annotation (node);
+  	isl_ast_expr_list* gate_call_expr_list = (isl_ast_expr_list*)(isl_id_get_user (id));
+
+  	isl_size sz = isl_ast_expr_list_size(gate_call_expr_list);
+
+  	prt = isl_printer_start_line(prt);
+  	prt = isl_printer_print_str(prt, "fprintf(f, \"%d;\\n\", rv[std::make_pair(");
+	prt = isl_printer_print_str(prt, isl_id_get_name(id));
+
+	std::string* key = new std::string(", std::vector<int>({");
+	isl_stat res = isl_ast_expr_list_foreach(gate_call_expr_list, &qrane_codegen::qrane_build_domain_key, (void*)(key));
+	key->erase(key->end() - 2, key->end());
+	key->append("}))])");
+	prt = isl_printer_print_str(prt, key->c_str());
+
+  	limit = isl_ast_expr_list_size(gate_call_expr_list);
+	cnt = 0;
+	  
+	prt = isl_printer_print_str(prt, ";\n");
+  	prt = isl_printer_end_line(prt);
+
+  	isl_ast_expr_list_free (gate_call_expr_list);
+  	return prt;
+};
 
 /*
 	Use this format when codegen should be in fprintf_qasm mode.
@@ -97,7 +140,7 @@ isl_stat qrane_codegen::qrane_build_single_access_expression(__isl_take isl_map*
   	t_qrane_ast_info* info = (t_qrane_ast_info*)(usr);
   	isl_pw_multi_aff* pma; 
 
-	isl_id* q = isl_id_alloc(isl_ast_build_get_ctx(isl_ast_build_copy(info->build)), "q", nullptr);
+	//isl_id* q = isl_id_alloc(isl_ast_build_get_ctx(isl_ast_build_copy(info->build)), "q", nullptr);
   	pma = isl_pw_multi_aff_from_map(acc);
   	
 	int nd = isl_map_dim(acc, isl_dim_out);
@@ -110,7 +153,7 @@ isl_stat qrane_codegen::qrane_build_single_access_expression(__isl_take isl_map*
 	}
 
 	isl_pw_multi_aff_free(pma);
-	isl_id_free(q);
+	//isl_id_free(q);
   	return isl_stat_ok;
 };
 
@@ -125,9 +168,10 @@ __isl_give isl_ast_expr_list* qrane_codegen::qrane_build_access_at_domain(__isl_
   														   __isl_keep isl_union_map * call) 
 {
 	isl_union_map * sched_to_call;
-  	sched_to_call = isl_union_map_apply_range(
-		  			isl_union_map_reverse(isl_union_map_copy(sched)), isl_union_map_copy (call));
+  	//sched_to_call = isl_union_map_apply_range(
+	//	  			isl_union_map_reverse(isl_union_map_copy(sched)), isl_union_map_copy (call));
 
+	sched_to_call = isl_union_map_reverse(isl_union_map_copy(sched));
 	isl_ctx * ctx = isl_union_map_get_ctx(sched);
 
 	t_qrane_ast_info info;
@@ -178,7 +222,8 @@ std::string qrane_codegen::find_domain_gate_id(const char* dom, std::vector<qran
 	tmp.erase(tmp.begin());
 	for (const auto &domain : doms) {
 		if (std::to_string(domain.domain_num).compare(tmp) == 0) {
-			ret = domain.gate_id;
+			//ret = domain.gate_id;
+			ret = std::to_string(domain.domain_num);
 		}
 	}
 	return ret;

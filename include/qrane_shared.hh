@@ -1,12 +1,16 @@
 #include <map>
 #include <deque>
 #include <vector>
+#include <string>
 #include <unordered_map>
-#include "qrane_domain.hh"
-#include "qrane_qop.hh"
 
 #ifndef QRANE_SHARED_HH
 #define QRANE_SHARED_HH
+
+typedef int qop_id;
+typedef int qubit_id;
+typedef int statement_id;
+typedef int program_id;
 
 struct PairHasher
 {
@@ -21,35 +25,14 @@ struct PairHasher
 	};
 };
 
-enum qop_component {
-	ARGS = 0,
-	IN_DEGREE,
-	OUT_DEGREE,
-	GATE_TYPE,
-	QOP_NUM_TYPE,
-	QOP_NUM_GLOBAL
-};
-
-// THIS MUST BE A MAP
-typedef std::map<unsigned int, std::vector<unsigned int>> time_dependence_graph;
-
 // Map: line_num -> (domain_num, [i, j, ...])
-typedef std::map<unsigned int, std::pair<unsigned int, std::vector<unsigned int>>> membership_map;
+typedef std::map<qop_id, std::pair<unsigned int, std::vector<unsigned int>>> membership_map_t;
+typedef std::map<std::string, qop_id> membership_map_reverse;
 
-typedef std::tuple<std::vector<int>, unsigned int, unsigned int, std::string, unsigned int, unsigned int> qop_identifier;
+typedef std::unordered_map<qop_id, std::vector<std::pair<qop_id, int>>> stride_graph;
 
-typedef std::map<unsigned int, qop_identifier> qasm_ops_list;
-
-typedef std::unordered_map<unsigned int, std::vector<std::pair<unsigned int, int>>> stride_graph;
-
-typedef std::vector<std::deque<unsigned int>> plinko_grid;
-
-typedef std::unordered_map<std::pair<unsigned int, float>, std::deque<unsigned int>, PairHasher> ray_graph;
+typedef std::unordered_map<std::pair<qop_id, float>, std::deque<qop_id>, PairHasher> ray_graph;
 
 typedef std::map<unsigned int, std::map<std::string, unsigned int>> qubit_profile_map;
-
-typedef std::vector<std::deque<unsigned int>> plinko_grid;
-
-typedef std::unordered_map<std::pair<unsigned int, float>, std::deque<unsigned int>, PairHasher> ray_graph;
 
 #endif

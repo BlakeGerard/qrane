@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 #include <queue>
 #include <string>
+#include <unordered_set>
 #include <stdlib.h>
 #include <iostream>
 #include <utility>
@@ -47,7 +48,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "isl/ast_build.h"
 #include "isl/constraint.h"
 
-#include "qrane_stmtlist.hh"
+#include "qrane_statementlist.hh"
 #include "qrane_domain.hh"
 #include "qrane_deps.hh"
 #include "qrane_statement.hh"
@@ -77,6 +78,8 @@ typedef std::vector<std::pair<lex_type, std::vector<unsigned int>>> candidate_li
 
 typedef std::unordered_map<std::vector<int>, std::pair<lex_type, std::deque<unsigned int>>, VectorOfIntsHasher> access_graph;
 
+typedef std::map<qubit_id, std::queue<qop_id>> qrane_grid;
+
 enum frame_element {
 	ID = 0,
 	STRIDE,
@@ -84,26 +87,24 @@ enum frame_element {
 	VISITED,
 	PATH
 };
-typedef std::stack<std::tuple<unsigned int, int, lex_type, std::unordered_map<unsigned int, bool>, std::vector<unsigned int>>> frame_stack;
-
+typedef std::stack<std::tuple<qop_id, int, lex_type, std::unordered_map<qop_id, bool>, std::vector<qop_id>>> frame_stack;
+typedef std::unordered_map<unsigned int, unsigned int> substr_new_id_map;
 
 class qrane_mainprogram {
 
   private:
 	const qrane_options* opt;
-    qrane_stmtlist* stmtlist;                         // openQASM statements parsed by Bison
+    qrane_statementlist statements;
+	qrane_qop_map qops;
     qrane_deps deps;
-    std::string codegen_c_str;                        // String to store codegen output with ISL_FORMAT_C flag enabled
+	std::vector<qrane_statementlist> substrs;
+
     unsigned int num_qops;                            // Number of qops in the file
-	unsigned long long num_points;
-	unsigned long long num_qubit_exprs;
-
-    unsigned int subcircuit_num;
+	unsigned int num_points;
+	unsigned int num_qubit_exprs;
+	bool substr_repetition;
+	circuit_id id;
 	
-
-    qasm_ops_list qops_list;
-	plinko_grid circuit;
-    std::unordered_map<std::string, std::vector<qrane_domain>> gate_domain_map; // Group domains by gate type
 	std::vector<qrane_domain> original_domains;
     std::vector<qrane_domain> unchanged_domains;
 
@@ -112,18 +113,14 @@ class qrane_mainprogram {
 
     // ISL Specific Objects
     isl_ctx *ctx;                                     // context for this program
-    isl_union_map* default_schedule;                  // default schedule for this program
     isl_printer* printer;                             // printer for displaying objects
     t_qrane_scop* scop;
-
-    // ISL interaction for 1D sets and maps
     __isl_give isl_union_set* initialize_domain();
 	__isl_give isl_union_map* initialize_read_relations();
 	__isl_give isl_union_map* initialize_write_relations();
 	__isl_give isl_union_map* initialize_call_relations();
 	__isl_give isl_union_map* initialize_recovered_schedule();
 
-    // ISL interaction for 2D sets and maps
     __isl_give isl_set* build_ND_domain_from_sets(std::vector<qrane_domain>& mergees);
     __isl_give isl_mat* compute_access_relations(isl_mat* mat);
 	__isl_give isl_mat* concat_matrices_dimwise(std::vector<qrane_domain>& mergees);
@@ -136,26 +133,26 @@ class qrane_mainprogram {
 
 	// Circuit processing
 	void convert_vector_form_to_plinko_grid();
+	std::vector<qop_id> get_next_grid_row(qrane_grid& P, std::unordered_set<qop_id>& grouped);
+	qrane_grid generate_circuit_grid();
+
 	void process_ddg();
 	void process_circuit();
-	std::vector<unsigned int> get_ones_from_level(std::vector<unsigned int>& level);
-	std::vector<unsigned int> get_twos_from_level(std::vector<unsigned int>& level);
-	std::vector<unsigned int> find_longest_ones_path(std::vector<unsigned int>& ones, std::size_t qreg_size);
-	std::vector<unsigned int> find_longest_twos_path(std::vector<unsigned int>& twos, std::size_t qreg_size);
-	std::vector<unsigned int> get_most_frequent_gate_type(const std::vector<unsigned int>& level);
-	std::vector<unsigned int> one_qubit_clearing_policy(std::vector<unsigned int>& level);
-	std::vector<unsigned int> look_ahead_policy(std::vector<unsigned int>& level, unsigned int depth);
-	std::array<unsigned int, 2> dependence_graph_lookahead(std::vector<unsigned int>& path, unsigned int depth);
+	std::vector<qop_id> get_ones_from_level(std::vector<qop_id>& level);
+	std::vector<qop_id> get_twos_from_level(std::vector<qop_id>& level);
+	std::vector<qop_id> find_longest_ones_path(std::vector<qop_id>& ones, std::size_t qreg_size);
+	std::vector<qop_id> find_longest_twos_path(std::vector<qop_id>& twos, std::size_t qreg_size);
+	std::vector<qop_id> get_most_frequent_gate_type(const std::vector<qop_id>& level);
+	std::vector<qop_id> one_qubit_clearing_policy(std::vector<qop_id>& level);
+	std::vector<qop_id> look_ahead_policy(std::vector<qop_id>& level, unsigned int depth);
+	std::array<unsigned int, 2> dependence_graph_lookahead(std::vector<qop_id>& path, unsigned int depth);
 
 	// Data structure interaction during circuit processing
-	plinko_grid generate_plinko_grid(qasm_ops_list& qops, unsigned int qreg_size);
-	stride_graph generate_stride_graph(const std::vector<unsigned int>& level, unsigned int qreg_size, unsigned int args);
-	ray_graph generate_ray_graph(const std::vector<unsigned int>& level, unsigned int qreg_size);
-	std::vector<unsigned int> get_next_grid_row(plinko_grid& P, std::vector<bool>& seen, unsigned int qreg_size);
-	std::vector<unsigned int> longest_path_search(stride_graph& G, std::vector<unsigned int> ordering);
-	std::vector<unsigned int> longest_valid_path_search(stride_graph G, std::vector<unsigned int> ordering);
-	std::vector<unsigned int> get_longest_valid_path(std::vector<std::vector<unsigned int>> paths);
-	std::array<unsigned int, 2> look_ahead(plinko_grid circuit, unsigned int depth);
+	stride_graph generate_stride_graph(const std::vector<qop_id>& level, unsigned int qreg_size, unsigned int args);
+	ray_graph generate_ray_graph(const std::vector<qop_id>& level, unsigned int qreg_size);
+	std::vector<qop_id> longest_path_search(stride_graph& G, std::vector<qop_id> ordering);
+	std::vector<qop_id> longest_valid_path_search(stride_graph G, std::vector<qop_id> ordering);
+	std::vector<qop_id> get_longest_valid_path(std::vector<std::vector<qop_id>> paths);
 
 	void combine_domains();
 	bool domains_time_space_subset(const qrane_domain& i, const qrane_domain& j);
@@ -171,7 +168,7 @@ class qrane_mainprogram {
 	bool extended_domain_inconsistent(unsigned int lhs, unsigned int rhs, unsigned int current_dim);
 	domain_map_t greedy_domain_selection(candidate_list candidates, unsigned int current_dim);
 
-	void create_fresh_domain(isl_ctx* ctx, std::vector<unsigned int>& path);
+	void create_fresh_domain(isl_ctx* ctx, std::vector<qop_id>& path);
 
     // Parsing-specific functions
     void parse_1D_domains();
@@ -186,40 +183,42 @@ class qrane_mainprogram {
     std::string build_union_write_str();
 	std::string build_union_call_str();
 
-	// Functions for doing the graph version 1D domains
-	void parse_with_bipartition_cover();
-	void convert_stmtlist_to_vector_form();
-	qop_identifier generate_qop_identifier(qrane_qop* qop, std::size_t qop_num_type);
-	void sort_favor_linearity(qasm_ops_list& ops_list);
-	bool dependence_constrained_lex_order(const qop_identifier& a, const qop_identifier& b);
-
 	void sort_domains(std::vector<qrane_domain>& domains);
 	bool time_constrained_lex_order(const qrane_domain& a, const qrane_domain& b);
 	bool domain_num_order(const qrane_domain& a, const qrane_domain& b);
 	std::string print_domain_size_histogram(std::vector<qrane_domain> dom_list);
 
-
   public:
   	qrane_mainprogram();
     qrane_mainprogram(const qrane_options* opt);
+	qrane_mainprogram(const qrane_options* opt, circuit_id subcircuit_num);
     ~qrane_mainprogram();
 	bool qreg_seen;
 	std::size_t qreg_size;
 
-	std::vector<qrane_stmtlist*> substrs;
+	unsigned int get_time_min();
+	unsigned int get_time_max();
+	void mark_as_substr_repetition();
+	bool is_substr_repetition() const;
+	circuit_id get_id() const;
+	bool operator==(const qrane_mainprogram& mp);
 
-	unsigned int get_time_min() const;
-	unsigned int get_time_max() const;
+	substr_new_id_map create_old_to_new_domain_map();
+	substr_new_id_map create_old_to_new_qop_map(qrane_statementlist stmts);
+
 	qrane_deps get_deps();
 	void set_deps(qrane_deps deps);
-	time_dependence_graph get_ddg();
-	void set_ddg(time_dependence_graph ddg);
 	void set_membership(membership_map membership);
 	void compute_num_points();
+	std::string get_membership_map_reverse_str();
 
 	isl_union_map* get_dependences();
+	qrane_graph<qop_id> get_dependence_graph();
 
-	void set_substrs(std::vector<qrane_stmtlist*> stmts);
+	void set_substrs(std::vector<qrane_statementlist> stmts);
+	unsigned int substr_recurrences();
+	std::vector<qrane_statementlist> get_substrs();
+
 	void set_dependences();
 	void full_stack_transformation();
 
@@ -227,12 +226,9 @@ class qrane_mainprogram {
 	void compute_transformation();
 
     // Functions for parser interaction
+	void initialize(qrane_statementlist stmtlist, unsigned int qreg_size);
     void parse_domains();
-	void generate_ddg_only();
-	void build_dependence_graph();
-    void add_stmtlist(qrane_stmtlist *stmtlist);
-    qrane_stmtlist* get_stmtlist();
-    std::string get_registers(); 
+	void modify_substrs(std::vector<qrane_mainprogram>& subcircuits);
 
 	void set_scop(t_qrane_scop* new_scop);
 	void set_subcircuit_num(unsigned int num);
@@ -246,20 +242,24 @@ class qrane_mainprogram {
 	unsigned int get_num_qops();
 	void set_num_qops(unsigned int num_qops);
 	unsigned long long get_num_qubit_exprs();
-	std::vector<qrane_statement*> get_1Q_gates();
-	std::vector<qrane_statement*> get_2Q_gates();
-
-	t_qrane_scop* get_scop();
-	qrane_output_scop* get_output_scop();
+	qrane_statementlist get_1Q_gates();
+	qrane_statementlist get_2Q_gates();
 	
     // Accessing ISL functionality
     void build_isl_domain_read_write_schedule();
     void print_isl_domain_read_write_schedule();
-	void print_membership_graph();
-
     std::string generate_codegen_c_str();
+	t_qrane_scop* get_scop();
+	qrane_output_scop* get_output_scop();
+
+	// Local check functions
 	bool check_all_qops_accounted();
     bool check_recovered_respects_dependencies();
+
+    qrane_statementlist get_statementlist();
+	qrane_statementlist get_qops();
+	std::string get_qasm_string();
+    std::string get_registers(); 
 	std::string get_domain_list_str();
 	std::string get_qubit_profile_str();
 	std::string get_aquma_scop_str();
@@ -267,6 +267,9 @@ class qrane_mainprogram {
 	std::string get_domain_size_histogram_str();
 	std::string get_reconstruction_histogram_str();
 	std::string print_reconstruction_histogram(std::vector<qrane_domain> dom_list);
+	void print_membership_graph();
+
+	std::string get_qasm_string(std::vector<qop_id> ordering);
 };
 
 #endif

@@ -3,7 +3,8 @@
 void qrane_options_init(qrane_options* opt) {
 	opt->qrane_home = std::getenv("QRANE_HOME");
 	opt->qasm_file = NULL;
-	opt->device_file = NULL;
+	opt->calibration_file = NULL;
+	opt->coupling_file = NULL;
 	opt->codegen_file = NULL;
 	opt->aquma_file = NULL;
 	opt->check_qasm = NULL;
@@ -79,7 +80,7 @@ void print_qrane_options(qrane_options* opt) {
 	printf ("\tSubstr                  : %s\n", opt->membership ? "True" : "False");
   	printf ("\tSubcircuit Size         : %d\n", opt->chunk);
 	printf ("\tLookahead Breadth Limit : %d\n", opt->breadth_limit);
-	printf ("\tSearch Limit            : %d\n", opt->search_limit);
+	printf ("\tSearch Limit            : %ld\n", opt->search_limit);
 	printf ("\tCircuit Processing Mode : %d\n", opt->process_mode);
 	printf ("\tSchedule Mode           : %d\n", opt->schedule_mode);
   	printf ("\n\n");

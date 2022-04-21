@@ -1,6 +1,6 @@
 /*
 Qrane
-Filename: qrane_statement.hh
+Filename: qrane_domain.hh
 Creation date: June 30, 2020
 Copyright (C) 2020
 
@@ -18,36 +18,87 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef QRANE_STATEMENT
-#define QRANE_STATEMENT
+#ifndef QRANE_DOMAIN
+#define QRANE_DOMAIN
 
 #include <string>
-#include <stdlib.h>
-#include <iostream>
-#include "qrane_explist.hh"
-#include "qrane_argument.hh"
-#include "qrane_arglist.hh"
+#include <cstdlib>
+#include <sstream>
+#include <map>
+#include <assert.h>
 
-class qrane_statement {
+#include "isl/ctx.h"
+#include "isl/space.h"
+#include "isl/set.h"
+#include "isl/union_set.h"
+#include "isl/id.h"
+#include "isl/val.h"
+#include "isl/mat.h"
+#include "isl/vec.h"
+#include "isl/map.h"
 
-    public:
-        enum statement_type {
-            DECL = 0,
-            QOP, 
-            QREG
-        };
-        qrane_statement();
-        virtual ~qrane_statement();
-        void set_statement_type(statement_type type);
-        statement_type get_statement_type();
+#include "qrane_qop.hh"
+#include "qrane_shared.hh"
 
-        void print_type();
+namespace qrane {
 
-        virtual void set_if_condition(std::string if_id, int if_nnint) {}
-        virtual void set_idlist(qrane_idlist* idlist) {}
-    
-    protected:
-        statement_type stmt_type;
-};
+    enum lex_type_e {
+        LEX_POS = 0,
+        LEX_NEG,
+        LEX_SUBSET,
+        LEX_REMOVE,
+        LEX_SINGLE
+    };
+
+    class Statement {
+
+        public:
+            statement_id id_;
+            std::string op_name_;
+            int num_args_;
+            unsigned int dim_;
+            unsigned int card_;
+            lex_type_e lex_;
+            std::vector<statement_id> sub_statements_;			// Tracks all domain_nums within this domain
+            std::vector<qop_id> component_qops_;	            // Tracks all global_ids within this domain
+            std::vector<std::pair<int, int>> affine_list_;
+            isl_set* domain_;
+            isl_mat* access_mat_;
+
+            // Construcors
+            Statement();
+            ~Statement();
+            Statement(isl_ctx* ctx, unsigned int domain_num,
+                      const std::map<qop_id, std::shared_ptr<Qop>>& qops_list, std::vector<qop_id>& qop_ids);
+            Statement(Statement const& rhs);
+
+            // Operator overloads
+            Statement& operator=(Statement const& rhs);
+
+            // Mutators
+            void add_component_qops(const std::vector<qop_id>& qop_ids);
+            void raise_dimensionality();
+            void set_dimensionality(unsigned int dim);
+            void back_substitution(isl_ctx* ctx);
+            void set_domain(isl_set* new_domain);
+            void set_access_mat(isl_mat* mat);
+           
+            // Accessors
+            __isl_give isl_set* lexmin() const;
+            __isl_give isl_set* lexmax() const;
+            __isl_give isl_set* domain_copy() const;
+            __isl_give isl_mat* access_mat_copy() const;
+            std::string domain_string() const;
+            unsigned int card() const;
+            unsigned int dim() const;
+            qop_id time_space_min() const;
+            qop_id time_space_max() const;
+            int get_coefficient(unsigned int arg, unsigned int dim) const;
+
+        private:
+            void build_affine_list_from_qop_ids(const std::map<qop_id, std::shared_ptr<Qop>>& qops, std::vector<qop_id>& qop_ids);
+            __isl_keep void build_local_domain(__isl_keep isl_ctx* ctx);
+    };
+}
 
 #endif

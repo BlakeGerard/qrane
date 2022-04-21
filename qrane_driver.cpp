@@ -3,7 +3,8 @@
 void qrane_options_init(qrane_options* opt) {
 	opt->qrane_home = std::getenv("QRANE_HOME");
 	opt->qasm_file = NULL;
-	opt->device_file = NULL;
+	opt->calibration_file = NULL;
+	opt->coupling_file = NULL;
 	opt->codegen_file = NULL;
 	opt->aquma_file = NULL;
 	opt->check = false;
@@ -71,7 +72,7 @@ void print_qrane_options(qrane_options* opt) {
 	printf ("\tSubstr                  : %s\n", opt->membership ? "True" : "False");
   	printf ("\tSubcircuit Size         : %d\n", opt->chunk);
 	printf ("\tLookahead Breadth Limit : %d\n", opt->breadth_limit);
-	printf ("\tSearch Limit            : %d\n", opt->search_limit);
+	printf ("\tSearch Limit            : %ld\n", opt->search_limit);
 	printf ("\tCircuit Processing Mode : %d\n", opt->process_mode);
 	printf ("\tSchedule Mode           : %d\n", opt->schedule_mode);
   	printf ("\n\n");
@@ -89,6 +90,7 @@ int main(int argc, char* argv[]) {
 	timer.global_start = std::chrono::high_resolution_clock::now();
 
 	// Parse the command line options
+	std::cout << "Beginning command line parsing.\n";
 	res = host.parse_options(argc, argv);
 	if (res) {
 		std::cout << "Failed to parse qrane_options. Exiting.\n";
@@ -96,8 +98,8 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	std::cout << "Parsing circuit\n" << std::endl;
 	// Parse the input circuit
+	std::cout << "Beginning circuit parsing.\n";
 	res = host.parse_circuit();
 	if (res) {
 		std::cout << "Something went wrong in the parser. Exiting.\n";
@@ -105,8 +107,8 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	std::cout << "Processing circuit\n" << std::endl;
 	// Run qrane's reconstruction process
+	std::cout << "Beginning reconstruction.\n";
 	if (!opt.substr) { res = host.process_circuit(); }
 	else { res = host.process_circuit_via_substring_decomposition(); }
 	if (res) {
@@ -115,7 +117,6 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 	
-	std::cout << "Checking\n" << std::endl;
 	// Run checks if requested
 	if (opt.check) { res = host.run_checks(); }
 	if (res) {

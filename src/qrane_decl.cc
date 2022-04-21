@@ -1,6 +1,6 @@
 /*
 Qrane
-Filename: qrane_decl.cc
+Filename: Decl.cc
 Creation date: July 1, 2020
 Copyright (C) 2020
 
@@ -20,126 +20,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "qrane_decl.hh"
 
-qrane_decl::qrane_decl() {};
-qrane_decl::~qrane_decl() {};
+namespace qrane {
 
-void qrane_decl::set_decl_type(decl_type t_decl) {
-    this->t_decl = t_decl;
-};
+    Decl::Decl(element_variant_e element_variant, decl_variant_e decl_type, 
+        std::string name) : Element(element_variant) {
+        variant_ = decl_type;
+        name_ = name;
+        params_ = std::vector<std::shared_ptr<Parameter>>();
+        args_ = std::vector<std::shared_ptr<Argument>>();
+        elements_ = std::vector<std::shared_ptr<Element>>();
+    }
 
-qrane_decl::decl_type qrane_decl::get_decl_type() {
-    return this->t_decl;
-};
+    Decl::Decl(element_variant_e element_variant, decl_variant_e decl_type, 
+        std::string name, std::vector<std::shared_ptr<Argument>> args) : Element(element_variant) {
+        variant_ = decl_type;
+        name_ = name;
+        params_ = std::vector<std::shared_ptr<Parameter>>();
+        args_ = args;
+        elements_ = std::vector<std::shared_ptr<Element>>();
+    }
 
-qrane_qreg::qrane_qreg() {};
-qrane_qreg::~qrane_qreg() {};
+    Decl::Decl(element_variant_e element_variant, decl_variant_e decl_type, 
+        std::string name, std::vector<std::shared_ptr<Parameter>> params, 
+        std::vector<std::shared_ptr<Argument>> args) : Element(element_variant) {
+        variant_ = decl_type;
+        name_ = name;
+        params_ = params;
+        args_ = args;
+        elements_ = std::vector<std::shared_ptr<Element>>();
+    }
 
-void qrane_qreg::set_id(std::string id) {
-    this->id = id;
-};
+    void Decl::set_statementlist(std::vector<std::shared_ptr<Element>> statements) {
+        elements_ = statements;
+    }
 
-void qrane_qreg::set_size(int nninteger) {
-    this->size = nninteger;
-};
+    std::string Decl::name() {
+        return name_;
+    }
 
-std::string qrane_qreg::get_id() {
-    return this->id;
-};
-
-int qrane_qreg::get_size() {
-    return this->size;
-}
-
-qrane_creg::qrane_creg() {};
-qrane_creg::~qrane_creg() {};
-
-void qrane_creg::set_id(std::string id) {
-    this->id = id;
-};
-
-void qrane_creg::set_size(int nninteger) {
-    this->size = nninteger;
-};
-
-std::string qrane_creg::get_id() {
-    return this->id;
-};
-
-int qrane_creg::get_size() {
-    return this->size;
-}
-
-qrane_gatedecl::qrane_gatedecl() {};
-
-qrane_gatedecl::~qrane_gatedecl() {
-    delete paramlist;
-    delete arglist;
-    delete goplist;
-};
-
-void qrane_gatedecl::set_id(std::string id) {
-    this->id = id;
-};
-
-void qrane_gatedecl::set_paramlist(qrane_idlist* paramlist) {
-    this->paramlist = paramlist;
-};
-
-void qrane_gatedecl::set_arglist(qrane_idlist* arglist) {
-    this->arglist = arglist;
-};
-
-void qrane_gatedecl::set_goplist(qrane_stmtlist *goplist) {
-    this->goplist = goplist;
-};
-
-std::string qrane_gatedecl::get_id() {
-    return this->id;
-};
-
-int qrane_gatedecl::get_size() {
-    return this->arglist->size();
-}
-
-qrane_opaque::qrane_opaque() {};
-qrane_opaque::~qrane_opaque() {
-    delete paramlist;
-    delete arglist;
-};
-
-void qrane_opaque::set_id(std::string id) {
-    this->id = id;
-};
-
-void qrane_opaque::set_paramlist(qrane_idlist* paramlist) {
-    this->paramlist = paramlist;
-};
-
-void qrane_opaque::set_arglist(qrane_idlist* arglist) {
-    this->arglist = arglist;
-};
-
-std::string qrane_opaque::get_id() {
-    return this->id;
-};
-
-int qrane_opaque::get_size() {
-    return this->arglist->size();
-}
-
-qrane_barrier::qrane_barrier() {};
-qrane_barrier::~qrane_barrier() {
-    delete arglist;
-};
-
-void qrane_barrier::set_arglist(qrane_arglist* arglist) {
-    this->arglist = arglist;
-};
-
-std::string qrane_barrier::get_id() {
-    return std::string("barrier");
-};
-
-int qrane_barrier::get_size() {
-    return this->arglist->size();
+    std::string Decl::to_string() {
+        return std::string("decl");
+    }
 }

@@ -12,7 +12,7 @@
 %define api.token.constructor
 %define api.value.type variant
 %define api.parser.class {qrane_parser}
-%parse-param {qrane_mainprogram* mainprogram}
+%parse-param {std::shared_ptr<qrane_mainprogram> mainprogram}
 
 %code requires {
     #ifndef YY_NULLPTR
@@ -31,38 +31,29 @@
 %code {
     #define _USE_MATH_DEFINES
 
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <ctype.h>
-    #include <math.h>
     #include <cmath>
-    #include <string.h>
     #include <cstddef>
-    #include <string>
-    #include <vector>
-    #include <map>
-    #include <string>
     #include <iostream>
+    #include <memory>
 
     // Declare Flex/Bison variables and functions
     extern yy::qrane_parser::symbol_type yylex();
     extern char *yytext;
     extern yy::location loc;
 
-    // Keep track of each qop's number in the sequence
-    bool qreg_decl_seen = false;
-    int dim1_qop_num = -1;
-    unsigned int domain_nums = -1;
+    bool qreg_seen = false;
+    unsigned int qreg_size = 0;
+    qop_id qop_count = 0;
 }
 
 %token T_OPENQASM               
-%token T_QREG          
-%token T_CREG        
-%token T_GATE_CUSTOM
-%token T_OPAQUE
-%token T_BARRIER
-%token T_MEASURE 
-%token T_RESET          
+%token <std::string> T_QREG          
+%token <std::string> T_CREG        
+%token <std::string> T_GATE_CUSTOM
+%token <std::string> T_OPAQUE
+%token <std::string> T_BARRIER
+%token <std::string> T_MEASURE 
+%token <std::string> T_RESET          
 %token T_U              
 %token T_CX  
 %token T_IF                             
@@ -76,42 +67,42 @@
 %token T_COMMA        ","
 %token T_SEMICOLON    ";"
 %token T_ARROW        "->"
-%token T_ADD          "+"
-%token T_SUB          "-"
-%token T_MUL          "*"
-%token T_DIV          "/"
-%token T_CARROT       "^"
-%token T_EQLTY        "=="
+%token T_EQLTY        "=="   
 %token T_EOF 0        "end of file";
 
-%token T_PI                       
-%token T_SIN           
-%token T_COS           
-%token T_TAN           
-%token T_EXP           
-%token T_LN           
-%token T_SQRT          
+%token <std::string> T_ADD
+%token <std::string> T_SUB
+%token <std::string> T_MUL
+%token <std::string> T_DIV
+%token <std::string> T_CARROT
+%token <std::string> T_PI
+%token <std::string> T_SIN           
+%token <std::string> T_COS           
+%token <std::string> T_TAN           
+%token <std::string> T_EXP           
+%token <std::string> T_LN           
+%token <std::string> T_SQRT      
 
-//%token <semantic_value> name
 %token <std::string>    T_ID             // custom gate name
 %token <double>         T_REAL           // real number
-%token <int>            T_NNINTEGER      // non-negative integer
+%token <unsigned int>   T_UINTEGER       // non-negative integer
 
-%type <qrane_mainprogram*>      mainprogram;
-%type <qrane_stmtlist*>         program;
-%type <qrane_statement*>        statement;
-%type <qrane_decl*>             decl;
-%type <qrane_decl*>             gatedecl;
-%type <qrane_stmtlist*>         goplist;
-%type <qrane_qop*>              qop;
-%type <qrane_qop*>              uop;
-%type <qrane_arglist*>          anylist;
-%type <qrane_idlist*>           idlist;
-%type <qrane_arglist*>          mixedlist;
-%type <qrane_argument*>         argument;
-%type <qrane_explist*>          explist;
-%type <qrane_exp*>              exp;
-%type <qrane_exp::unaryop_type> unaryop;
+%type <std::shared_ptr<qrane::Program>>                       mainprogram;
+%type <std::vector<std::shared_ptr<qrane::Element>>>         program;
+%type <std::shared_ptr<qrane::Element>>                      statement;
+%type <std::shared_ptr<qrane::Decl>>                           decl;
+%type <std::shared_ptr<qrane::Decl>>                           gatedecl;
+%type <std::shared_ptr<qrane::Reg>>                            reg;
+%type <std::shared_ptr<qrane::Qop>>                            qop;
+%type <std::shared_ptr<qrane::Qop>>                            uop;
+%type <std::vector<std::shared_ptr<qrane::Element>>>         goplist;
+%type <std::vector<std::shared_ptr<qrane::Argument>>>          anylist;
+%type <std::vector<std::shared_ptr<qrane::Argument>>>          idlist;
+%type <std::vector<std::shared_ptr<qrane::Argument>>>          mixedlist;
+%type <std::shared_ptr<qrane::Argument>>                       argument;
+%type <std::vector<std::shared_ptr<qrane::Parameter>>>         explist;
+%type <std::shared_ptr<Parameter>>                             exp;
+%type <unaryop_type>                                           unaryop;
 
 %left T_ADD
 %left T_SUB
@@ -123,431 +114,274 @@
 
 mainprogram : T_OPENQASM T_REAL T_SEMICOLON program 
             {
-                mainprogram->add_stmtlist($4);
+                mainprogram->initialize($4, qreg_size);
             }
 
 program : statement             
         {
-            $$ = new qrane_stmtlist();
-            $$->add_statement($1);
+            $$ = qrane_statementlist();
+            $$.append($1);
         }      
         | program statement     
         {
             $$ = $1;
-            $$->add_statement($2);
+            $$.append($2);
         }
 
-statement : decl 
+statement : decl
           {
-            $$ = $1;
-          }                                                        
-          | gatedecl goplist T_RCUR
+            $$ = std::static_pointer_cast<qrane_statement>($1);
+          } 
+          | reg
           {
-            $1->set_goplist($2);
-            $$ = $1;
-          }                                  
-          | gatedecl T_RCUR
-          {
-            $$ = $1;
-          }                                     
-          | T_OPAQUE T_ID idlist T_SEMICOLON
-          {
-            qrane_decl *opaque = new qrane_opaque();
-            opaque->set_statement_type(qrane_statement::statement_type::DECL);
-            opaque->set_decl_type(qrane_decl::decl_type::OPAQUE);
-            opaque->set_id($2);
-            opaque->set_paramlist(new qrane_idlist());
-            opaque->set_arglist($3);
-            $$ = opaque;
-          }
-          | T_OPAQUE T_ID T_LPAR T_RPAR idlist T_SEMICOLON 
-          {
-            qrane_decl *opaque = new qrane_opaque();
-            opaque->set_statement_type(qrane_statement::statement_type::DECL);
-            opaque->set_decl_type(qrane_decl::decl_type::OPAQUE);
-            opaque->set_id($2);
-            opaque->set_paramlist(new qrane_idlist());
-            opaque->set_arglist($5);
-            $$ = opaque;
-          }
-          | T_OPAQUE T_ID T_LPAR idlist T_RPAR idlist T_SEMICOLON
-          {
-            qrane_decl *opaque = new qrane_opaque();
-            opaque->set_statement_type(qrane_statement::statement_type::DECL);
-            opaque->set_decl_type(qrane_decl::decl_type::OPAQUE);
-            opaque->set_id($2);
-            opaque->set_paramlist($4);
-            opaque->set_arglist($6);
-            $$ = opaque;
-          }
+            $$ = std::static_pointer_cast<qrane_statement>($1);
+          }   
           | qop
           {
-              $$ = $1;
-              //mainprogram->parse_iteration_domains_online($$, domain_nums);
+            $$ = std::static_pointer_cast<qrane_statement>($1);
           }
-          | T_IF T_LPAR T_ID T_EQLTY T_NNINTEGER T_RPAR qop
+          | T_IF T_LPAR T_ID T_EQLTY T_UINTEGER T_RPAR qop
           {
-              $$ = $7;
-              $$->set_if_condition($3, $5);
-          }
-          | T_BARRIER anylist T_SEMICOLON
-          {
-            qrane_decl *barrier = new qrane_barrier();
-            barrier->set_statement_type(qrane_statement::statement_type::DECL);
-            barrier->set_decl_type(qrane_decl::decl_type::BARRIER);
-            barrier->set_arglist($2);
-            $$ = barrier;
+              //$$ = $7;
+              //$$->set_if_condition($3, $5);
           }
 
-decl : T_QREG T_ID T_LBRA T_NNINTEGER T_RBRA T_SEMICOLON
+decl : gatedecl goplist T_RCUR
      {
-         mainprogram->qreg_seen = true;
-		 mainprogram->qreg_size = $4;
-         qrane_decl *qreg = new qrane_qreg();
-         qreg->set_statement_type(qrane_statement::statement_type::QREG);
-         qreg->set_decl_type(qrane_decl::decl_type::QREG);
-         qreg->set_id($2);
-         qreg->set_size($4);
-         $$ = qreg;
-     }
-     | T_CREG T_ID T_LBRA T_NNINTEGER T_RBRA T_SEMICOLON
+        $$ = $1;
+        $$->set_statementlist($2);
+     }                                  
+     | gatedecl T_RCUR
      {
-         qrane_decl *creg = new qrane_creg();
-         creg->set_statement_type(qrane_statement::statement_type::DECL);
-         creg->set_decl_type(qrane_decl::decl_type::CREG);
-         creg->set_id($2);
-         creg->set_size($4);
-         $$ = creg;
-     }
+        $$ = $1;
+     }  
 
 gatedecl : T_GATE_CUSTOM T_ID idlist T_LCUR
          {
-            qrane_gatedecl *gate = new qrane_gatedecl();
-            gate->set_statement_type(qrane_statement::statement_type::DECL);
-            gate->set_decl_type(qrane_decl::decl_type::GATE);
-            gate->set_id($2);
-            gate->set_arglist($3);
-            gate->set_paramlist(new qrane_idlist());
-            gate->set_goplist(new qrane_stmtlist());
-            $$ = gate;
+            $$ = std::make_shared<qrane_decl>(
+                    statement_type::DECL, decl_type::GATEDECL,
+                    $2, $3);
          }
          | T_GATE_CUSTOM T_ID T_LPAR T_RPAR idlist T_LCUR
          {
-            qrane_gatedecl *gate = new qrane_gatedecl();
-            gate->set_statement_type(qrane_statement::statement_type::DECL);
-            gate->set_decl_type(qrane_decl::decl_type::GATE);
-            gate->set_id($2);
-            gate->set_arglist($5);
-            gate->set_paramlist(new qrane_idlist());
-            gate->set_goplist(new qrane_stmtlist());
-            $$ = gate;
+            $$ = std::make_shared<qrane_decl>(
+                    statement_type::DECL, decl_type::GATEDECL,
+                    $2, $5);
          }
-         | T_GATE_CUSTOM T_ID T_LPAR idlist T_RPAR idlist T_LCUR
+         | T_GATE_CUSTOM T_ID T_LPAR explist T_RPAR idlist T_LCUR
          {
-            qrane_gatedecl *gate = new qrane_gatedecl();
-            gate->set_statement_type(qrane_statement::statement_type::DECL);
-            gate->set_decl_type(qrane_decl::decl_type::GATE);
-            gate->set_id($2);
-            gate->set_paramlist($4);
-            gate->set_arglist($6);
-            gate->set_goplist(new qrane_stmtlist());
-            $$ = gate;
+            $$ = std::make_shared<qrane_decl>(
+                    statement_type::DECL, decl_type::GATEDECL,
+                    $2, $4, $6);
          }
 
-goplist : uop
-        {
-            $$ = new qrane_stmtlist();
-            $$->add_statement($1); 
-        }
-        | T_BARRIER idlist T_SEMICOLON
-        {
-            $$ = new qrane_stmtlist();
-            qrane_decl* barrier = new qrane_barrier();
-            barrier->set_statement_type(qrane_statement::statement_type::DECL);
-            barrier->set_decl_type(qrane_decl::decl_type::BARRIER);
-            barrier->set_idlist($2);
-            $$->add_statement(barrier);
-        }
-        | goplist uop
-        {
-            $$ = $1;
-            $$->add_statement($2);
-        }
-        | goplist T_BARRIER idlist T_SEMICOLON
-        {
-            $$ = $1;
-            qrane_decl* barrier = new qrane_barrier();
-            barrier->set_statement_type(qrane_statement::statement_type::DECL);
-            barrier->set_decl_type(qrane_decl::decl_type::BARRIER);
-            barrier->set_idlist($3);
-            $$->add_statement(barrier);
-        }
+reg : T_QREG T_ID T_LBRA T_UINTEGER T_RBRA T_SEMICOLON
+     {
+        qreg_seen = true;
+		qreg_size = $4;
+         $$ = std::make_shared<qrane_reg>(
+                statement_type::REG, reg_type::QREG,
+                $1, $2, $4);
+     }
+     | T_CREG T_ID T_LBRA T_UINTEGER T_RBRA T_SEMICOLON
+     {
+         $$ = std::make_shared<qrane_reg>(
+                statement_type::REG, reg_type::CREG,
+                $1, $2, $4);
+     }
 
 qop : uop
     {
         $$ = $1;
     }
-    | T_MEASURE argument T_ARROW argument T_SEMICOLON       // measureq[0]->c[0];
+    | T_MEASURE argument T_ARROW argument T_SEMICOLON       // measure q[0]->c[0];
     {
-        //if (qreg_decl_seen) {++dim1_qop_num;}
-		if ( mainprogram->qreg_seen) { mainprogram->increment_num_qops(); }
-        qrane_qop *measure = new qrane_measure();
-        measure->set_statement_type(qrane_statement::statement_type::QOP);
-        measure->set_qop_type(qrane_qop::qop_type::MEASURE);
-        //measure->set_dim1_qop_num(dim1_qop_num); 
-		measure->set_dim1_qop_num(mainprogram->get_num_qops());      
-        
-        qrane_arglist *arglist = new qrane_mixedlist();
-        arglist->add_argument($2);
-        arglist->add_argument($4);
-        measure->set_arglist(arglist);
-        $$ = measure;
+        $$ = std::make_shared<qrane_qop>(
+                statement_type::QOP, qop_type::MEASURE, 
+                qop_count, $1, qrane_argumentlist({$2, $4}));
+        if (qreg_seen) { qop_count += 1; }
     }
-    | T_RESET argument T_SEMICOLON                          // resetq[0];
+    | T_RESET argument T_SEMICOLON                          // reset q[0];
     {
-        //if (qreg_decl_seen) {++dim1_qop_num;}
-		if ( mainprogram->qreg_seen) { mainprogram->increment_num_qops(); }
-        qrane_qop *reset = new qrane_reset();
-        reset->set_statement_type(qrane_statement::statement_type::QOP);           
-        reset->set_qop_type(qrane_qop::qop_type::RESET);
-        //reset->set_dim1_qop_num(dim1_qop_num);
-		reset->set_dim1_qop_num(mainprogram->get_num_qops());
-
-        qrane_arglist *arglist = new qrane_mixedlist();
-        arglist->add_argument($2);
-        reset->set_arglist(arglist);
-        $$ = reset;
+        $$ = std::make_shared<qrane_qop>(
+                statement_type::QOP, qop_type::RESET, 
+                qop_count, $1, qrane_argumentlist({$2}));
+        if (qreg_seen) { qop_count += 1; }
+    }
+    | T_BARRIER anylist T_SEMICOLON
+    {
+        if (qreg_seen) { mainprogram->increment_num_qops(); }
+        $$ = std::make_shared<qrane_qop>(
+                statement_type::QOP, qop_type::BARRIER, 
+                qop_count, $1, $2);
+        if (qreg_seen) { qop_count += 1; }
+    }
+    | T_OPAQUE T_ID idlist T_SEMICOLON
+    {
+        $$ = std::make_shared<qrane_qop>(
+                statement_type::QOP, qop_type::OPAQUE, 
+                qop_count, $2, $3);
+        if (qreg_seen) { qop_count += 1; }
+    }
+    | T_OPAQUE T_ID T_LPAR T_RPAR idlist T_SEMICOLON 
+    {
+        $$ = std::make_shared<qrane_qop>(
+                statement_type::QOP, qop_type::OPAQUE, 
+                qop_count, $2, $5);
+        if (qreg_seen) { qop_count += 1; }
+    }
+    | T_OPAQUE T_ID T_LPAR explist T_RPAR idlist T_SEMICOLON
+    {
+        $$ = std::make_shared<qrane_qop>(
+                statement_type::QOP, qop_type::OPAQUE, 
+                qop_count, $2, $4, $6);
+        if (qreg_seen) { qop_count += 1; }
     }
 
-uop : T_U T_LPAR explist T_RPAR argument T_SEMICOLON        // U(2.0,0.0,1.0)q[1];
+uop : T_ID anylist T_SEMICOLON                              // gate_name q[0],q[2],q[3],q[1];
     {
-        //if (qreg_decl_seen) {++dim1_qop_num;}
-		if (mainprogram->qreg_seen) { mainprogram->increment_num_qops(); }
-        qrane_qop *u = new qrane_u();
-        u->set_statement_type(qrane_statement::statement_type::QOP);                       
-        u->set_qop_type(qrane_qop::qop_type::U);
-        //u->set_dim1_qop_num(dim1_qop_num);
-		u->set_dim1_qop_num(mainprogram->get_num_qops());
-        u->set_explist($3);
-
-        qrane_arglist *arglist = new qrane_mixedlist();
-        arglist->add_argument($5);
-        u->set_arglist(arglist);
-        $$ = u;
-    }        
-    | T_CX argument T_COMMA argument T_SEMICOLON            // CXq[1],q[2];
-    {
-        //if (qreg_decl_seen) {++dim1_qop_num;}
-		if ( mainprogram->qreg_seen) { mainprogram->increment_num_qops(); }
-        qrane_qop *cx = new qrane_cx();
-        cx->set_statement_type(qrane_statement::statement_type::QOP);
-        cx->set_qop_type(qrane_qop::qop_type::CX);
-        //cx->set_dim1_qop_num(dim1_qop_num);
-		cx->set_dim1_qop_num(mainprogram->get_num_qops());
-
-        qrane_arglist *arglist = new qrane_mixedlist();
-        arglist->add_argument($2);
-        arglist->add_argument($4);
-        cx->set_arglist(arglist);
-        $$ = cx;
-    }
-    | T_ID anylist T_SEMICOLON                              // gate_name q[0],q[2],q[3],q[1];
-    {
-        //if (qreg_decl_seen) {++dim1_qop_num;}
-		if ( mainprogram->qreg_seen) { mainprogram->increment_num_qops(); }
-        qrane_qop *custom = new qrane_custom();
-        custom->set_statement_type(qrane_statement::statement_type::QOP);
-        custom->set_qop_type(qrane_qop::qop_type::CUSTOM);
-        //custom->set_dim1_qop_num(dim1_qop_num);
-		custom->set_dim1_qop_num(mainprogram->get_num_qops());
-        custom->set_id($1);
-        custom->set_explist(new qrane_explist());
-        custom->set_arglist($2);
-        $$ = custom;
+		
+        $$ = std::make_shared<qrane_qop>(
+                statement_type::QOP, qop_type::GATE, 
+                qop_count, $1, $2);
+        if (qreg_seen) { qop_count += 1; }
     }
     | T_ID T_LPAR T_RPAR anylist T_SEMICOLON                // gate_name() q[0],q[2],q[4],q[3];
     {
-        //if (qreg_decl_seen) {++dim1_qop_num;}
-		if ( mainprogram->qreg_seen) { mainprogram->increment_num_qops(); }
-        qrane_qop *custom = new qrane_custom();
-        custom->set_statement_type(qrane_statement::statement_type::QOP);
-        custom->set_qop_type(qrane_qop::qop_type::CUSTOM);
-        //custom->set_dim1_qop_num(dim1_qop_num);
-		custom->set_dim1_qop_num(mainprogram->get_num_qops());
-        custom->set_id($1);
-        custom->set_explist(new qrane_explist());
-        custom->set_arglist($4);
-        $$ = custom;
+        $$ = std::make_shared<qrane_qop>(
+                statement_type::QOP, qop_type::GATE, 
+                qop_count, $1, $4);
+        if (qreg_seen) { qop_count += 1; }
     }
     | T_ID T_LPAR explist T_RPAR anylist T_SEMICOLON        // gate_name(2.0,0.0,pi/4) q[0],q[2],q[4];
     {
-        //if (qreg_decl_seen) {++dim1_qop_num;}
-		if ( mainprogram->qreg_seen) { mainprogram->increment_num_qops(); }
-        qrane_qop *custom = new qrane_custom();
-        custom->set_statement_type(qrane_statement::statement_type::QOP);
-        custom->set_qop_type(qrane_qop::qop_type::CUSTOM);
-        //custom->set_dim1_qop_num(dim1_qop_num);
-		custom->set_dim1_qop_num(mainprogram->get_num_qops());
-        custom->set_id($1);
-        custom->set_explist($3);
-        custom->set_arglist($5);
-        $$ = custom;
+        $$ = std::make_shared<qrane_qop>(
+                statement_type::QOP, qop_type::GATE, 
+                qop_count, $1, $3, $5);
+        if (qreg_seen) { qop_count += 1; }
     }
+
+goplist : qop
+        {
+            $$ = qrane_statementlist();
+            $$.append($1); 
+        }
+        | goplist qop
+        {
+            $$ = $1;
+            $$.append($2);
+        }
 
 anylist : idlist        { $$ = $1; } 
         | mixedlist     { $$ = $1; }
 
 idlist : T_ID
        {
-            qrane_idlist* idlist = new qrane_idlist();
-            idlist->set_type(qrane_arglist::arglist_type::IDLIST);
-            idlist->add_id($1);
-            $$ = idlist;
+           $$ = qrane_argumentlist();
+           $$.append(std::make_shared<qrane_argument>($1));
        }
        | idlist T_COMMA T_ID
        {
             $$ = $1;
-            $$->add_id($3);
+            $$.append(std::make_shared<qrane_argument>($3));
        }
 
-mixedlist : T_ID T_LBRA T_NNINTEGER T_RBRA
+mixedlist : T_ID T_LBRA T_UINTEGER T_RBRA
           {
-            qrane_arglist* mixedlist = new qrane_mixedlist();
-            qrane_argument* arg = new qrane_argument($1, $3);
-            mixedlist->set_type(qrane_arglist::arglist_type::MIXED);
-            mixedlist->add_argument(arg);
-            $$ = mixedlist;
+            $$ = qrane_argumentlist();
+            $$.append(std::make_shared<qrane_argument>($1, $3));
           }
           | mixedlist T_COMMA T_ID 
           {
-            qrane_argument* arg = new qrane_argument($3);
-
             $$ = $1;
-            $$->add_argument(arg);
+            $$.append(std::make_shared<qrane_argument>($3));
           }
-          | mixedlist T_COMMA T_ID T_LBRA T_NNINTEGER T_RBRA
-          {
-            qrane_argument* arg = new qrane_argument($3, $5);
-
-            $$ = $1;
-            $$->add_argument(arg);
-          }
-          | idlist T_COMMA T_ID T_LBRA T_NNINTEGER T_RBRA
+          | mixedlist T_COMMA T_ID T_LBRA T_UINTEGER T_RBRA
           {
             $$ = $1;
-            $$->add_id($3);
+            $$.append(std::make_shared<qrane_argument>($3, $5));
+          }
+          | idlist T_COMMA T_ID T_LBRA T_UINTEGER T_RBRA
+          {
+            $$ = $1;
+            $$.append(std::make_shared<qrane_argument>($3, $5));
           }
 
 argument : T_ID 
          {
-            qrane_argument* arg = new qrane_argument($1);
-            $$ = arg;
+            $$ = std::make_shared<qrane_argument>($1);
          }
-         | T_ID T_LBRA T_NNINTEGER T_RBRA
+         | T_ID T_LBRA T_UINTEGER T_RBRA
          {
-            qrane_argument* arg = new qrane_argument($1, $3);
-            $$ = arg;
+            $$ = std::make_shared<qrane_argument>($1, $3);
          }
 
 explist : exp
         {
-            $$ = new qrane_explist();
-            $$->add_exp($1);
+            $$ = qrane_parameterlist();
+            $$.append($1);
         }
         | explist T_COMMA exp
         {
             $$ = $1;
-            $$->add_exp($3);
+            $$.append($3);
         }
 
 exp : T_REAL                    
     { 
-         qrane_exp* real = new qrane_value<double>($1);
-         $$ = real;
+         $$ = std::make_shared<qrane_value<double>>($1);
     } 
-    | T_NNINTEGER
+    | T_UINTEGER
     { 
-         qrane_exp* nninteger = new qrane_value<int>($1);
-         $$ = nninteger;
+         $$ = std::make_shared<qrane_value<int>>($1);
     }               
     | T_PI
     { 
-         qrane_exp* pi = new qrane_value<double>(double(M_PI));
-         $$ = pi;
+         $$ = std::make_shared<qrane_value<double>>(double(M_PI));
     }                    
     | T_ID
     { 
-         qrane_exp* id = new qrane_value<std::string>($1);
-         $$ = id;
+         $$ = std::make_shared<qrane_value<std::string>>($1);
     }                      
     | exp T_ADD exp     %prec T_ADD        
     { 
-        qrane_exp* binaryop = new qrane_binaryop();
-        binaryop->set_binaryop_type(qrane_exp::binaryop_type::ADD);
-        binaryop->set_lhs($1);
-        binaryop->set_rhs($3);
-        $$ = binaryop;
+        $$ = std::make_shared<qrane_binaryop>(binaryop_type::ADD, $2, $1, $3);
     }           
     | exp T_SUB exp      %prec T_SUB       
     {
-        qrane_exp* binaryop = new qrane_binaryop();
-        binaryop->set_binaryop_type(qrane_exp::binaryop_type::SUB);
-        binaryop->set_lhs($1);
-        binaryop->set_rhs($3);
-        $$ = binaryop;
+        $$ = std::make_shared<qrane_binaryop>(binaryop_type::SUB, $2, $1, $3);
     }           
     | exp T_MUL exp       %prec T_MUL
     { 
-        qrane_exp* binaryop = new qrane_binaryop();
-        binaryop->set_binaryop_type(qrane_exp::binaryop_type::MUL);
-        binaryop->set_lhs($1);
-        binaryop->set_rhs($3);
-        $$ = binaryop;
+        $$ = std::make_shared<qrane_binaryop>(binaryop_type::MUL, $2, $1, $3);
     }           
     | exp T_DIV exp        %prec T_DIV
     {
-        qrane_exp* binaryop = new qrane_binaryop();
-        binaryop->set_binaryop_type(qrane_exp::binaryop_type::DIV);
-        binaryop->set_lhs($1);
-        binaryop->set_rhs($3);
-        $$ = binaryop;
+        $$ = std::make_shared<qrane_binaryop>(binaryop_type::DIV, $2, $1, $3);
     }           
     | T_SUB exp                 
     { 
-        qrane_exp* unaryop = new qrane_unaryop();
-        unaryop->set_unaryop_type(qrane_exp::unaryop_type::NEG);
-        unaryop->set_arg($2);
-        $$ = unaryop;
+        $$ = std::make_shared<qrane_unaryop>(unaryop_type::NEG, $1, $2);
     }         
     | exp T_CARROT exp       %prec T_CARROT
     { 
-        qrane_exp* binaryop = new qrane_binaryop();
-        binaryop->set_binaryop_type(qrane_exp::binaryop_type::CAR);
-        binaryop->set_lhs($1);
-        binaryop->set_rhs($3);
-        $$ = binaryop;
+        $$ = std::make_shared<qrane_binaryop>(binaryop_type::CAR, $2, $1, $3);
     }        
     | T_LPAR exp T_RPAR         
     {
-        qrane_exp* unaryop = new qrane_unaryop();
-        unaryop->set_unaryop_type(qrane_exp::unaryop_type::PAR);
-        unaryop->set_arg($2);
-        $$ = unaryop;
+        $$ = std::make_shared<qrane_unaryop>(unaryop_type::PAR, "", $2);
     }                
     | unaryop T_LPAR exp T_RPAR 
     { 
-        qrane_exp* unaryop = new qrane_unaryop();
-        unaryop->set_unaryop_type($1);
-        unaryop->set_arg($3);
-        $$ = unaryop;
+        $$ = std::make_shared<qrane_unaryop>($1, "", $3);
     }
 
-unaryop : T_SIN     { $$ = qrane_exp::unaryop_type::SIN;  }
-        | T_COS     { $$ = qrane_exp::unaryop_type::COS;  }
-        | T_TAN     { $$ = qrane_exp::unaryop_type::TAN;  }
-        | T_EXP     { $$ = qrane_exp::unaryop_type::EXP;  }
-        | T_LN      { $$ = qrane_exp::unaryop_type::LN;   }
-        | T_SQRT    { $$ = qrane_exp::unaryop_type::SQRT; }
+unaryop : T_SIN     { $$ = unaryop_type::SIN;  }
+        | T_COS     { $$ = unaryop_type::COS;  }
+        | T_TAN     { $$ = unaryop_type::TAN;  }
+        | T_EXP     { $$ = unaryop_type::EXP;  }
+        | T_LN      { $$ = unaryop_type::LN;   }
+        | T_SQRT    { $$ = unaryop_type::SQRT; }
 
 %%
 

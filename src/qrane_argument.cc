@@ -1,6 +1,6 @@
 /*
 Qrane
-Filename: qrane_argument.cc
+Filename: Argument.cc
 Creation date: July 2, 2020
 Copyright (C) 2020
 
@@ -19,23 +19,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "qrane_argument.hh"
+#include <limits>
 
-qrane_argument::qrane_argument(std::string id) {
-    this->id = id;
-};
+namespace qrane {
 
-qrane_argument::qrane_argument(std::string id, unsigned long index) {
-    this->id = id;
-    this->index = index;
-};
+    Argument::Argument() {
+        this->reg_ = std::string("undefined");
+        this->index_ = std::numeric_limits<qubit_id>::max();
+    }
 
-qrane_argument::qrane_argument(){};
-qrane_argument::~qrane_argument(){};
+    Argument::Argument(std::string reg) {
+        this->reg_ = reg;
+        this->index_ = std::numeric_limits<qubit_id>::max();
+    }
 
-std::string qrane_argument::get_id() {
-    return this->id;
-};
+    Argument::Argument(std::string reg, qubit_id index) {
+        this->reg_ = reg;
+        this->index_ = index;
+    }
 
-unsigned long qrane_argument::get_index() {
-    return this->index;
-};
+    std::string Argument::reg() const {
+        return this->reg_;
+    }
+
+    qubit_id Argument::index() const {
+        return this->index_;
+    }
+
+    std::string Argument::to_string() const {
+        std::ostringstream strm;
+        strm << reg_ << "[" << index_ << "]";
+        return strm.str();
+    }
+}

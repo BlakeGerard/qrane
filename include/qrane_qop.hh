@@ -1,6 +1,6 @@
 /*
 Qrane
-Filename: qrane_qop.hh
+Filename: Qop.hh
 Creation date: June 30, 2020
 Copyright (C) 2020
 
@@ -18,162 +18,67 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef QRANE_QOP
-#define QRANE_QOP
+#ifndef QRANE_QOP_H
+#define QRANE_QOP_H
 
-#include <string>
-#include <stdlib.h>
-#include <iostream>
-#include "qrane_statement.hh"
-#include "qrane_explist.hh"
-#include "qrane_arglist.hh"
+#include "qrane_shared.hh"
 #include "qrane_argument.hh"
-//#include "include/qrane_statement.hh"
-//#include "include/qrane_explist.hh"
-//#include "include/qrane_arglist.hh"
-//#include "include/qrane_argument.hh"
+#include "qrane_parameter.hh"
+#include "qrane_element.hh"
+#include <memory>
 
-class qrane_qop : public qrane_statement {
+namespace qrane {
+    enum qop_variant_e {
+        GATE,
+        MEASURE,
+        RESET,
+        OPAQUE,
+        BARRIER
+    };
 
-    public:
+    class Qop : public Element {
 
-        enum qop_type {
-            U = 0,
-            CX,
-            CUSTOM,
-            MEASURE,
-            RESET
-        };
+         private:
+            qop_variant_e variant_;
+            qop_id id_;
+            std::string name_;
+            std::vector<std::shared_ptr<Parameter>> params_;
+            std::vector<std::shared_ptr<Argument>> args_;
 
-        virtual ~qrane_qop();
+        public:
 
-        void set_qop_type(qop_type type);
-        qop_type get_qop_type();
-        void set_dim1_qop_num(unsigned int val);
-        unsigned int get_dim1_qop_num();
-        void set_if_condition(std::string id, int nninteger);
+            // Constructors
+            Qop();
+            Qop(element_variant_e element_variant, qop_variant_e qop_variant, 
+                qop_id id, std::string name);
+            Qop(element_variant_e element_variant, qop_variant_e qop_variant, 
+                qop_id id, std::string name,
+                std::vector<std::shared_ptr<Argument>> args);
+            Qop(element_variant_e element_variant, qop_variant_e qop_variant, 
+                qop_id  id, std::string name,
+                std::vector<std::shared_ptr<Parameter>>, 
+                std::vector<std::shared_ptr<Argument>> args);
 
-        // Virtual set methods
-        virtual void set_explist(qrane_explist* explist) {}
-        virtual void set_argument(qrane_argument* argument) {}
-        virtual void set_argument1(qrane_argument* argument1) {}
-        virtual void set_argument2(qrane_argument* argument2) {}
-        virtual void set_id(std::string id) {}
-        virtual void set_arglist(qrane_arglist* arglist) {}
+            // Static functions
+            static std::shared_ptr<Qop> make_unassigned_2Q_gate(std::string name, 
+                std::string reg_name, qubit_id arg0, qubit_id arg1);
 
-        // Virtual get methods
-        virtual std::string get_id() = 0;
-		virtual std::string to_str() = 0;
-        virtual qrane_arglist* get_arglist() = 0;
-        virtual unsigned long get_first_arg_index() = 0;
-        virtual unsigned long get_target_index() = 0;
-        virtual std::size_t num_args() const = 0;
-        virtual unsigned int at(int index) const = 0; 
-    
-    protected:
-        qop_type t_qop;
-        unsigned int dim1_qop_num;
+            // Operator overloads
+            bool operator==(const Qop& rhs);
 
-        // This is just for catching if statements, 
-        bool conditional;
-        std::string if_id;
-        int if_nnint;
-};
-
-class qrane_u : public qrane_qop {
-    protected:
-        qrane_explist* explist;
-        qrane_arglist* arglist;
-
-    public:
-        qrane_u();
-        ~qrane_u();
-        void set_explist(qrane_explist* explist);
-        void set_arglist(qrane_arglist* arglist);
-
-        qrane_arglist* get_arglist();
-        unsigned long get_first_arg_index();
-        unsigned long get_target_index();
-        std::string get_id();
-		std::string to_str();
-        std::size_t num_args() const;
-        unsigned int at(int index) const;
-};
-
-class qrane_cx : public qrane_qop {
-    protected:
-        qrane_arglist* arglist;
-
-    public:
-        qrane_cx();
-        ~qrane_cx();
-        void set_arglist(qrane_arglist* arglist);
-
-        qrane_arglist* get_arglist();
-        unsigned long get_first_arg_index();
-        unsigned long get_target_index();
-        std::string get_id();
-        std::size_t num_args() const;
-		std::string to_str();
-        unsigned int at(int index) const;
-};
-
-class qrane_custom : public qrane_qop {
-    protected:
-        std::string id;
-        qrane_explist* explist;
-        qrane_arglist* arglist;
-
-    public:
-        qrane_custom();
-        ~qrane_custom();
-        void set_id(std::string id);
-        void set_explist(qrane_explist* explist);
-        void set_arglist(qrane_arglist* arglist);
-
-        qrane_arglist* get_arglist();
-        unsigned long get_first_arg_index();
-        unsigned long get_target_index();
-        std::string get_id();
-        std::size_t num_args() const;
-		std::string to_str();
-        unsigned int at(int index) const;
-};
-
-class qrane_measure : public qrane_qop {
-    protected:
-        qrane_arglist* arglist;
-
-    public:
-        qrane_measure();
-        ~qrane_measure();
-        void set_arglist(qrane_arglist* arglist);
-
-        qrane_arglist* get_arglist();
-        unsigned long get_first_arg_index();
-        unsigned long get_target_index();
-        std::string get_id();
-        std::size_t num_args() const;
-		std::string to_str();
-        unsigned int at(int index) const;
-};
-
-class qrane_reset : public qrane_qop {
-    protected:
-        qrane_arglist* arglist;
-
-    public:
-        qrane_reset();
-        ~qrane_reset();
-        void set_arglist(qrane_arglist* arglist);
-
-        qrane_arglist* get_arglist();
-        unsigned long get_first_arg_index();
-        unsigned long get_target_index();
-        std::string get_id();
-        std::size_t num_args() const;
-		std::string to_str();
-        unsigned int at(int index) const;
-};
+            // Accessors
+            qop_id id() const;
+            std::string name() const;
+            std::string to_string() const;
+            unsigned int num_params() const;
+            unsigned int num_args() const;
+            bool is_1Q_gate() const;
+            bool is_2Q_gate() const;
+            std::shared_ptr<Parameter> param(unsigned int index);
+            std::shared_ptr<Argument> arg(unsigned int index);
+            std::vector<std::shared_ptr<Parameter>> parameters();
+            std::vector<std::shared_ptr<Argument>> arguments();
+    };
+}
 
 #endif

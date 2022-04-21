@@ -1,7 +1,7 @@
 /*
 Qrane
-Filename: qrane_explist.hh
-Creation date: June 30, 2020
+Filename: Element.cc
+Creation date: July 2, 2020
 Copyright (C) 2020
 
 This program is free software: you can redistribute it and/or modify
@@ -18,21 +18,26 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef QRANE_EXPLIST
-#define QRANE_EXPLIST
+#include "qrane_element.hh"
 
-#include <vector>
-#include "qrane_exp.hh"
+namespace qrane {
+    Element::Element(element_variant_e type) {
+        this->variant_ = type;
+    }
 
-class qrane_explist {
+    element_variant_e Element::statement_type() const {
+        return this->variant_;
+    }
 
-    protected:
-        std::vector<qrane_exp*> explist;
+    bool Element::is_decl() const {
+        return this->variant_ == element_variant_e::DECL;
+    }
 
-    public:
-        qrane_explist();
-        ~qrane_explist();
-        void add_exp(qrane_exp* exp);
-};
+    bool Element::is_reg() const {
+        return this->variant_ == element_variant_e::REG;
+    }
 
-#endif
+    bool Element::is_qop() const {
+        return this->variant_ == element_variant_e::QOP;
+    }
+}

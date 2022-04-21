@@ -4,7 +4,8 @@
 struct qrane_options_s {
 	char* qrane_home;
 	char* qasm_file;
-	char* device_file;
+	char* calibration_file;
+	char* coupling_file;
 	char* codegen_file;
 	char* aquma_file;
 	char* check_qasm;
@@ -15,7 +16,7 @@ struct qrane_options_s {
 	bool write_all;
 	unsigned int chunk;
 	unsigned int breadth_limit;
-	unsigned int search_limit;
+	long search_limit;
 	unsigned int process_mode;
 	unsigned int schedule_mode;
 };

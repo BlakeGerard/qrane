@@ -21,21 +21,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef QRANE_ARGUMENT
 #define QRANE_ARGUMENT
 
+#include "qrane_shared.hh"
+#include <memory>
 #include <string>
+#include <sstream>
 
-class qrane_argument {
+namespace qrane {
 
-    protected:
-        std::string id;
-        unsigned long index;
+    class Argument {
 
-    public:
-        qrane_argument(std::string id);
-        qrane_argument(std::string id, unsigned long index);
-        qrane_argument();
-        ~qrane_argument();
-        std::string get_id();
-        unsigned long get_index();
-};
+        private:
+            std::string reg_;
+            qubit_id index_;
+
+        public:
+            Argument();
+            Argument(std::string reg);
+            Argument(std::string reg, qubit_id index);
+            std::string reg() const;
+            qubit_id index() const;
+            std::string to_string() const;
+    };
+
+    typedef std::vector<std::shared_ptr<Argument>> argument_list_t;
+}
+
+
 
 #endif

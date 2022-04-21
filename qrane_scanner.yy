@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cstdlib>
 
-#include "qrane_general.hh"
+#include "qrane-parser.h"
 
 // Flex incompatibility protection
 # undef yywrap
@@ -35,7 +35,7 @@ std::string qelib = qrane_home + "/qelib1.inc";
 
 ID [a-z][A-Za-z0-9_]*
 REAL ([0-9]+\.[0-9]*|[0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?
-NNINTEGER [1-9]+[0-9]*|0
+UINTEGER [1-9]+[0-9]*|0
 
 %x incl
 
@@ -60,23 +60,31 @@ NNINTEGER [1-9]+[0-9]*|0
 			}
 
 "qreg"  	{ 
-				return yy::qrane_parser::make_T_QREG(loc); 
+				return yy::qrane_parser::make_T_QREG("qreg", loc); 
 			}
 
 "creg"  	{ 
-				return yy::qrane_parser::make_T_CREG(loc); 
+				return yy::qrane_parser::make_T_CREG("creg", loc); 
 			}
 
+"U"			{
+				return yy::qrane_parser::make_T_ID("U", loc);
+			}
+
+"CX"		{
+				return yy::qrane_parser::make_T_ID("CX", loc);
+			}			
+
 "gate"  	{
-				return yy::qrane_parser::make_T_GATE_CUSTOM(loc); 
+				return yy::qrane_parser::make_T_GATE_CUSTOM("gate", loc); 
 			}
 
 "barrier"	{ 
-				return yy::qrane_parser::make_T_BARRIER(loc); 
+				return yy::qrane_parser::make_T_BARRIER("barrier", loc); 
 			}
 
 "opaque"	{ 
-				return yy::qrane_parser::make_T_OPAQUE(loc); 
+				return yy::qrane_parser::make_T_OPAQUE("opaque", loc); 
 			}
 
 "if"		{ 
@@ -84,19 +92,11 @@ NNINTEGER [1-9]+[0-9]*|0
 			}
 
 "measure"	{ 
-				return yy::qrane_parser::make_T_MEASURE(loc); 
+				return yy::qrane_parser::make_T_MEASURE("measure", loc); 
 			}
 
 "reset"		{ 
-				return yy::qrane_parser::make_T_RESET(loc); 
-			}
-
-"U"			{ 
-				return yy::qrane_parser::make_T_U(loc); 
-			}
-
-"CX"		{  
-				return yy::qrane_parser::make_T_CX(loc); 
+				return yy::qrane_parser::make_T_RESET("reset", loc); 
 			}
 
 "("			{  
@@ -136,23 +136,23 @@ NNINTEGER [1-9]+[0-9]*|0
 			}
 
 "+"			{  
-				return yy::qrane_parser::make_T_ADD(loc); 
+				return yy::qrane_parser::make_T_ADD("+", loc); 
 			}
 
 "-"			{  
-				return yy::qrane_parser::make_T_SUB(loc); 
+				return yy::qrane_parser::make_T_SUB("-", loc); 
 			}
 
 "*"			{ 
-				return yy::qrane_parser::make_T_MUL(loc); 
+				return yy::qrane_parser::make_T_MUL("*", loc); 
 			}
 
 "/"			{  
-				return yy::qrane_parser::make_T_DIV(loc); 
+				return yy::qrane_parser::make_T_DIV("/", loc); 
 			}
 
 "^"			{  
-				return yy::qrane_parser::make_T_CARROT(loc); 
+				return yy::qrane_parser::make_T_CARROT("^", loc); 
 			}
 
 "=="		{  
@@ -160,31 +160,31 @@ NNINTEGER [1-9]+[0-9]*|0
 			}
 
 "pi"		{ 
-				return yy::qrane_parser::make_T_PI(loc); 
+				return yy::qrane_parser::make_T_PI("pi", loc); 
 			}
 
 "sin"		{  
-				return yy::qrane_parser::make_T_SIN(loc); 
+				return yy::qrane_parser::make_T_SIN("sin", loc); 
 			}
 
 "cos"		{  
-				return yy::qrane_parser::make_T_COS(loc); 
+				return yy::qrane_parser::make_T_COS("cos", loc); 
 			}
 
 "tan"		{  
-				return yy::qrane_parser::make_T_TAN(loc); 
+				return yy::qrane_parser::make_T_TAN("tan", loc); 
 			}
 
 "exp"		{  
-				return yy::qrane_parser::make_T_EXP(loc); 
+				return yy::qrane_parser::make_T_EXP("exp", loc); 
 			}
 
 "ln"		{  
-				return yy::qrane_parser::make_T_LN(loc); 
+				return yy::qrane_parser::make_T_LN("ln", loc); 
 			}
 
 "sqrt"		{  
-				return yy::qrane_parser::make_T_SQRT(loc); 
+				return yy::qrane_parser::make_T_SQRT("sqrt", loc); 
 			}
 
 {ID}		{ 
@@ -192,11 +192,11 @@ NNINTEGER [1-9]+[0-9]*|0
 			}
 
 {REAL}		{
-			    return yy::qrane_parser::make_T_REAL(atol(yytext), loc);
+			    return yy::qrane_parser::make_T_REAL(std::stod(yytext), loc);
 			}
 
-{NNINTEGER}	{
-				return yy::qrane_parser::make_T_NNINTEGER(atoi(yytext), loc);
+{UINTEGER}	{
+				return yy::qrane_parser::make_T_UINTEGER(std::stoul(yytext), loc);
 		    }
 
 <incl>[ \t]*

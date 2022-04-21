@@ -1,23 +1,16 @@
 #include "qrane_host.hh"
+#include "qrane_utils.hh"
 
 // Global domain counting variable from qrane_ctr.hh
 unsigned int num_domains = 0;
 extern int optind;
 
-unsigned int max_substr_size = std::numeric_limits<unsigned int>::min();
-unsigned int avg_substr_size = 0;
-unsigned int avg_substr_occ = 0;
-unsigned int substr_count = 0;
-
 qrane_host::qrane_host(qrane_options* opt, qrane_timer* timer) {
 	this->opt = opt;
 	this->timer = timer;
-	this->main_processor = new qrane_mainprogram(opt);
+	this->main_processor = std::make_shared<qrane_mainprogram>(opt);
+	this->circuit_count = 0;
 };
-
-qrane_host::~qrane_host() {
-	delete main_processor;
-}
 
 int qrane_host::parse_circuit() {
 	FILE* qasm = fopen(opt->qasm_file, "r");
@@ -28,38 +21,39 @@ int qrane_host::parse_circuit() {
 	return result;
 };
 
-
 	// ----------------------------
 	// Aquma + Qrane Reconstruction
 	// ----------------------------
 
 int qrane_host::process_circuit_via_substring_decomposition() {
+
+	// Aquma initialization
 	aquma_options aopt;
 	int res = set_fixed_aquma_options(&aopt);
-
 	aquma_graph* ag = new aquma_graph(&aopt);
 	ag->read_graph(aopt.device_file);
-
 	aquma_qparser * parser;
  	parser = new aquma_qparser (aopt.scop_file, ag->get_size());
   	assert (!parser->parse());
   	parser->build_qubit_string(ag->get_substr_ref());
-
 	aquma_circuit* circ = read_aquma_circuit_from_qasm();
-
 	ag->initialize_layout();
 	ag->init_qubit_reciprocals();
 
-	std::vector<qrane_mainprogram> gates_2Q = circuit_decomposition(ag, circ);
-	std::vector<qrane_mainprogram> gates_1Q = 
+	// Qrane decomposition
+	auto all = std::vector<qrane_mainprogram>();
+	auto subcircuits = circuit_decomposition(ag, circ);
+	auto remaining = 
 		generate_qrane_mainprogram_list_from_chunked_statements(
-		main_processor->get_1Q_gates(), gates_2Q.size());
+		collect_unpartitioned_statements(subcircuits));
+	
+	all.insert(all.end(), subcircuits.begin(), subcircuits.end());
+	all.insert(all.end(), remaining.begin(), remaining.end());
 
-	gates_2Q.insert(gates_2Q.end(), gates_1Q.begin(), gates_1Q.end());
-
-	parallel_process(gates_2Q);
+	parallel_process(all);
 	timer->reconstruction_complete = std::chrono::high_resolution_clock::now();
 
+	// Qrane scheduling
 	if (opt->schedule_mode != SCHEDULE_IMPLICIT) { main_processor->compute_transformation(); }
 	timer->scheduling_complete = std::chrono::high_resolution_clock::now();
 
@@ -69,55 +63,71 @@ int qrane_host::process_circuit_via_substring_decomposition() {
 	return 0;
 }
 
-std::vector<qrane_mainprogram> qrane_host::circuit_decomposition(aquma_graph* ag, aquma_circuit* circ) {
-    std::set<int> pending;
-	unsigned int subcircuit_count = 0;
+qrane_statementlist qrane_host::collect_unpartitioned_statements(std::vector<qrane_mainprogram>& subcircuits) {
+	auto all_statements = this->main_processor->get_statementlist();
+	auto unpartitioned_statements = qrane_statementlist();
 
-	std::vector<qrane_statement*> qrane_stmts = main_processor->get_2Q_gates();
-	std::vector<qrane_mainprogram> all;
+	std::shared_ptr<qrane_qop> qop;
+	bool continue_flag;
+	for (const auto& statement : all_statements) {
+		if (statement->is_qop()) {
+			continue_flag = false;
+			qop = std::dynamic_pointer_cast<qrane_qop>(statement);
+
+			// Skip any statements already in a subcircuit
+			for (auto& circ : subcircuits) {
+				bool c0 = qop->get_id() == circ.get_time_min();
+				bool c1 = qop->get_id() == circ.get_time_max();
+				bool c2 = qop->get_id() > circ.get_time_min() && qop->get_id() < circ.get_time_max();
+				if (c0 || c1 || c2) {
+					continue_flag = true;
+					break;
+				}
+			}
+			if (continue_flag) { continue; }
+		
+			// Otherwise, add it.
+			unpartitioned_statements.append(statement);
+		}
+	}
+	return unpartitioned_statements;
+};
+
+std::vector<qrane_mainprogram> qrane_host::circuit_decomposition(aquma_graph* ag, aquma_circuit* circ) {
+	auto statements_2Q = main_processor->get_2Q_gates();
+	auto all = std::vector<qrane_mainprogram>();
+	this->subcircuit_map = qrane_subcircuit_map();
 
 	// Aquma initialization
+	std::set<int> pending;
 	ag->initialize_pending_qubits(pending, circ);
 
 	// Continue until the 2Q gates list is exhausted
 	while (!ag->m_qsubstr.empty()) {
 
-	  	std::cout << "Recursing on the longest substr." << std::endl;
-
 		// Perform the recursion and pick a substr
-		qrane_substr_info selected = substr_recursion(ag);
+		qrane_substr_result result = substr_recursion(ag);
 
-		// If the chosen substr is below the bound, all other substrs will be that small.
-		// The pool of remaining gates is chunked like normal
-		if (selected.first.size() <= DECOMP_SUBSTR_SIZE_BOUND) {
-			std::vector<qrane_mainprogram> mps = 
-				generate_qrane_mainprogram_list_from_chunked_statements(qrane_stmts, subcircuit_count);
-			all.insert(all.end(), mps.begin(), mps.end());
-			break;
-		}
+		// Check termination conditions
+		bool c0 = result.first.size() <= DECOMP_SUBSTR_SIZE_BOUND;
+		bool c1 = result.second.size() < RECURSION_SUBSTR_OCCURRENCE_BOUND;
+		bool c2 = result.second.empty();
+		if (c0 || c1 || c2) { break; }
 
-		// Convert the chosen substr into corresponding qrane_statement* values.
-		qrane_mainprogram new_mp = generate_qrane_mainprogram_from_aquma_substr(
-			selected, qrane_stmts, subcircuit_count);
-		store_substrs_in_qrane_mainprogram(new_mp, selected, qrane_stmts);
-		all.push_back(new_mp);
-
-		substr_count += 1;
-		avg_substr_size += selected.first.size();
-		avg_substr_occ += selected.second.size();
-		if (selected.first.size() > max_substr_size) { max_substr_size = selected.first.size(); }
+		// Generate mainprograms from subcircuit result
+		std::vector<qrane_mainprogram> subcircuits = 
+			qrane_mainprograms_from_substr_result(result, statements_2Q);
+		all.insert(all.end(), subcircuits.begin(), subcircuits.end());
 
 		// Now remove the substrings from the m_qsubstr and qrane_stmts lists
-		ag->splice_substr(selected.second, selected.first.size());
-		qrane_utils::splice_stmtlist(qrane_stmts, selected.second, selected.first.size());
-		subcircuit_count += 1;
+		ag->splice_substr(result.second, result.first.size());
+		statements_2Q = qrane_utils::splice_stmtlist(
+			statements_2Q, result.second, result.first.size());
 	}
-	avg_substr_size /= substr_count;
-	avg_substr_occ /= substr_count;
 	return all;
 }
 
-qrane_substr_info qrane_host::substr_recursion(aquma_graph* ag) {
+qrane_substr_result qrane_host::substr_recursion(aquma_graph* ag) {
 	std::vector<int> prev;
 	std::vector<unsigned int> prev_locs;
 	std::vector<int> curr;
@@ -129,178 +139,115 @@ qrane_substr_info qrane_host::substr_recursion(aquma_graph* ag) {
 	ag_prime.m_qsubstr = std::vector<int>(ag->m_qsubstr);
 
 	while (depth <= RECURSION_DEPTH_BOUND) {
+		curr.clear();
+		curr_locs.clear();
 
 		ag_prime.extract_longest_repeated_non_overlapping_substr(curr);
 
 		if (curr.empty()) {
-			return qrane_substr_info(ag_prime.m_qsubstr, std::vector<unsigned int>()); 
+			return qrane_substr_result(ag_prime.m_qsubstr, std::vector<unsigned int>()); 
 		}
 
 		ag_prime.count_substr_repetitions(ag_prime.m_qsubstr, curr, curr_locs);
 
 		if (curr_locs.size() < RECURSION_SUBSTR_OCCURRENCE_BOUND) {
-			if (!prev.empty()) { return qrane_substr_info(prev, prev_locs); }
-			else { return qrane_substr_info(curr, curr_locs);}
+			if (!prev.empty()) {
+				std::cout << "Met occr bound, returning prev\n"; 
+				return qrane_substr_result(prev, prev_locs); 
+			} else { 
+				std::cout << "Met occr bound, returning curr\n"; 
+				return qrane_substr_result(curr, curr_locs);
+			}
 		}
 
 		if (curr.size() <= RECURSION_SUBSTR_SIZE_BOUND) {
-			if (!prev.empty()) { return qrane_substr_info(prev, prev_locs); }
-			else { return qrane_substr_info(curr, curr_locs);}
+			if (!prev.empty()) { 
+				std::cout << "Met size bound, returning prev\n"; 
+				return qrane_substr_result(prev, prev_locs); 
+			}else { 
+				std::cout << "Met size bound, returning curr\n"; 
+				return qrane_substr_result(curr, curr_locs);
+			}
 		}
 
+		prev.clear();
+		prev_locs.clear();
 		prev = curr;
 		prev_locs = curr_locs;
 		ag_prime.m_qsubstr = curr;
 		depth += 1;
 	}
-	return qrane_substr_info(prev, prev_locs);
+	return qrane_substr_result(prev, prev_locs);
+};
+
+std::vector<qrane_mainprogram> qrane_host::qrane_mainprograms_from_substr_result(
+	qrane_substr_result& result,
+	qrane_statementlist& statements_2Q) {
+	
+	std::vector<qrane_mainprogram> ret;
+	ret.reserve(result.second.size());
+	circuit_id leader;
+
+	// For each index in statements_2Q
+	for (std::size_t i = 0; i < result.second.size(); ++i) {
+		auto first = statements_2Q.begin() + result.second[i];
+		auto last = statements_2Q.begin() + result.second[i] + result.first.size();
+		auto first_qop = std::dynamic_pointer_cast<qrane_qop>(*first);
+		auto last_qop = std::dynamic_pointer_cast<qrane_qop>(*last);
+		auto in_range = qrane_statementlist();
+		bool range = false;
+
+		// Collect all qops in the range [first, last]
+		std::shared_ptr<qrane_qop> qop;
+		for (const auto& statement : this->main_processor->get_qops()) {
+			qop = dynamic_pointer_cast<qrane_qop>(statement);
+
+			if (qop->get_id() == first_qop->get_id())
+				range = true;
+			else if (qop->get_id() == last_qop->get_id())
+				range = false;
+			
+			if (range)
+				in_range.append(statement);
+		}
+
+		// Generate and store the mainprogram
+		qrane_mainprogram mp = create_fresh_qrane_mainprogram(in_range);
+		if (i == 0) { 
+			leader = mp.get_id();
+			this->subcircuit_map.insert(std::make_pair(leader, std::vector<circuit_id>()));
+		} else {
+			mp.mark_as_substr_repetition();
+			this->subcircuit_map[leader].push_back(mp.get_id()); 
+		}
+		ret.push_back(mp);
+	}
+	return ret;
 };
 
 std::vector<qrane_mainprogram> qrane_host::generate_qrane_mainprogram_list_from_chunked_statements(
-	std::vector<qrane_statement*> stmts_to_chunk, unsigned int subcircuit_count) {
+	qrane_statementlist stmts_to_chunk) {
 	if (stmts_to_chunk.empty()) { return std::vector<qrane_mainprogram>(); }
-	std::vector<std::vector<qrane_statement*>> chunked = 
+	std::vector<qrane_statementlist> chunked = 
 		qrane_utils::split_into_n_components(stmts_to_chunk, opt->chunk);
 
 	std::vector<qrane_mainprogram> mps; mps.reserve(chunked.size());
 	for (auto& chunk : chunked) {
-		mps.push_back(create_fresh_qrane_mainprogram(chunk, subcircuit_count));
-		subcircuit_count += 1;
+		mps.push_back(create_fresh_qrane_mainprogram(chunk));
 	}	
 	return mps;
 }
 
-qrane_mainprogram qrane_host::generate_qrane_mainprogram_from_aquma_substr(
-	qrane_substr_info& info, std::vector<qrane_statement*>& stmts_2Q, unsigned int subcircuit_num) {
-	std::vector<qrane_statement*>::const_iterator first = stmts_2Q.begin() + info.second[0];
-	std::vector<qrane_statement*>::const_iterator last = stmts_2Q.begin() + info.second[0] + info.first.size();
-	std::vector<qrane_statement*> stmts(first, last);
-	return create_fresh_qrane_mainprogram(stmts, subcircuit_num);
-};
-
+/*
+	NOTE: This function increments this->circuit_count
+*/
 qrane_mainprogram qrane_host::create_fresh_qrane_mainprogram(
-	std::vector<qrane_statement*> stmts, unsigned int subcircuit_num) {
-	qrane_stmtlist* stmtlist = new qrane_stmtlist();
-	stmtlist->set_stmts(stmts);
-	qrane_mainprogram new_mp = qrane_mainprogram(opt);
-	new_mp.set_subcircuit_num(subcircuit_num);
-	new_mp.add_stmtlist(stmtlist);
-	new_mp.set_num_qops(stmts.size());
-	new_mp.qreg_size = main_processor->qreg_size;
+	qrane_statementlist statements) {
+	qrane_mainprogram new_mp = qrane_mainprogram(opt, this->circuit_count);
+	new_mp.initialize(statements, main_processor->qreg_size);
+	this->circuit_count += 1;
 	return new_mp;
 }
-
-void qrane_host::store_substrs_in_qrane_mainprogram(qrane_mainprogram& mp, 
-	qrane_substr_info& info, std::vector<qrane_statement*> stmts_2Q) {
-	std::vector<qrane_stmtlist*> substrs; substrs.reserve(info.second.size() - 1);
-
-	for (std::size_t i = 1; i < info.second.size(); ++i) {
-		std::vector<qrane_statement*>::const_iterator first = stmts_2Q.begin() + info.second[i];
-		std::vector<qrane_statement*>::const_iterator last = stmts_2Q.begin() + info.second[i] + info.first.size();
-		std::vector<qrane_statement*> stmts(first, last);
-		qrane_stmtlist* stmtlist = new qrane_stmtlist();
-		stmtlist->set_stmts(stmts);
-		substrs.push_back(stmtlist);
-	}
-	mp.set_substrs(substrs);
-};
-
-std::vector<qrane_mainprogram> qrane_host::generate_qrane_mainprogram_substrs(qrane_mainprogram& mp) {
-	std::vector<qrane_mainprogram> new_mps; new_mps.reserve(mp.substrs.size());
-	
-	// For each substr of the given mainprogram
-	for (const auto& stmts : mp.substrs) {
-
-		// 2. map1 = originalDomainNum -> newDomainNum
-		// 3. map2 = originalLineNum -> [substr1LineNum, substr2LineNum, ...]
-		qrane_mainprogram substr_mp = create_fresh_qrane_mainprogram(stmts->get_2Q_gates(), 9999);
-		substr_new_id_map domains = create_old_to_new_domain_map(mp);
-		substr_new_id_map qops = create_old_to_new_qop_map(mp, stmts);
-
-		// 4. For each domain in unchanged_domains:
-		//		- Update the domain nums
-		//		- Replace the id in the local domain
-		std::vector<qrane_domain> new_doms = mp.get_scop()->final_domain_list;
-		for (auto& dom : new_doms) {
-			unsigned int old_id = domains[dom.domain_num];
-			dom.domain_num = old_id;
-			isl_set* local_domain = dom.get_local_domain_copy();
-			std::string new_id = "S" + std::to_string(old_id);
-			local_domain = isl_set_set_tuple_name(local_domain, new_id.c_str());
-			isl_set_free(dom.local_domain);
-			dom.set_local_domain(local_domain);
-		}
-		substr_mp.set_unchanged_domains(new_doms);
-
-		for (const auto& dom : new_doms) {
-			std::cout << dom.domain_num << ": \n";
-			isl_set_dump(dom.get_local_domain_copy());
-		}
-
-		// 5. For each relation in ddg:
-		substr_mp.set_deps(mp.get_deps());
-		time_dependence_graph new_ddg;
-		for (const auto& relation : substr_mp.get_deps().ddg) {
-			for (const auto& n : relation.second) {
-					new_ddg[qops[relation.first]].push_back(qops[n]);
-			}
-		}
-		substr_mp.set_ddg(new_ddg);
-
-		// 6. For each relation in membership:
-		//		- use map1 and map2 to edit both the lhs and rhs
-		membership_map new_membership;
-		for (const auto& relation : substr_mp.get_deps().membership) {
-			new_membership[qops[relation.first]] = relation.second;
-			new_membership[qops[relation.first]].first = domains[relation.second.first];
-		}
-		substr_mp.set_membership(new_membership);
-
-		substr_mp.build_isl_domain_read_write_schedule();
-		std::cout << "-----\n";
-		isl_union_set_dump(substr_mp.get_scop()->domain);
-		isl_union_map_dump(substr_mp.get_scop()->read);
-		new_mps.push_back(substr_mp);
-	}
-	return new_mps;
-};
-
-std::vector<unsigned int> qrane_host::get_new_domain_ids_list(unsigned int cnt) {
-	num_domains += 1;
-	std::vector<unsigned int> ret; ret.reserve(cnt);
-	for (unsigned int i = num_domains; i < num_domains + cnt; ++i) {
-		ret.push_back(i);
-	}
-	num_domains += cnt;
-	return ret;
-};
-
-substr_new_id_map qrane_host::create_old_to_new_domain_map(qrane_mainprogram& mp) {
-	std::vector<unsigned int> new_domain_ids;
-	new_domain_ids = get_new_domain_ids_list(mp.get_num_domains());
-
-	std::vector<qrane_domain>& old_domains = mp.get_scop()->final_domain_list;
-
-	substr_new_id_map ret; ret.reserve(new_domain_ids.size());
-	for (std::size_t i = 0; i < mp.get_scop()->final_domain_list.size(); ++i) {
-		ret[old_domains[i].domain_num] = new_domain_ids[i];
-	}
-	return ret;
-}
-
-substr_new_id_map qrane_host::create_old_to_new_qop_map(qrane_mainprogram& mp, qrane_stmtlist* stmts) {
-	std::vector<qrane_statement*> old_qop_ids = mp.get_stmtlist()->get_2Q_gates();
-	std::vector<qrane_statement*> new_qop_ids = stmts->get_2Q_gates();
-	assert(old_qop_ids.size() == new_qop_ids.size());
-
-	substr_new_id_map ret; ret.reserve(old_qop_ids.size());
-	for (std::size_t i = 0; i < old_qop_ids.size(); ++i) {
-		ret[((qrane_qop*) old_qop_ids[i])->get_dim1_qop_num()] = ((qrane_qop*) new_qop_ids[i])->get_dim1_qop_num();
-	}
-	return ret;
-}
-
-
 
 aquma_circuit* qrane_host::read_aquma_circuit_from_qasm() {
 	int retval;
@@ -324,13 +271,12 @@ aquma_circuit* qrane_host::read_aquma_circuit_from_qasm() {
 }
 
 int qrane_host::set_fixed_aquma_options(aquma_options* aopt) {
-	if (this->opt->device_file == NULL) {
+	if (this->opt->calibration_file == NULL) {
 		std::cout << "You must provide a device_file to utilize Aquma facilities.\n";
 		return 1;
 	}
-
 	aopt->scop_file = this->opt->qasm_file;
-	aopt->device_file = this->opt->device_file;
+	aopt->device_file = this->opt->calibration_file;
 	aopt->input_format = FORMAT_QASM;
 	aopt->slice_mode = SLICE_NORMAL;
 	aopt->solver = SOLVER_ISL;
@@ -347,8 +293,8 @@ int qrane_host::set_fixed_aquma_options(aquma_options* aopt) {
 
 int qrane_host::process_circuit() {
 	if (opt->chunk > 1) { 
-		auto stmts = main_processor->get_stmtlist()->get_qops();
-		auto mps = generate_qrane_mainprogram_list_from_chunked_statements(stmts, 0);
+		auto qops = main_processor->get_statementlist().get_qops();
+		auto mps = generate_qrane_mainprogram_list_from_chunked_statements(qops);
 		parallel_process(mps); 
 	} 
 	else { sequential_process(); }
@@ -362,84 +308,136 @@ int qrane_host::process_circuit() {
 
 void qrane_host::sequential_process() {
 	main_processor->parse_domains();
+	if (!opt->quiet) { std::cout << "Merging affine abstractions ... " << std::flush;}
 	main_processor->build_isl_domain_read_write_schedule();
 };
 
-bool sort_mps_in_time(const qrane_mainprogram& a, const qrane_mainprogram& b) {
+bool comparator_mainprogram(qrane_mainprogram& a, qrane_mainprogram& b) {
 	return a.get_time_max() < b.get_time_min();
 };
 
-void codegen_for_all_subcircuits(std::vector<qrane_mainprogram> mps) {
-	std::sort(mps.begin(), mps.end(), sort_mps_in_time);
+void qrane_host::sort_mainprograms(std::vector<qrane_mainprogram>& mps) {
+	std::sort(mps.begin(), mps.end(), comparator_mainprogram);
+};
 
-	unsigned int ctr = 0;
-	for (auto& mp : mps) {
-		std::string codegen_c_str = mp.generate_codegen_c_str();
-		std::string codegen_file  = std::string("sabretest/gen_" + std::to_string(ctr) + ".qasm");
-		std::string base_name;
-		std::string c_name;
-		std::string qasm_name;
-		std::string executable_name;
-		std::string compile;
-		std::string execute;
-		std::string cleanup;
+void qrane_host::testing(std::vector<qrane_mainprogram> mps) {
+	// Sort mainprograms so they are in correct order
+	sort_mainprograms(mps);
 
-		base_name = codegen_file.substr(0, codegen_file.find_last_of("."));
-		c_name = base_name + ".c";
-		qasm_name = base_name + ".qasm";
-		executable_name = "temp.exe";
+	// Initialize qrane_routing
+	qrane_routing router = qrane_routing(
+		mps[0].get_dependence_graph(),
+		opt->coupling_file
+	);
 
-		compile = "gcc -std=c11 " + c_name + " -o " + executable_name;
-		execute = "./" + executable_name;
-		cleanup = "rm " + c_name + " " + executable_name;
+	// Collect external routing results for each subcircuit
+	Py_Initialize();
+	std::vector<qrane_routing_result> results;
+	for (const auto& mp : mps) {
+		std::cout << "Externally routing subcircuit: " << mp.get_id() << " ... ";
+		results.push_back(router.export_to_tket(std::make_shared<qrane_mainprogram>(mp), opt));
+		std::cout << "done." << std::endl;
+	}
+	Py_Finalize();
+	
+	auto all = qrane_statementlist();
 
-    	int res = qrane_utils::generate_c_test_file(c_name, qasm_name, codegen_c_str, mp.get_registers());
-		if (res) {
-			std::cout << "Failed to open codegen file ... returning error code 1.\n";
-			exit(1);
+	if (results.size() == 1) {
+		all = results[0].first->get_qops();
+	} else {
+		for (std::size_t i = 0; i < results.size() - 1; ++i) {
+			for (const auto& statement : results[i].first->get_qops()) {
+				all.append(statement);
+			}
+
+			// Reconcile final mapping of it with initial mapping of it+1
+			std::cout << "Reconciling " << i << " and " << i+1 << " ... \n" << std::flush;
+			auto swaps = router.reconcile_mappings(results[i].second.second, results[i+1].second.first);
+			std::cout << "done\n";
+
+			for (const auto& statement : swaps) {
+				all.append(statement);
+			}
 		}
-		// Use std::system to compile the codegen_c_str.c file and execute it
-		if (std::system(compile.c_str())) {
-			std::cout << "Could not compile codegen file.\n";
-			exit(1);
+	}
+	
+
+	qrane_mainprogram full = qrane_mainprogram(opt);
+	full.initialize(all, mps[0].qreg_size);
+
+	std::cout << std::boolalpha << router.simulate_circuit_execution(all, results[0].second.first) << std::endl;
+};
+
+void qrane_host::modify_subcircuits(std::vector<std::vector<qrane_mainprogram>::iterator> its) {
+	auto leader = its.begin();
+
+	// For each substr of the given mainprogram
+	for (auto i = its.begin() + 1; i < its.end(); ++i) {
+
+		substr_new_id_map old_to_new_domains = (*leader)->create_old_to_new_domain_map();
+		substr_new_id_map old_to_new_qops = (*leader)->create_old_to_new_qop_map((*i)->get_qops());
+
+
+		// 4. For each domain in unchanged_domains:
+		//		- Update the domain nums
+		//		- Replace the id in the local domain
+		std::vector<qrane_domain> new_doms = (*leader)->get_scop()->final_domain_list;
+		for (auto& dom : new_doms) {
+			unsigned int new_id = old_to_new_domains[dom.domain_num];
+			dom.domain_num = new_id;
+			std::string new_id_str = "S" + std::to_string(new_id);
+
+			isl_set* local_domain = dom.get_local_domain_copy();
+			isl_set_free(dom.local_domain);
+			local_domain = isl_set_set_tuple_name(local_domain, new_id_str.c_str());
+			dom.set_local_domain(local_domain);
 		}
-		if (std::system(execute.c_str())) {
-			std::cout << "Could not execute check program.\n";
-			exit(1);
+		(*i)->set_unchanged_domains(new_doms);
+
+		// 6. For each relation in membership:
+		//		- use map1 and map2 to edit both the lhs and rhs
+		membership_map new_membership;
+		for (const auto& relation : (*leader)->get_scop()->membership) {
+			new_membership[old_to_new_qops[relation.first]] = relation.second;
+			new_membership[old_to_new_qops[relation.first]].first = old_to_new_domains[relation.second.first];
 		}
-		if (std::system(cleanup.c_str())) {
-			std::cout << "Error doing cleanup.\n";
-			exit(1);
-		}
-		++ctr;
+		(*i)->set_membership(new_membership);
+
+		(*i)->build_isl_domain_read_write_schedule();
 	}
 };
 
-void qrane_host::parallel_process(std::vector<qrane_mainprogram> mps) {
-	main_processor->build_dependence_graph();
+void qrane_host::parallel_process(std::vector<qrane_mainprogram>& mps) {
 	unsigned int qreg_size = main_processor->qreg_size;
 	std::vector<t_qrane_scop*> all_scops = std::vector<t_qrane_scop*>(mps.size());
 
 #pragma omp parallel for schedule(dynamic)
-		for (std::size_t i = 0; i < mps.size(); ++i) {
-			mps[i].parse_domains();
-			mps[i].build_isl_domain_read_write_schedule();
-			all_scops[i] = mps[i].get_scop();
-		}
-
-		if (opt->substr) {
-			for (std::size_t i = 0; i < mps.size(); ++i) {
-				if (!mps[i].substrs.empty()) {
-					for (auto& mp : generate_qrane_mainprogram_substrs(mps[i])) {
-						mps.push_back(mp);
-						all_scops.push_back(mp.get_scop());
-					}
-				}
+		for (int i = 0; i < mps.size(); ++i) {
+			if (!mps[i].is_substr_repetition()) {
+				mps[i].parse_domains();
+				mps[i].build_isl_domain_read_write_schedule();
+				all_scops[i] = mps[i].get_scop();
 			}
 		}
 
-		codegen_for_all_subcircuits(mps);
-		exit(1);
+		//testing(mps);
+		//exit(1);
+
+		for (const auto& entry : this->subcircuit_map) {
+			std::vector<std::vector<qrane_mainprogram>::iterator> temp;
+			for (auto mp = mps.begin(); mp != mps.end(); ++mp) {
+				if (mp->get_id() == entry.first) {
+					temp.push_back(mp);
+					break;
+				}
+			}
+			for (auto mp = mps.begin(); mp != mps.end(); ++mp) {
+				if (std::find(entry.second.begin(), entry.second.end(), mp->get_id()) != entry.second.end()) {
+					temp.push_back(mp);
+				}
+			}
+			modify_subcircuits(temp);
+		}
 
 		if (!opt->quiet) { std::cout << "Merging subcircuit scops ... " << std::flush;}
 		isl_ctx* ctx = isl_ctx_alloc();
@@ -467,24 +465,14 @@ void qrane_host::parallel_process(std::vector<qrane_mainprogram> mps) {
 			std::move(all_scops[i]->final_domain_list.begin(), all_scops[i]->final_domain_list.end(),
 				std::back_inserter(full_scop->final_domain_list));
         }
+		//full_scop->dependence = main_processor->get_dependences();
 		main_processor->set_scop(full_scop);
 		if (!opt->quiet) { std::cout << "Done.\n";}
 };
 
 void qrane_host::merge_qubit_access_profiles(qubit_profile_map& a, qubit_profile_map& b) {
 	for (const auto& qubit : b) {
-		//if (a.count(qubit.first) == 0) {
-		//	std::cout << "Qubit not registered\n";
-		//	a.insert(qubit);
-		//	continue;
-		//}
 		for (const auto& gate : qubit.second) {
-			//if (a[qubit.first].count(gate.first) == 0) {
-			//	std::cout << "Gate not registered\n";
-			//	a[qubit.first].insert(gate);
-			//	continue;
-			//}
-
 			a[qubit.first][gate.first] += gate.second;
 		}
 	}
@@ -522,15 +510,6 @@ int qrane_host::run_checks() {
 	}
 	if (!opt->quiet) { std::cout << "True\n" << std::flush; }
 
-
-	if (!opt->quiet) { std::cout << "Checking that control-read dependences are subset of control-write dependence ... " << std::flush; }
-	check_res = check_qubit_access_profile_equivalence();
-	if (check_res == false) { 
-		if (!opt->quiet) { std::cout << "False\n" << std::flush; }
-		return 1; 
-	}
-	if (!opt->quiet) { std::cout << "True\n" << std::flush; }
-
 	if (!opt->quiet) { std::cout << "Checking for isomorphism between original and recovered dependence graphs ... " << std::flush; }
 	check_res = check_isomorphism();
 	if (check_res == false) { 
@@ -548,14 +527,14 @@ bool qrane_host::check_qubit_access_profile_equivalence() {
 	// Write the mainpg codegen to a C file, compile, and generate check qasm file.
 	std::string codegen_c_str = main_processor->generate_codegen_c_str();
 
-	std::string c_name = "check.c";
+	std::string c_name = "check.cc";
 	std::string qasm_name = "check.qasm";
 	std::string exec_name = "check.exe";
-	std::string compile = "gcc -std=c11 check.c -o check.exe";
+	std::string compile = "g++ -std=c++11 check.c -o check.exe";
 	std::string execute = "./" + exec_name;
 	std::string clean = "rm -f " + c_name + " " + qasm_name + " " + exec_name;
 
-    qrane_utils::generate_c_test_file(c_name, qasm_name, codegen_c_str, main_processor->get_registers());
+    qrane_utils::generate_c_test_file(c_name, qasm_name, codegen_c_str, main_processor->get_registers(), main_processor->get_membership_map_reverse_str());
 
 	// Use std::system to compile the codegen_c_str.c file and execute it
 	if (std::system(compile.c_str())) {
@@ -567,7 +546,8 @@ bool qrane_host::check_qubit_access_profile_equivalence() {
 		return false;
 	}
 
-	check_processor = new qrane_mainprogram(opt);
+	this->check_processor = std::make_shared<qrane_mainprogram>(opt);
+	
 	
 	// Read the qasm through the bison parser to get a new stmtlist
 	FILE *qasm = nullptr;
@@ -582,9 +562,6 @@ bool qrane_host::check_qubit_access_profile_equivalence() {
 		return false;
   	}
 
-	// We need to do this so that checkpg->get_qubit_profile_map() has something to create
-	check_processor->build_dependence_graph();
-
 	std::string mainmap = main_processor->get_qubit_access_profile_str();
 	std::string checkmap = check_processor->get_qubit_access_profile_str();
 
@@ -593,26 +570,15 @@ bool qrane_host::check_qubit_access_profile_equivalence() {
 	//	return false;
 	//}
 
-	std::cout << mainmap;
-	std::cout << checkmap;
+	//std::cout << mainmap;
+	//std::cout << checkmap;
 
-	// Do not delete check_processor here. It is used in isomorphism check
-	return mainmap == checkmap; // 0 if they are equal
+	return mainmap == checkmap;
 };
 
-/*
-bool qrane_host::check_dependence_subset() {
-	if (opt->write_all) {
-
-	} else {
-		return true;
-	}
-}
-*/
-
 int qrane_host::check_input_output_isomorphism() {
-	this->main_processor = new qrane_mainprogram(opt);
-	this->check_processor = new qrane_mainprogram(opt);
+	this->main_processor = std::make_shared<qrane_mainprogram>(opt);
+	this->check_processor = std::make_shared<qrane_mainprogram>(opt);
 
 	FILE* qasm = fopen(opt->qasm_file, "r");
 	yyin = qasm;
@@ -625,9 +591,6 @@ int qrane_host::check_input_output_isomorphism() {
 	yy::qrane_parser check_parser(this->check_processor);
 	result = check_parser();
 	fclose(yyin);
-
-	this->main_processor->build_dependence_graph();
-	this->check_processor->build_dependence_graph();
 
 	bool res = check_isomorphism();
 	return res;
@@ -693,8 +656,6 @@ bool qrane_host::check_isomorphism() {
 	//	return false;
 	//}
 
-	delete check_processor;
-
 	if (result_str == "true") { return true; } 
 	else { return false; }
 };
@@ -706,21 +667,13 @@ void qrane_host::print_scop() {
 
 void qrane_host::print_stats() {
   	std::cout << "--- Stats ---" << std::endl;
-	if (opt->chunk > 1 || opt->substr) { std::cout << "Qops: " << main_processor->get_num_qops() + 1 << std::endl; }
-	else { std::cout << "Qops: " << main_processor->get_num_qops() << std::endl; }
+	std::cout << "Qops: " << main_processor->get_num_qops() << std::endl;
 	std::cout << "Lookahead Breadth Limit: " << opt->breadth_limit << std::endl;
 	std::cout << "Search Limit: " << opt->search_limit << std::endl;
   	std::cout << "Domains: \n";
   	std::cout << main_processor->get_domain_profile_str();
   	std::cout << "Total: " << main_processor->get_num_domains() << " domains, "<< main_processor->get_num_points() << " points." <<  std::endl;
 	std::cout << "-------------" << std::endl;
-
-	std::cout << "--- Substr ---" << std::endl;
-	std::cout << "Num substr             : " << substr_count << std::endl;
-	std::cout << "Max substr size        : " << max_substr_size << std::endl;
-	std::cout << "Avg substr size        : " << avg_substr_size << std::endl;
-	std::cout << "Avg substr occurrences : " << avg_substr_occ << std::endl;
-	std::cout << "--------------" << std::endl;
 
 	std::cout << main_processor->get_domain_size_histogram_str();
 	std::cout << main_processor->get_reconstruction_histogram_str();
@@ -756,6 +709,7 @@ int qrane_host::output_to_files() {
 		std::string codegen_file  = std::string(opt->codegen_file);
 		std::string base_name;
 		std::string c_name;
+		std::string qops_name;
 		std::string qasm_name;
 		std::string executable_name;
 		std::string compile;
@@ -763,20 +717,20 @@ int qrane_host::output_to_files() {
 		std::string cleanup;
 
 		base_name = codegen_file.substr(0, codegen_file.find_last_of("."));
-		c_name = base_name + ".c";
+		c_name = base_name + ".cc";
+		qops_name = base_name + ".qops";
 		qasm_name = base_name + ".qasm";
 		executable_name = "temp.exe";
 
-		compile = "gcc -std=c11 " + c_name + " -o " + executable_name;
+		compile = "g++ -std=c++11 " + c_name + " -o " + executable_name;
 		execute = "./" + executable_name;
 		cleanup = "rm " + c_name + " " + executable_name;
 
-    	int res = qrane_utils::generate_c_test_file(c_name, qasm_name, codegen_c_str, main_processor->get_registers());
+    	int res = qrane_utils::generate_c_test_file(c_name, qops_name, codegen_c_str, main_processor->get_registers(), main_processor->get_membership_map_reverse_str());
 		if (res) {
 			std::cout << "Failed to open codegen file ... returning error code 1.\n";
 			return 1;
 		}
-		// Use std::system to compile the codegen_c_str.c file and execute it
 		if (std::system(compile.c_str())) {
 			std::cout << "Could not compile codegen file.\n";
 			return 1;
@@ -785,10 +739,23 @@ int qrane_host::output_to_files() {
 			std::cout << "Could not execute check program.\n";
 			return 1;
 		}
-		if (std::system(cleanup.c_str())) {
-			std::cout << "Error doing cleanup.\n";
+
+		std::vector<qop_id> ordering = qrane_utils::read_qop_id_sequence(qops_name);
+		std::string reordered_qasm_str = main_processor->get_qasm_string(ordering);
+
+		std::ofstream qasm_out;
+		qasm_out.open(qasm_name);
+		if (qasm_out.is_open()) {
+			qasm_out << reordered_qasm_str;
+			qasm_out.close();
+		} else {
+			std::cout << "Failed to open qasm file." << std::endl;
 			return 1;
 		}
+		//if (std::system(cleanup.c_str())) {
+		//	std::cout << "Error doing cleanup.\n";
+		//	return 1;
+		//}
 	}
 	return 0;
 }
@@ -825,12 +792,13 @@ int qrane_host::parse_options(int argc, char* argv[]) {
 			{"feautrier", no_argument, 0, 10},
 			{"aquma", optional_argument, 0, 11},
       		{"codegen", optional_argument, 0, 12},
-			{"circuit", no_argument, 0, 13},
-			{"device_file", required_argument, 0, 14},
+			{"grid", no_argument, 0, 13},
+			{"calibration", required_argument, 0, 14},
 			{"substr", no_argument, 0, 15},
 			{"help", no_argument, 0, 16},
 			{"check_qasm", required_argument, 0, 17},
 			{"write_all", no_argument, 0, 18},
+			{"coupling", required_argument, 0, 19},
      		{0, 0, 0, 0}
     };
 
@@ -938,9 +906,9 @@ int qrane_host::parse_options(int argc, char* argv[]) {
 
 		case 14:
 			if (optarg) { 
-				opt->device_file = optarg;
+				opt->calibration_file = optarg;
 			} else {
-				std::cout << "Must provide a device file.\n";
+				std::cout << "Please provide a .csv calibration file.\n";
 				return 1;
 			} 
 			break;
@@ -968,7 +936,17 @@ int qrane_host::parse_options(int argc, char* argv[]) {
 			opt->write_all = true;
 			break;
 
+		case 19:
+			if (optarg) { 
+				opt->coupling_file = optarg;
+			} else {
+				std::cout << "Must provide an edge-list formatted coupling graph .txt file.\n";
+				return 1;
+			} 
+			break;
+
       	case '?':
+		  	return 1;
         	break;
 		
       	default:
@@ -997,7 +975,7 @@ std::string qrane_host::help_message() {
 	strm << "--quiet                          Quiet mode. Only send domain size histogram, checks, and stats to stdout." << std::endl;
 	strm << "--member                         Print the time space -> domain space map." << std::endl;
 	strm << "--substr                         Use aquma-substring based circuit decomposition tactic." << std::endl;
-	strm << "--write_all                     Consider all qubit accesses as write-only." << std::endl;
+	strm << "--write_all                      Consider all qubit accesses as write-only." << std::endl;
 	strm << "--isl                            Use isl's default scheduling algorithm." << std::endl;
 	strm << "--minfuse                        Use Pluto minfuse scheduling algorithm." << std::endl;
 	strm << "--maxfuse                        Use Pluto maxfuse scheduling algorithm." << std::endl;
