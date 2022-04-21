@@ -1,8 +1,11 @@
 
+=====================================================================
+NOTE:
 The dev branch is for me to gradually incorporate clean-up measures
 into qrane. Improved coding practices, modularity, and documentation.
+=====================================================================
 
-==============================================================================
+
 The Qrane mini-api has been modified to closely model the aquma api.
 The changes mostly reside on the qrane side (the drivers are much cleaner now),
 so the library invocation in your custom driver should remain largely the same.
