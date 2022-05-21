@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cstdlib>
 
-#include "qrane-parser.h"
+#include "qrane_parser.h"
 
 // Flex incompatibility protection
 # undef yywrap

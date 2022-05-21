@@ -48,7 +48,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "isl/ast_build.h"
 #include "isl/constraint.h"
 
-#include "qrane_statementlist.hh"
 #include "qrane_domain.hh"
 #include "qrane_deps.hh"
 #include "qrane_statement.hh"
