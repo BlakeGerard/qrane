@@ -2,6 +2,15 @@
 .cache/
 qasm/
 
+# Library files
 barvinok-0.41.4/
 bison-3.3
 ntl-11.4.3/
+lib/
+
+# Parser files
+qrane_parser.c
+qrane_parser.h
+qrane_parser.output
+qrane_scanner.c
+location.hh
