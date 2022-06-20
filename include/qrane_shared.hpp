@@ -4,8 +4,8 @@
 #include <string>
 #include <unordered_map>
 
-#ifndef QRANE_SHARED_HH
-#define QRANE_SHARED_HH
+#ifndef QRANE_SHARED_HPP
+#define QRANE_SHARED_HPP
 
 typedef int qop_id;
 typedef int qubit_id;

@@ -1,6 +1,6 @@
 /*
 Qrane
-Filename: qrane_deps.hh
+Filename: qrane_deps.hpp
 Creation date: December 26, 2020
 Copyright (C) 2020
 
@@ -29,10 +29,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "isl/map.h"
 #include "isl/union_map.h"
 
-#include "qrane_options.hh"
-#include "qrane_shared.hh"
-#include "qrane_graph.hh"
-#include "qrane_qop.hh"
+#include "qrane_options.hpp"
+#include "qrane_shared.hpp"
+#include "qrane_graph.hpp"
+#include "qrane_qop.hpp"
 
 namespace qrane {
 

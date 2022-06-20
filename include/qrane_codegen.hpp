@@ -14,7 +14,7 @@
 #include "isl/ast.h"
 #include "isl/ast_build.h"
 #include <cassert>
-#include "qrane_scop.hh"
+#include "qrane_scop.hpp"
 
 namespace qrane_codegen {
 

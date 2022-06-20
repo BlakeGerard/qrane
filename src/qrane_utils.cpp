@@ -3,7 +3,7 @@
 #include <cmath>
 #include <functional>
 #include "assert.h"
-#include "qrane_utils.hh"
+#include "qrane_utils.hpp"
 
 namespace qrane {
 	namespace utils {

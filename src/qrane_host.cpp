@@ -1,14 +1,14 @@
-#include "qrane_host.hh"
-#include "qrane_utils.hh"
+#include "qrane_host.hpp"
+#include "qrane_utils.hpp"
 
-// Global domain counting variable from qrane_ctr.hh
+// Global domain counting variable from qrane_ctr.hpp
 unsigned int num_domains = 0;
 extern int optind;
 
 qrane_host::qrane_host(qrane_options* opt, qrane_timer* timer) {
 	this->opt = opt;
 	this->timer = timer;
-	this->main_processor = std::make_shared<qrane_mainprogram>(opt);
+	this->main_processor = std::make_shared<qrane_program>(opt);
 	this->circuit_count = 0;
 };
 
@@ -41,10 +41,10 @@ int qrane_host::process_circuit_via_substring_decomposition() {
 	ag->init_qubit_reciprocals();
 
 	// Qrane decomposition
-	auto all = std::vector<qrane_mainprogram>();
+	auto all = std::vector<qrane_program>();
 	auto subcircuits = circuit_decomposition(ag, circ);
 	auto remaining = 
-		generate_qrane_mainprogram_list_from_chunked_statements(
+		generate_qrane_program_list_from_chunked_statements(
 		collect_unpartitioned_statements(subcircuits));
 	
 	all.insert(all.end(), subcircuits.begin(), subcircuits.end());
@@ -63,7 +63,7 @@ int qrane_host::process_circuit_via_substring_decomposition() {
 	return 0;
 }
 
-qrane_statementlist qrane_host::collect_unpartitioned_statements(std::vector<qrane_mainprogram>& subcircuits) {
+qrane_statementlist qrane_host::collect_unpartitioned_statements(std::vector<qrane_program>& subcircuits) {
 	auto all_statements = this->main_processor->get_statementlist();
 	auto unpartitioned_statements = qrane_statementlist();
 
@@ -93,9 +93,9 @@ qrane_statementlist qrane_host::collect_unpartitioned_statements(std::vector<qra
 	return unpartitioned_statements;
 };
 
-std::vector<qrane_mainprogram> qrane_host::circuit_decomposition(aquma_graph* ag, aquma_circuit* circ) {
+std::vector<qrane_program> qrane_host::circuit_decomposition(aquma_graph* ag, aquma_circuit* circ) {
 	auto statements_2Q = main_processor->get_2Q_gates();
-	auto all = std::vector<qrane_mainprogram>();
+	auto all = std::vector<qrane_program>();
 	this->subcircuit_map = qrane_subcircuit_map();
 
 	// Aquma initialization
@@ -115,8 +115,8 @@ std::vector<qrane_mainprogram> qrane_host::circuit_decomposition(aquma_graph* ag
 		if (c0 || c1 || c2) { break; }
 
 		// Generate mainprograms from subcircuit result
-		std::vector<qrane_mainprogram> subcircuits = 
-			qrane_mainprograms_from_substr_result(result, statements_2Q);
+		std::vector<qrane_program> subcircuits = 
+			qrane_programs_from_substr_result(result, statements_2Q);
 		all.insert(all.end(), subcircuits.begin(), subcircuits.end());
 
 		// Now remove the substrings from the m_qsubstr and qrane_stmts lists
@@ -180,11 +180,11 @@ qrane_substr_result qrane_host::substr_recursion(aquma_graph* ag) {
 	return qrane_substr_result(prev, prev_locs);
 };
 
-std::vector<qrane_mainprogram> qrane_host::qrane_mainprograms_from_substr_result(
+std::vector<qrane_program> qrane_host::qrane_programs_from_substr_result(
 	qrane_substr_result& result,
 	qrane_statementlist& statements_2Q) {
 	
-	std::vector<qrane_mainprogram> ret;
+	std::vector<qrane_program> ret;
 	ret.reserve(result.second.size());
 	circuit_id leader;
 
@@ -212,7 +212,7 @@ std::vector<qrane_mainprogram> qrane_host::qrane_mainprograms_from_substr_result
 		}
 
 		// Generate and store the mainprogram
-		qrane_mainprogram mp = create_fresh_qrane_mainprogram(in_range);
+		qrane_program mp = create_fresh_qrane_program(in_range);
 		if (i == 0) { 
 			leader = mp.get_id();
 			this->subcircuit_map.insert(std::make_pair(leader, std::vector<circuit_id>()));
@@ -225,15 +225,15 @@ std::vector<qrane_mainprogram> qrane_host::qrane_mainprograms_from_substr_result
 	return ret;
 };
 
-std::vector<qrane_mainprogram> qrane_host::generate_qrane_mainprogram_list_from_chunked_statements(
+std::vector<qrane_program> qrane_host::generate_qrane_program_list_from_chunked_statements(
 	qrane_statementlist stmts_to_chunk) {
-	if (stmts_to_chunk.empty()) { return std::vector<qrane_mainprogram>(); }
+	if (stmts_to_chunk.empty()) { return std::vector<qrane_program>(); }
 	std::vector<qrane_statementlist> chunked = 
 		qrane_utils::split_into_n_components(stmts_to_chunk, opt->chunk);
 
-	std::vector<qrane_mainprogram> mps; mps.reserve(chunked.size());
+	std::vector<qrane_program> mps; mps.reserve(chunked.size());
 	for (auto& chunk : chunked) {
-		mps.push_back(create_fresh_qrane_mainprogram(chunk));
+		mps.push_back(create_fresh_qrane_program(chunk));
 	}	
 	return mps;
 }
@@ -241,9 +241,9 @@ std::vector<qrane_mainprogram> qrane_host::generate_qrane_mainprogram_list_from_
 /*
 	NOTE: This function increments this->circuit_count
 */
-qrane_mainprogram qrane_host::create_fresh_qrane_mainprogram(
+qrane_program qrane_host::create_fresh_qrane_program(
 	qrane_statementlist statements) {
-	qrane_mainprogram new_mp = qrane_mainprogram(opt, this->circuit_count);
+	qrane_program new_mp = qrane_program(opt, this->circuit_count);
 	new_mp.initialize(statements, main_processor->qreg_size);
 	this->circuit_count += 1;
 	return new_mp;
@@ -294,7 +294,7 @@ int qrane_host::set_fixed_aquma_options(aquma_options* aopt) {
 int qrane_host::process_circuit() {
 	if (opt->chunk > 1) { 
 		auto qops = main_processor->get_statementlist().get_qops();
-		auto mps = generate_qrane_mainprogram_list_from_chunked_statements(qops);
+		auto mps = generate_qrane_program_list_from_chunked_statements(qops);
 		parallel_process(mps); 
 	} 
 	else { sequential_process(); }
@@ -312,15 +312,15 @@ void qrane_host::sequential_process() {
 	main_processor->build_isl_domain_read_write_schedule();
 };
 
-bool comparator_mainprogram(qrane_mainprogram& a, qrane_mainprogram& b) {
+bool comparator_mainprogram(qrane_program& a, qrane_program& b) {
 	return a.get_time_max() < b.get_time_min();
 };
 
-void qrane_host::sort_mainprograms(std::vector<qrane_mainprogram>& mps) {
+void qrane_host::sort_mainprograms(std::vector<qrane_program>& mps) {
 	std::sort(mps.begin(), mps.end(), comparator_mainprogram);
 };
 
-void qrane_host::testing(std::vector<qrane_mainprogram> mps) {
+void qrane_host::testing(std::vector<qrane_program> mps) {
 	// Sort mainprograms so they are in correct order
 	sort_mainprograms(mps);
 
@@ -335,7 +335,7 @@ void qrane_host::testing(std::vector<qrane_mainprogram> mps) {
 	std::vector<qrane_routing_result> results;
 	for (const auto& mp : mps) {
 		std::cout << "Externally routing subcircuit: " << mp.get_id() << " ... ";
-		results.push_back(router.export_to_tket(std::make_shared<qrane_mainprogram>(mp), opt));
+		results.push_back(router.export_to_tket(std::make_shared<qrane_program>(mp), opt));
 		std::cout << "done." << std::endl;
 	}
 	Py_Finalize();
@@ -362,13 +362,13 @@ void qrane_host::testing(std::vector<qrane_mainprogram> mps) {
 	}
 	
 
-	qrane_mainprogram full = qrane_mainprogram(opt);
+	qrane_program full = qrane_program(opt);
 	full.initialize(all, mps[0].qreg_size);
 
 	std::cout << std::boolalpha << router.simulate_circuit_execution(all, results[0].second.first) << std::endl;
 };
 
-void qrane_host::modify_subcircuits(std::vector<std::vector<qrane_mainprogram>::iterator> its) {
+void qrane_host::modify_subcircuits(std::vector<std::vector<qrane_program>::iterator> its) {
 	auto leader = its.begin();
 
 	// For each substr of the given mainprogram
@@ -407,7 +407,7 @@ void qrane_host::modify_subcircuits(std::vector<std::vector<qrane_mainprogram>::
 	}
 };
 
-void qrane_host::parallel_process(std::vector<qrane_mainprogram>& mps) {
+void qrane_host::parallel_process(std::vector<qrane_program>& mps) {
 	unsigned int qreg_size = main_processor->qreg_size;
 	std::vector<t_qrane_scop*> all_scops = std::vector<t_qrane_scop*>(mps.size());
 
@@ -424,7 +424,7 @@ void qrane_host::parallel_process(std::vector<qrane_mainprogram>& mps) {
 		//exit(1);
 
 		for (const auto& entry : this->subcircuit_map) {
-			std::vector<std::vector<qrane_mainprogram>::iterator> temp;
+			std::vector<std::vector<qrane_program>::iterator> temp;
 			for (auto mp = mps.begin(); mp != mps.end(); ++mp) {
 				if (mp->get_id() == entry.first) {
 					temp.push_back(mp);
@@ -546,7 +546,7 @@ bool qrane_host::check_qubit_access_profile_equivalence() {
 		return false;
 	}
 
-	this->check_processor = std::make_shared<qrane_mainprogram>(opt);
+	this->check_processor = std::make_shared<qrane_program>(opt);
 	
 	
 	// Read the qasm through the bison parser to get a new stmtlist
@@ -577,8 +577,8 @@ bool qrane_host::check_qubit_access_profile_equivalence() {
 };
 
 int qrane_host::check_input_output_isomorphism() {
-	this->main_processor = std::make_shared<qrane_mainprogram>(opt);
-	this->check_processor = std::make_shared<qrane_mainprogram>(opt);
+	this->main_processor = std::make_shared<qrane_program>(opt);
+	this->check_processor = std::make_shared<qrane_program>(opt);
 
 	FILE* qasm = fopen(opt->qasm_file, "r");
 	yyin = qasm;

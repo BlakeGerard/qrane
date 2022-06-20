@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unordered_set>
-#include "qrane_routing.hh"
+#include "qrane_routing.hpp"
 #include "Python.h"
 #include "omp.h"
 
@@ -195,7 +195,7 @@ qrane_reg qrane_routing::register_subset_accessed_by_qops(qrane_statementlist qo
 
 /*
 qrane_routing_result qrane_routing::export_to_qiskit(
-    std::shared_ptr<qrane_mainprogram> subcircuit, qrane_options* opt) {
+    std::shared_ptr<qrane_program> subcircuit, qrane_options* opt) {
     std::string qasm_str = subcircuit->get_qasm_string();
     std::string coupling_str = this->coupling.to_python_tuple_list();
     std::string result_path = "./scripts/routed.qasm";
@@ -227,7 +227,7 @@ qrane_routing_result qrane_routing::export_to_qiskit(
     
 	PyRun_SimpleString(strm.str().c_str());
 
-    auto routed = std::make_shared<qrane_mainprogram>(opt);
+    auto routed = std::make_shared<qrane_program>(opt);
     FILE* qasm = fopen(result_path.c_str(), "r");
 	yyin = qasm;
 	yy::qrane_parser main_parser(routed);
@@ -242,7 +242,7 @@ qrane_routing_result qrane_routing::export_to_qiskit(
 */
 
 qrane_routing_result qrane_routing::export_to_tket(
-    std::shared_ptr<qrane_mainprogram> subcircuit, qrane_options* opt) {
+    std::shared_ptr<qrane_program> subcircuit, qrane_options* opt) {
     std::string qasm_str = subcircuit->get_qasm_string();
     std::string coupling_str = this->coupling.to_python_tuple_list();
     std::string result_path = "./scripts/routed.qasm";
@@ -277,7 +277,7 @@ qrane_routing_result qrane_routing::export_to_tket(
 
 	PyRun_SimpleString(strm.str().c_str());
 
-    auto routed = std::make_shared<qrane_mainprogram>(opt);
+    auto routed = std::make_shared<qrane_program>(opt);
     FILE* qasm = fopen(result_path.c_str(), "r");
 	yyin = qasm;
 	yy::qrane_parser main_parser(routed);

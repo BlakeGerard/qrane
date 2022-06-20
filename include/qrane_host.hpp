@@ -11,13 +11,13 @@
 #include "omp.h"
 
 #include "qrane-parser.h"
-#include "qrane_ctr.hh"
-#include "qrane_options.hh"
-#include "qrane_timer.hh"
-#include "qrane_mainprogram.hh"
-#include "qrane_scop.hh"
-#include "qrane_routing.hh"
-#include "aquma.hh"
+#include "qrane_ctr.hpp"
+#include "qrane_options.hpp"
+#include "qrane_timer.hpp"
+#include "qrane_program.hpp"
+#include "qrane_scop.hpp"
+#include "qrane_routing.hpp"
+#include "aquma.hpp"
 
 #define RECURSION_DEPTH_BOUND 4
 #define RECURSION_SUBSTR_SIZE_BOUND 50
@@ -33,22 +33,22 @@ class qrane_host {
 	private:
 		qrane_options* opt;
 		qrane_timer* timer;
-		std::shared_ptr<qrane_mainprogram> main_processor;
-		std::shared_ptr<qrane_mainprogram> check_processor;
+		std::shared_ptr<qrane_program> main_processor;
+		std::shared_ptr<qrane_program> check_processor;
 
 		qrane_subcircuit_map subcircuit_map;
 		circuit_id circuit_count;
 
-		std::vector<qrane_mainprogram> circuit_decomposition(aquma_graph* ag, aquma_circuit* circ);
+		std::vector<qrane_program> circuit_decomposition(aquma_graph* ag, aquma_circuit* circ);
 		qrane_substr_result substr_recursion(aquma_graph* ag);
 
-		std::vector<qrane_mainprogram> generate_qrane_mainprogram_list_from_chunked_statements(
+		std::vector<qrane_program> generate_qrane_program_list_from_chunked_statements(
 			qrane_statementlist stmts_to_chunk);
 
-		qrane_mainprogram create_fresh_qrane_mainprogram(
+		qrane_program create_fresh_qrane_program(
 			qrane_statementlist stmts);
 
-		std::vector<qrane_mainprogram> generate_qrane_mainprogram_substrs(qrane_mainprogram& mp);
+		std::vector<qrane_program> generate_qrane_program_substrs(qrane_program& mp);
 
 		void merge_qubit_access_profiles(qubit_profile_map& a, qubit_profile_map& b);
 
@@ -57,16 +57,16 @@ class qrane_host {
 
 		bool check_isomorphism();
 		bool check_qubit_access_profile_equivalence();
-		void parallel_process(std::vector<qrane_mainprogram>& chunked);
+		void parallel_process(std::vector<qrane_program>& chunked);
 		void sequential_process();
 		std::string help_message();
 
-		void modify_subcircuits(std::vector<std::vector<qrane_mainprogram>::iterator> its);
-		std::vector<qrane_mainprogram> qrane_mainprograms_from_substr_result(qrane_substr_result& result,
+		void modify_subcircuits(std::vector<std::vector<qrane_program>::iterator> its);
+		std::vector<qrane_program> qrane_programs_from_substr_result(qrane_substr_result& result,
 			qrane_statementlist& statements_2Q);
-		qrane_statementlist collect_unpartitioned_statements(std::vector<qrane_mainprogram>& subcircuits);
-		void sort_mainprograms(std::vector<qrane_mainprogram>& mps);
-		void testing(std::vector<qrane_mainprogram> mps);
+		qrane_statementlist collect_unpartitioned_statements(std::vector<qrane_program>& subcircuits);
+		void sort_mainprograms(std::vector<qrane_program>& mps);
+		void testing(std::vector<qrane_program> mps);
 
 	public:
 		qrane_host(qrane_options* opt, qrane_timer* timer);

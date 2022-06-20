@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <queue>
 
-#include "include/qrane_deps.hh"
-#include "qrane_utils.hh"
+#include "include/qrane_deps.hpp"
+#include "qrane_utils.hpp"
 
 	// -------------------------------
 	// Constructors and Initialization

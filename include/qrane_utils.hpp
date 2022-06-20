@@ -7,9 +7,8 @@
 #include <stack>
 #include "isl/mat.h"
 #include "isl/val.h"
-#include "qrane_element.hh"
-#include "qrane_shared.hh"
-#include "aquma.hh"
+#include "qrane_element.hpp"
+#include "qrane_shared.hpp"
 
 namespace qrane {
 

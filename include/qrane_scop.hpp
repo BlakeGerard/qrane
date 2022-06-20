@@ -7,8 +7,7 @@
 #include "isl/union_map.h"
 #include "isl/ast_build.h"
 
-#include "qrane_domain.hh"
-#include "qrane_deps.hh"
+#include "qrane_deps.hpp"
 
 namespace qrane {
 

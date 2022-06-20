@@ -12,7 +12,7 @@
 %define api.token.constructor
 %define api.value.type variant
 %define api.parser.class {qrane_parser}
-%parse-param {std::shared_ptr<qrane_mainprogram> mainprogram}
+%parse-param {std::shared_ptr<qrane_program> mainprogram}
 
 %code requires {
     #ifndef YY_NULLPTR
@@ -25,7 +25,8 @@
     #define _D_(x) 
     #endif
 
-    #include "qrane_general.hh"
+    #include "qrane_general.hpp"
+	using namespace qrane
 }
 
 %code {
@@ -87,22 +88,22 @@
 %token <double>         T_REAL           // real number
 %token <unsigned int>   T_UINTEGER       // non-negative integer
 
-%type <std::shared_ptr<qrane::Program>>                       mainprogram;
-%type <std::vector<std::shared_ptr<qrane::Element>>>         program;
-%type <std::shared_ptr<qrane::Element>>                      statement;
-%type <std::shared_ptr<qrane::Decl>>                           decl;
-%type <std::shared_ptr<qrane::Decl>>                           gatedecl;
-%type <std::shared_ptr<qrane::Reg>>                            reg;
-%type <std::shared_ptr<qrane::Qop>>                            qop;
-%type <std::shared_ptr<qrane::Qop>>                            uop;
-%type <std::vector<std::shared_ptr<qrane::Element>>>         goplist;
-%type <std::vector<std::shared_ptr<qrane::Argument>>>          anylist;
-%type <std::vector<std::shared_ptr<qrane::Argument>>>          idlist;
-%type <std::vector<std::shared_ptr<qrane::Argument>>>          mixedlist;
-%type <std::shared_ptr<qrane::Argument>>                       argument;
-%type <std::vector<std::shared_ptr<qrane::Parameter>>>         explist;
-%type <std::shared_ptr<Parameter>>                             exp;
-%type <unaryop_type>                                           unaryop;
+%type <std::shared_ptr<qrane::Program>>                    mainprogram;
+%type <std::vector<std::shared_ptr<qrane::Element>>>       program;
+%type <std::shared_ptr<qrane::Element>>                    statement;
+%type <std::shared_ptr<qrane::Decl>>                       decl;
+%type <std::shared_ptr<qrane::Decl>>                       gatedecl;
+%type <std::shared_ptr<qrane::Reg>>                        reg;
+%type <std::shared_ptr<qrane::Qop>>                        qop;
+%type <std::shared_ptr<qrane::Qop>>                        uop;
+%type <std::vector<std::shared_ptr<qrane::Element>>>       goplist;
+%type <std::vector<std::shared_ptr<qrane::Argument>>>      anylist;
+%type <std::vector<std::shared_ptr<qrane::Argument>>>      idlist;
+%type <std::vector<std::shared_ptr<qrane::Argument>>>      mixedlist;
+%type <std::shared_ptr<qrane::Argument>>                   argument;
+%type <std::vector<std::shared_ptr<qrane::Parameter>>>     explist;
+%type <std::shared_ptr<Parameter>>                         exp;
+%type <unaryop_type>                                       unaryop;
 
 %left T_ADD
 %left T_SUB
@@ -149,7 +150,7 @@ statement : decl
 decl : gatedecl goplist T_RCUR
      {
         $$ = $1;
-        $$->set_statementlist($2);
+        $$->set_elements($2);
      }                                  
      | gatedecl T_RCUR
      {

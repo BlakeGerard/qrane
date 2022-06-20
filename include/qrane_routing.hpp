@@ -1,6 +1,6 @@
-#include "qrane_mainprogram.hh"
-#include "qrane_graph.hh"
-#include "qrane-parser.h"
+#include "qrane_program.hpp"
+#include "qrane_graph.hpp"
+#include "qrane_parser.h"
 
 #define QISKIT_LAYOUT_METHOD "\"sabre\""
 #define QISKIT_ROUTING_METHOD "\"sabre\""
@@ -13,7 +13,7 @@ extern FILE *yyin;
 typedef std::pair<qrane_reg, qrane_qop> state;
 
 // Circuit, (initial_mapping, final_mapping)
-typedef std::pair<std::shared_ptr<qrane_mainprogram>, 
+typedef std::pair<std::shared_ptr<qrane_program>, 
                   std::pair<qrane_reg, qrane_reg>> qrane_routing_result;
 
 
@@ -24,9 +24,9 @@ class qrane_routing {
 
         qrane_statementlist reconcile_mappings(qrane_reg init, qrane_reg goal);
         qrane_routing_result export_to_qiskit(
-            std::shared_ptr<qrane_mainprogram> subcircuit, qrane_options* opt);
+            std::shared_ptr<qrane_program> subcircuit, qrane_options* opt);
         qrane_routing_result export_to_tket(
-            std::shared_ptr<qrane_mainprogram> subcircuit, qrane_options* opt);
+            std::shared_ptr<qrane_program> subcircuit, qrane_options* opt);
 
         bool simulate_circuit_execution(qrane_statementlist qops, qrane_reg initial_mapping);
         
