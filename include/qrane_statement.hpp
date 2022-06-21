@@ -44,8 +44,8 @@ public:
 	// Construcors
     Statement();
     ~Statement();
-    Statement(isl_ctx* ctx, unsigned int domain_num,
-              const std::map<qop_id, std::shared_ptr<Qop>>& qops_list, std::vector<qop_id>& qop_ids);
+    Statement(isl_ctx* ctx, const std::map<qop_id, std::shared_ptr<Qop>>& all_qops, 
+			  statement_id id, std::vector<qop_id>& selected_qops);
     Statement(Statement const& rhs);
 
     // Operator overloads

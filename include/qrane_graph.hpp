@@ -111,6 +111,9 @@ Graph<T>::Graph(std::vector<T>& vertex_set, bool directed) {
     }
 }
 
+/*
+    Constructor with initializer list.
+*/
 template <typename T> 
 Graph<T>::Graph(std::initializer_list<T>& vertex_set, bool directed) {
     directed_ = directed;

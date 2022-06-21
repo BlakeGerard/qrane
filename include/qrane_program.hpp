@@ -86,111 +86,27 @@ enum frame_element {
 typedef std::stack<std::tuple<qop_id, int, lex_type, std::unordered_map<qop_id, bool>, std::vector<qop_id>>> frame_stack;
 typedef std::unordered_map<unsigned int, unsigned int> substr_new_id_map;
 
-class qrane_program {
+namespace {
 
-  private:
-	const qrane_options* opt;
-    qrane_statementlist statements;
-	qrane_qop_map qops;
-    qrane_deps deps;
-	std::vector<qrane_statementlist> substrs;
+class Program {
 
-    unsigned int num_qops;                            // Number of qops in the file
-	unsigned int num_points;
-	unsigned int num_qubit_exprs;
-	bool substr_repetition;
-	circuit_id id;
-	
-	std::vector<qrane_domain> original_domains;
-    std::vector<qrane_domain> unchanged_domains;
+public:
+	Program(isl_ctx* ctx, const qrane_options* opt, program_id id);
+    ~Program();
 
+	// Drivers
+	void initialize(std::vector<std::shared_ptr<qrane::Element>> elements);
+	void delinearize();
 
-	domain_map_t domain_map;
+	// Delinearization results
+	output_scop get_output_scop();
 
-    // ISL Specific Objects
-    isl_ctx *ctx;                                     // context for this program
-    isl_printer* printer;                             // printer for displaying objects
-    t_qrane_scop* scop;
-    __isl_give isl_union_set* initialize_domain();
-	__isl_give isl_union_map* initialize_read_relations();
-	__isl_give isl_union_map* initialize_write_relations();
-	__isl_give isl_union_map* initialize_call_relations();
-	__isl_give isl_union_map* initialize_recovered_schedule();
-
-    __isl_give isl_set* build_ND_domain_from_sets(std::vector<qrane_domain>& mergees);
-    __isl_give isl_mat* compute_access_relations(isl_mat* mat);
-	__isl_give isl_mat* concat_matrices_dimwise(std::vector<qrane_domain>& mergees);
-	void attempt_merge(std::vector<qrane_domain>& resultant, std::vector<qrane_domain> domains);
-    __isl_keep bool check_consistency(isl_mat* mat, std::size_t dim, std::size_t args);
-	bool integral_matrix(isl_mat* mat, std::size_t dim, std::size_t args);
-	__isl_give isl_mat* append_column_with_val(__isl_take isl_mat* mat, int val);
-	
-	std::list<qrane_domain> greedy_nd_domain_selection(std::list<qrane_domain> candidates);
-
-	// Circuit processing
-	void convert_vector_form_to_plinko_grid();
-	std::vector<qop_id> get_next_grid_row(qrane_grid& P, std::unordered_set<qop_id>& grouped);
-	qrane_grid generate_circuit_grid();
-
-	void process_ddg();
-	void process_circuit();
-	std::vector<qop_id> get_ones_from_level(std::vector<qop_id>& level);
-	std::vector<qop_id> get_twos_from_level(std::vector<qop_id>& level);
-	std::vector<qop_id> find_longest_ones_path(std::vector<qop_id>& ones, std::size_t qreg_size);
-	std::vector<qop_id> find_longest_twos_path(std::vector<qop_id>& twos, std::size_t qreg_size);
-	std::vector<qop_id> get_most_frequent_gate_type(const std::vector<qop_id>& level);
-	std::vector<qop_id> one_qubit_clearing_policy(std::vector<qop_id>& level);
-	std::vector<qop_id> look_ahead_policy(std::vector<qop_id>& level, unsigned int depth);
-	std::array<unsigned int, 2> dependence_graph_lookahead(std::vector<qop_id>& path, unsigned int depth);
-
-	// Data structure interaction during circuit processing
-	stride_graph generate_stride_graph(const std::vector<qop_id>& level, unsigned int qreg_size, unsigned int args);
-	ray_graph generate_ray_graph(const std::vector<qop_id>& level, unsigned int qreg_size);
-	std::vector<qop_id> longest_path_search(stride_graph& G, std::vector<qop_id> ordering);
-	std::vector<qop_id> longest_valid_path_search(stride_graph G, std::vector<qop_id> ordering);
-	std::vector<qop_id> get_longest_valid_path(std::vector<std::vector<qop_id>> paths);
-
-	void combine_domains();
-	bool domains_time_space_subset(const qrane_domain& i, const qrane_domain& j);
-	bool domains_have_different_gate_type(unsigned int lhs, unsigned int rhs);
-	bool domains_lex_mismatch(unsigned int lhs, unsigned int rhs);
-	lex_type domains_lex_order(unsigned int i, unsigned int j);
-	domain_map_t greedy_domain_selection(access_graph& G, unsigned int current_dim);
-	qrane_domain merge_domains(const std::vector<unsigned int>& domains, lex_type lex, unsigned int current_dim);
-	__isl_give isl_set* combine_isl_local_domains(const std::vector<unsigned int>& domains, unsigned int current_dim);
-	__isl_give isl_mat* combine_access_matrices(const std::vector<unsigned int>& domains, unsigned int current_dim);
-	bool inconsistent_or_rational_matrix(const std::vector<unsigned int>& domains, unsigned int current_dim);
-	bool extended_domain_inconsistent(unsigned int new_dom, std::vector<unsigned int> path, unsigned int current_dim);
-	bool extended_domain_inconsistent(unsigned int lhs, unsigned int rhs, unsigned int current_dim);
-	domain_map_t greedy_domain_selection(candidate_list candidates, unsigned int current_dim);
-
-	void create_fresh_domain(isl_ctx* ctx, std::vector<qop_id>& path);
-
-    // Parsing-specific functions
-    void parse_1D_domains();
-    void parse_ND_domains();
-	void parse_ND_domains_cover(unsigned int current_dim); 
-	void parse_domains_divide_and_conquer();
-	
-    void gate_map_store_domain(qrane_domain dom);
-	void add_dependence_vertex(qrane_qop* qop);
-	__isl_give isl_union_map* initialize_arguments_map();
-   	std::string build_union_read_str();
-    std::string build_union_write_str();
-	std::string build_union_call_str();
-
-	void sort_domains(std::vector<qrane_domain>& domains);
-	bool time_constrained_lex_order(const qrane_domain& a, const qrane_domain& b);
-	bool domain_num_order(const qrane_domain& a, const qrane_domain& b);
-	std::string print_domain_size_histogram(std::vector<qrane_domain> dom_list);
-
-  public:
-  	qrane_program();
-    qrane_program(const qrane_options* opt);
-	qrane_program(const qrane_options* opt, circuit_id subcircuit_num);
-    ~qrane_program();
-	bool qreg_seen;
-	std::size_t qreg_size;
+	// Standard getters
+	program_id id();
+	std::size_t num_qops();
+	std::size_t num_qubits();
+	std::size_t num_elements();
+	std::size_t num_statements();
 
 	unsigned int get_time_min();
 	unsigned int get_time_max();
@@ -266,6 +182,128 @@ class qrane_program {
 	void print_membership_graph();
 
 	std::string get_qasm_string(std::vector<qop_id> ordering);
-};
 
+  private:
+    isl_ctx* ctx_;                                     			// Pointer to isl context managed by Host
+	const qrane_options* opt_;									// Pointer to options managed by Host
+
+	program_id id_;												// Unique program id
+	std::size_t num_qops_;										// Count the number of qops.
+	std::vector<std::shared_ptr<Element>> elements_; 			// List of program (parsed) elements
+	std::map<qop_id, std::shared_ptr<Qop>> qops_;				// Qops
+	std::map<statement_id, Statement> statements_;				// Delinearized statements
+	DependenceProfile dependence_profile_;						// Track dependencies between qops
+	full_scop* full_scop_;										// full scop generated by the Program and given to the Host
+
+
+	// Internal delinearization drivers
+	void extract_qops();
+	void dependence_analysis();
+	void one_dimensional_scop_reconstruction(
+		std::function<std::vector<qop_id>(
+			const std::vector<qop_id>&,
+			const std::map<qop_id, std::shared_ptr<Qop>>&)> selection_policy);
+	void n_dimensional_scop_reconstruction(
+		std::function<std::vector<statement_id>(const std::vector<statement_id>&)> selection_policy);
+
+	// One-dimensional scop delinearization helpers
+	void create_and_store_statement();
+
+	__isl_give isl_union_set* generate_iteration_domain();
+	__isl_give isl_union_map* generate_read_relations();
+	__isl_give isl_union_map* generate_write_relations();
+	__isl_give isl_union_map* generate_implicit_schedule();
+	__isl_give isl_union_map* generate_arguments_map();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ////////// OLD ///////////
+    
+    __isl_give isl_union_set* initialize_domain();
+	__isl_give isl_union_map* initialize_read_relations();
+	__isl_give isl_union_map* initialize_write_relations();
+	__isl_give isl_union_map* initialize_call_relations();
+	__isl_give isl_union_map* initialize_recovered_schedule();
+
+    __isl_give isl_set* build_ND_domain_from_sets(std::vector<qrane_domain>& mergees);
+    __isl_give isl_mat* compute_access_relations(isl_mat* mat);
+	__isl_give isl_mat* concat_matrices_dimwise(std::vector<qrane_domain>& mergees);
+	void attempt_merge(std::vector<qrane_domain>& resultant, std::vector<qrane_domain> domains);
+    __isl_keep bool check_consistency(isl_mat* mat, std::size_t dim, std::size_t args);
+	bool integral_matrix(isl_mat* mat, std::size_t dim, std::size_t args);
+	__isl_give isl_mat* append_column_with_val(__isl_take isl_mat* mat, int val);
+	
+	std::list<qrane_domain> greedy_nd_domain_selection(std::list<qrane_domain> candidates);
+
+	// Circuit processing
+	void convert_vector_form_to_plinko_grid();
+	std::vector<qop_id> get_next_grid_row(qrane_grid& P, std::unordered_set<qop_id>& grouped);
+	qrane_grid generate_circuit_grid();
+
+	void process_ddg();
+	void process_circuit();
+	std::vector<qop_id> get_ones_from_level(std::vector<qop_id>& level);
+	std::vector<qop_id> get_twos_from_level(std::vector<qop_id>& level);
+	std::vector<qop_id> find_longest_ones_path(std::vector<qop_id>& ones, std::size_t qreg_size);
+	std::vector<qop_id> find_longest_twos_path(std::vector<qop_id>& twos, std::size_t qreg_size);
+	std::vector<qop_id> get_most_frequent_gate_type(const std::vector<qop_id>& level);
+	std::vector<qop_id> one_qubit_clearing_policy(std::vector<qop_id>& level);
+	std::vector<qop_id> look_ahead_policy(std::vector<qop_id>& level, unsigned int depth);
+	std::array<unsigned int, 2> dependence_graph_lookahead(std::vector<qop_id>& path, unsigned int depth);
+
+	// Data structure interaction during circuit processing
+	stride_graph generate_stride_graph(const std::vector<qop_id>& level, unsigned int qreg_size, unsigned int args);
+	ray_graph generate_ray_graph(const std::vector<qop_id>& level, unsigned int qreg_size);
+	std::vector<qop_id> longest_path_search(stride_graph& G, std::vector<qop_id> ordering);
+	std::vector<qop_id> longest_valid_path_search(stride_graph G, std::vector<qop_id> ordering);
+	std::vector<qop_id> get_longest_valid_path(std::vector<std::vector<qop_id>> paths);
+
+	void combine_domains();
+	bool domains_time_space_subset(const qrane_domain& i, const qrane_domain& j);
+	bool domains_have_different_gate_type(unsigned int lhs, unsigned int rhs);
+	bool domains_lex_mismatch(unsigned int lhs, unsigned int rhs);
+	lex_type domains_lex_order(unsigned int i, unsigned int j);
+	domain_map_t greedy_domain_selection(access_graph& G, unsigned int current_dim);
+	qrane_domain merge_domains(const std::vector<unsigned int>& domains, lex_type lex, unsigned int current_dim);
+	__isl_give isl_set* combine_isl_local_domains(const std::vector<unsigned int>& domains, unsigned int current_dim);
+	__isl_give isl_mat* combine_access_matrices(const std::vector<unsigned int>& domains, unsigned int current_dim);
+	bool inconsistent_or_rational_matrix(const std::vector<unsigned int>& domains, unsigned int current_dim);
+	bool extended_domain_inconsistent(unsigned int new_dom, std::vector<unsigned int> path, unsigned int current_dim);
+	bool extended_domain_inconsistent(unsigned int lhs, unsigned int rhs, unsigned int current_dim);
+	domain_map_t greedy_domain_selection(candidate_list candidates, unsigned int current_dim);
+
+	void create_fresh_domain(isl_ctx* ctx, std::vector<qop_id>& path);
+
+    // Parsing-specific functions
+    void parse_1D_domains();
+    void parse_ND_domains();
+	void parse_ND_domains_cover(unsigned int current_dim); 
+	void parse_domains_divide_and_conquer();
+	
+    void gate_map_store_domain(qrane_domain dom);
+	void add_dependence_vertex(qrane_qop* qop);
+	__isl_give isl_union_map* initialize_arguments_map();
+   	std::string build_union_read_str();
+    std::string build_union_write_str();
+	std::string build_union_call_str();
+
+	void sort_domains(std::vector<qrane_domain>& domains);
+	bool time_constrained_lex_order(const qrane_domain& a, const qrane_domain& b);
+	bool domain_num_order(const qrane_domain& a, const qrane_domain& b);
+	std::string print_domain_size_histogram(std::vector<qrane_domain> dom_list);
+
+  
+};
+}
 #endif

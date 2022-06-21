@@ -28,63 +28,67 @@ typedef std::pair<std::vector<int>, std::vector<unsigned int>> qrane_substr_resu
 typedef std::vector<qrane_substr_result> qrane_circuit_decomp;
 typedef std::map<circuit_id, std::vector<circuit_id>> qrane_subcircuit_map;
 
-class qrane_host {
+namespace qrane {
 
-	private:
-		qrane_options* opt;
-		qrane_timer* timer;
-		std::shared_ptr<qrane_program> main_processor;
-		std::shared_ptr<qrane_program> check_processor;
+class Host {
 
-		qrane_subcircuit_map subcircuit_map;
-		circuit_id circuit_count;
+public:
+	Host(qrane_options* opt, global_timer* timer);
 
-		std::vector<qrane_program> circuit_decomposition(aquma_graph* ag, aquma_circuit* circ);
-		qrane_substr_result substr_recursion(aquma_graph* ag);
+	// These are the functions to fully drive qrane's functionality.
+	int parse_options(int argc, char* argv[]);
+	int check_input_output_isomorphism();
 
-		std::vector<qrane_program> generate_qrane_program_list_from_chunked_statements(
-			qrane_statementlist stmts_to_chunk);
+	int parse_circuit();
+	int process_circuit();
+	int run_checks();
+	void print_scop();
+	void print_stats();
+	int output_to_files();
+	qrane_output_scop* get_scop();
 
-		qrane_program create_fresh_qrane_program(
-			qrane_statementlist stmts);
+	// Incorporating AQUMA for recursive decomposition
+	int process_circuit_via_substring_decomposition();
+	
+private:
+	qrane_options* opt;
+	global_timer* timer;
+	std::shared_ptr<qrane_program> main_processor;
+	std::shared_ptr<qrane_program> check_processor;
 
-		std::vector<qrane_program> generate_qrane_program_substrs(qrane_program& mp);
+	qrane_subcircuit_map subcircuit_map;
+	circuit_id circuit_count;
 
-		void merge_qubit_access_profiles(qubit_profile_map& a, qubit_profile_map& b);
+	std::vector<qrane_program> circuit_decomposition(aquma_graph* ag, aquma_circuit* circ);
+	qrane_substr_result substr_recursion(aquma_graph* ag);
 
-		int set_fixed_aquma_options(aquma_options* aopt);
-		aquma_circuit* read_aquma_circuit_from_qasm();
+	std::vector<qrane_program> generate_qrane_program_list_from_chunked_statements(
+		qrane_statementlist stmts_to_chunk);
 
-		bool check_isomorphism();
-		bool check_qubit_access_profile_equivalence();
-		void parallel_process(std::vector<qrane_program>& chunked);
-		void sequential_process();
-		std::string help_message();
+	qrane_program create_fresh_qrane_program(
+		qrane_statementlist stmts);
 
-		void modify_subcircuits(std::vector<std::vector<qrane_program>::iterator> its);
-		std::vector<qrane_program> qrane_programs_from_substr_result(qrane_substr_result& result,
-			qrane_statementlist& statements_2Q);
-		qrane_statementlist collect_unpartitioned_statements(std::vector<qrane_program>& subcircuits);
-		void sort_mainprograms(std::vector<qrane_program>& mps);
-		void testing(std::vector<qrane_program> mps);
+	std::vector<qrane_program> generate_qrane_program_substrs(qrane_program& mp);
 
-	public:
-		qrane_host(qrane_options* opt, qrane_timer* timer);
+	void merge_qubit_access_profiles(qubit_profile_map& a, qubit_profile_map& b);
 
-		// These are the functions to fully drive qrane's functionality.
-		int parse_options(int argc, char* argv[]);
-		int check_input_output_isomorphism();
+	int set_fixed_aquma_options(aquma_options* aopt);
+	aquma_circuit* read_aquma_circuit_from_qasm();
 
-		int parse_circuit();
-		int process_circuit();
-		int run_checks();
-		void print_scop();
-		void print_stats();
-		int output_to_files();
-		qrane_output_scop* get_scop();
+	bool check_isomorphism();
+	bool check_qubit_access_profile_equivalence();
+	void parallel_process(std::vector<qrane_program>& chunked);
+	void sequential_process();
+	std::string help_message();
 
-		// Incorporating AQUMA for recursive decomposition
-		int process_circuit_via_substring_decomposition();
+	void modify_subcircuits(std::vector<std::vector<qrane_program>::iterator> its);
+	std::vector<qrane_program> qrane_programs_from_substr_result(qrane_substr_result& result,
+		qrane_statementlist& statements_2Q);
+	qrane_statementlist collect_unpartitioned_statements(std::vector<qrane_program>& subcircuits);
+	void sort_mainprograms(std::vector<qrane_program>& mps);
+	void testing(std::vector<qrane_program> mps);
+
+
 };
-
+}
 #endif
