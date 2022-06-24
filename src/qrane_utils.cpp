@@ -6,7 +6,97 @@
 #include "qrane_utils.hpp"
 
 namespace qrane {
-	namespace utils {
+
+namespace Utils {
+
+std::vector<qop_id> oned_default_selection_policy(
+	const std::vector<qop_id>& frontier,	
+	const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+	auto one_qubit_qops = get_one_qubit_qops_from_frontier(frontier, all_qops);
+	auto two_qubit_qops = get_two_qubit_qops_from_frontier(frontier, all_qops);
+	if (!one_qubit_qops.empty()) {
+		auto qop_type = most_common_qop_type(one_qubit_qops, all_qops);
+		return find_longest_ones_path(ones, gate_type);
+	} else {
+		return find_longest_twos_path(twos, qreg_size);
+	}
+}
+
+// Anonymous namespace private to Utils namespace.
+namespace {
+
+std::vector<qop_id> get_one_qubit_qops_from_frontier(
+	const std::vector<qop_id>& frontier,	
+	const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+	std::vector<qop_id> one_qubit_qops;
+	for (const auto& id : frontier) {
+		if (all_qops.at(id)->is_1Q_gate()) {
+			one_qubit_qops.push_back(id);
+		}
+	}
+	return one_qubit_qops;
+};
+
+std::vector<qop_id> get_two_qubit_qops_from_frontier(
+	const std::vector<qop_id>& frontier,	
+	const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+	std::vector<qop_id> one_qubit_qops;
+	for (const auto& id : frontier) {
+		if (all_qops.at(id)->is_1Q_gate()) {
+			one_qubit_qops.push_back(id);
+		}
+	}
+	return one_qubit_qops;
+};
+
+std::string most_common_qop_type(
+	const std::vector<qop_id>& subset,	
+	const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+	std::map<std::string, unsigned int> counts;
+
+	// Count occurences of each gate type
+	for (const auto& id : subset) {
+		auto name = all_qops.at(id)->name();
+		if (!counts.count(name)) {
+			counts[name] = 0;
+		}
+		counts[name] += 1;
+	}
+
+	// Find the maximum count
+	auto max = std::max_element(counts.begin(), counts.end(), 
+		[](const std::pair<std::string, unsigned int>& a, 
+		   const std::pair<std::string, unsigned int>& b) {
+        	return a.second < b.second; 
+		}
+	);
+	return max->first;
+};
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////// OLD /////////
 
 		template<typename A, typename B>
 		std::initializer_list<A> get_map_keys_as_initializer_list(const std::map<A, B>& m) {

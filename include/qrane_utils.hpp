@@ -7,11 +7,25 @@
 #include <stack>
 #include "isl/mat.h"
 #include "isl/val.h"
-#include "qrane_element.hpp"
+
+#include "qrane_qop.hpp"
 #include "qrane_shared.hpp"
 
 namespace qrane {
+
 namespace Utils {
+
+std::vector<qop_id> oned_default_selection_policy(
+	const std::vector<qop_id>& frontier,	
+	const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+	return;
+}
+
+
+
+
+
+
 
 
 
@@ -49,6 +63,7 @@ __isl_give isl_mat* get_zero_matrix(isl_ctx* ctx, isl_size rows, isl_size cols);
 std::vector<int> find_zero_cols(__isl_keep isl_mat* mat, int col_lb, int col_ub);
 __isl_give isl_mat* drop_zero_cols(__isl_take isl_mat* mat, std::vector<int> cols_to_drop);
 void print_isl_mat(isl_mat* mat);
+
 }
 }
 
