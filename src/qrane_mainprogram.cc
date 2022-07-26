@@ -601,7 +601,7 @@ std::vector<unsigned int> qrane_mainprogram::longest_valid_path_search(stride_gr
 					// Compute the stride and lexicographic order, then build the new frame
 					if (std::get<STRIDE>(curr_frame) == 0) {
 						int diff = i->first - std::get<PATH>(curr_frame).back();
-						lex_type lex;
+						lex_type lex = LEX_POS;
 						if (diff > 0) { lex = LEX_POS; }
 						else if (diff < 0) { lex = LEX_NEG; }
 						auto new_frame = std::make_tuple(i->first, i->second, lex,
@@ -612,7 +612,7 @@ std::vector<unsigned int> qrane_mainprogram::longest_valid_path_search(stride_gr
 					// Otherwise, we only push a new frame when the path stride (weight) equals the established stride
 					} else {
 						int diff = i->first - std::get<PATH>(curr_frame).back();
-						lex_type lex;
+						lex_type lex = LEX_POS;
 						if (diff > 0) { lex = LEX_POS; }
 						else if (diff < 0) { lex = LEX_NEG; }
 

@@ -7,7 +7,7 @@
 #include "isl/mat.h"
 #include "isl/val.h"
 #include "qrane_shared.hh"
-#include "aquma.hh"
+//#include "aquma.hh"
 
 namespace qrane_utils {
 	void splice_stmtlist(std::vector<qrane_statement*>& stmts, 

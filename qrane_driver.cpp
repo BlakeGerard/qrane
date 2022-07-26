@@ -108,7 +108,7 @@ int main(int argc, char* argv[]) {
 	std::cout << "Processing circuit\n" << std::endl;
 	// Run qrane's reconstruction process
 	if (!opt.substr) { res = host.process_circuit(); }
-	else { res = host.process_circuit_via_substring_decomposition(); }
+	//else { res = host.process_circuit_via_substring_decomposition(); }
 	if (res) {
 		std::cout << "Something went wrong during reconstruction. Exiting.\n";
 		qrane_options_free(&opt);

@@ -33,6 +33,7 @@ int qrane_host::parse_circuit() {
 	// Aquma + Qrane Reconstruction
 	// ----------------------------
 
+/*
 int qrane_host::process_circuit_via_substring_decomposition() {
 	aquma_options aopt;
 	int res = set_fixed_aquma_options(&aopt);
@@ -155,6 +156,7 @@ qrane_substr_info qrane_host::substr_recursion(aquma_graph* ag) {
 	}
 	return qrane_substr_info(prev, prev_locs);
 };
+*/
 
 std::vector<qrane_mainprogram> qrane_host::generate_qrane_mainprogram_list_from_chunked_statements(
 	std::vector<qrane_statement*> stmts_to_chunk, unsigned int subcircuit_count) {
@@ -170,6 +172,7 @@ std::vector<qrane_mainprogram> qrane_host::generate_qrane_mainprogram_list_from_
 	return mps;
 }
 
+/*
 qrane_mainprogram qrane_host::generate_qrane_mainprogram_from_aquma_substr(
 	qrane_substr_info& info, std::vector<qrane_statement*>& stmts_2Q, unsigned int subcircuit_num) {
 	std::vector<qrane_statement*>::const_iterator first = stmts_2Q.begin() + info.second[0];
@@ -177,6 +180,7 @@ qrane_mainprogram qrane_host::generate_qrane_mainprogram_from_aquma_substr(
 	std::vector<qrane_statement*> stmts(first, last);
 	return create_fresh_qrane_mainprogram(stmts, subcircuit_num);
 };
+*/
 
 qrane_mainprogram qrane_host::create_fresh_qrane_mainprogram(
 	std::vector<qrane_statement*> stmts, unsigned int subcircuit_num) {
@@ -299,9 +303,7 @@ substr_new_id_map qrane_host::create_old_to_new_qop_map(qrane_mainprogram& mp, q
 	}
 	return ret;
 }
-
-
-
+/*
 aquma_circuit* qrane_host::read_aquma_circuit_from_qasm() {
 	int retval;
     char cmdstr[1000];
@@ -322,7 +324,9 @@ aquma_circuit* qrane_host::read_aquma_circuit_from_qasm() {
     if (ff) fclose (ff);
 	return circ;
 }
+*/
 
+/*
 int qrane_host::set_fixed_aquma_options(aquma_options* aopt) {
 	if (this->opt->device_file == NULL) {
 		std::cout << "You must provide a device_file to utilize Aquma facilities.\n";
@@ -339,7 +343,7 @@ int qrane_host::set_fixed_aquma_options(aquma_options* aopt) {
 	aopt->debug = 0;
 	return 0;
 };
-
+*/
 
 	// ----------------------------
 	// Default Qrane Reconstruction

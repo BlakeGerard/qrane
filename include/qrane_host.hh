@@ -11,13 +11,13 @@
 #include "getopt.h"
 #include "omp.h"
 
-#include "qrane-parser.h"
+#include "qrane_parser.h"
 #include "qrane_ctr.hh"
 #include "qrane_options.hh"
 #include "qrane_timer.hh"
 #include "qrane_mainprogram.hh"
 #include "qrane_scop.hh"
-#include "aquma.hh"
+//#include "aquma.hh"
 
 #define RECURSION_DEPTH_BOUND 4
 #define RECURSION_SUBSTR_SIZE_BOUND 50
@@ -41,13 +41,13 @@ class qrane_host {
 		qrane_mainprogram* main_processor;
 		qrane_mainprogram* check_processor;
 
-		std::vector<qrane_mainprogram> circuit_decomposition(aquma_graph* ag, aquma_circuit* circ);
-		qrane_substr_info substr_recursion(aquma_graph* ag);
+		//std::vector<qrane_mainprogram> circuit_decomposition(aquma_graph* ag, aquma_circuit* circ);
+		//qrane_substr_info substr_recursion(aquma_graph* ag);
 
 		std::vector<qrane_mainprogram> generate_qrane_mainprogram_list_from_chunked_statements(
 			std::vector<qrane_statement*> stmts_to_chunk, unsigned int subcircuit_count);
-		qrane_mainprogram generate_qrane_mainprogram_from_aquma_substr(qrane_substr_info& info, 
-			std::vector<qrane_statement*>& stmts, unsigned int subcircuit_num);
+		//qrane_mainprogram generate_qrane_mainprogram_from_aquma_substr(qrane_substr_info& info, 
+		//	std::vector<qrane_statement*>& stmts, unsigned int subcircuit_num);
 		qrane_mainprogram create_fresh_qrane_mainprogram(
 			std::vector<qrane_statement*> stmts, unsigned int subcircuit_num);
 
@@ -59,8 +59,8 @@ class qrane_host {
 		substr_new_id_map create_old_to_new_qop_map(qrane_mainprogram& mp, qrane_stmtlist* stmts);
 		void merge_qubit_access_profiles(qubit_profile_map& a, qubit_profile_map& b);
 
-		int set_fixed_aquma_options(aquma_options* aopt);
-		aquma_circuit* read_aquma_circuit_from_qasm();
+		//int set_fixed_aquma_options(aquma_options* aopt);
+		//aquma_circuit* read_aquma_circuit_from_qasm();
 
 		bool check_isomorphism();
 		bool check_qubit_access_profile_equivalence();
@@ -85,7 +85,7 @@ class qrane_host {
 		qrane_output_scop* get_scop();
 
 		// Incorporating AQUMA for recursive decomposition
-		int process_circuit_via_substring_decomposition();
+		//int process_circuit_via_substring_decomposition();
 };
 
 #endif

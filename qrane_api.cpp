@@ -115,7 +115,7 @@ qrane_output_scop* qrane_driver(int argc, char* argv[],
 	}
 
 	if (!opt->substr) { res = host.process_circuit(); }
-	else { res = host.process_circuit_via_substring_decomposition(); }
+	//else { res = host.process_circuit_via_substring_decomposition(); }
 	if (res) {
 		std::cout << "Something went wrong during reconstruction. Returning empty scop.\n";
 		return scop;

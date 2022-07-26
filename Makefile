@@ -23,13 +23,15 @@ BISON_BIN = $(BISON)/bin/bison
 # Python
 PYTHON_HOME = $(QRANE_CONDA_BASE)/lib
 PYTHON_INCL = $(QRANE_CONDA_BASE)/include/python3.9
-PYTHON_HEAD = /usr/include/python3.9/
+
+#PYTHON_HOME = /usr/lib/python3.10/config-3.10-x86_64-linux-gnu
+#PYTHON_INCL = /usr/include/python3.10
 
 # Aquma
 AQUMA_INCL = $(AQUMA_HOME)
 
-INCL = -I. -I./include -I$(AQUMA_INCL) -I$(PYTHON_HEAD) -I$(PYTHON_INCL) -I$(PYTHON_HOME) -I$(BARVINOK_INCL) -I$(NTL_INCL)
-LIBS = -L. -L$(PYTHON_HOME) -lpython3.9 -L$(BARVINOK_LIBS) -L$(NTL_LIBS)  -lstdc++ -lbarvinok -lisl -lpolylibgmp -lntl -L$(BISON_LIBS) -ly -lgmp -ldl -lutil 
+INCL = -I. -I./include -I$(AQUMA_INCL) -I$(PYTHON_INCL) -I$(PYTHON_HOME) -I$(BARVINOK_INCL) -I$(NTL_INCL)
+LIBS = -L. -L$(PYTHON_HOME) -lpython3.10 -L$(BARVINOK_LIBS) -L$(NTL_LIBS)  -lstdc++ -lbarvinok -lisl -lpolylibgmp -lntl -L$(BISON_LIBS) -ly -lgmp -ldl -lutil 
 
 SRCS = qrane_driver.cpp $(SCANNER).c $(GRAMMAR).c ./src/*
 LIBSRCS = qrane_api.cpp $(SCANNER).c $(GRAMMAR).c ./src/*
