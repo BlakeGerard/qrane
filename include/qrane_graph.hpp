@@ -27,6 +27,12 @@ using adjacency_t = std::vector<T>;
 template <typename T>
 using graph_t = std::map<T, adjacency_t<T>>;
 
+template <typename T, typename W>
+using vertex_properties_t = std::map<T, W>;
+
+template <typename T, typename W>
+using edge_properties_t = std::map<std::pair<T, T>, W>;
+
 template<typename T>
 class Graph {
 
@@ -285,7 +291,7 @@ unsigned int Graph<T>::num_edges() const {
 }
 
 template <typename T>
-bool Graph<T>::contains_vertex(T v) const {
+inline bool Graph<T>::contains_vertex(T v) const {
     return G_.count(v);
 }
 
@@ -304,7 +310,7 @@ bool Graph<T>::contains_edge(T v, T u) const {
     Check if the graph is empty.
 */
 template <typename T>
-bool Graph<T>::empty() const {
+inline bool Graph<T>::empty() const {
     return G_.empty();
 }
 
@@ -378,7 +384,7 @@ std::vector<T> Graph<T>::topological_ordering() const {
             
         for (const auto& m : H.vertex_adj(n)) {
             H.remove_edge(n, m);
-            if (H.vertex_in_degree_(m) == 0) {
+            if (H.in_degree_(m) == 0) {
                 S.insert(m);
             }
         }
@@ -409,7 +415,7 @@ std::map<T, unsigned int> Graph<T>::initialize_distance_map(T src) const {
 }
 
 /*
-	Longest path length search.
+
 */
 template <typename T>
 unsigned int Graph<T>::longest_path() const {
