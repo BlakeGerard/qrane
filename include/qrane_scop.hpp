@@ -6,14 +6,6 @@
 #include "isl/ast_build.h"
 #include "isl/union_map.h"
 #include "isl/union_set.h"
-#include "qrane_deps.hpp" #ifndef QRANE_SCOP_H
-#define QRANE_SCOP_H
-
-#include <vector>
-
-#include "isl/ast_build.h"
-#include "isl/union_map.h"
-#include "isl/union_set.h"
 #include "qrane_deps.hpp"
 
 namespace qrane {

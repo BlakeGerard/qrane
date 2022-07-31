@@ -102,18 +102,16 @@ class Program {
   // Internal delinearization drivers
   void extract_qops();
   void dependence_analysis();
-  void one_dimensional_scop_reconstruction(
-      std::function<std::vector<qop_id>()> selection_policy);
-  void n_dimensional_scop_reconstruction(
-      std::function<std::vector<statement_id>()> selection_policy);
+  void one_dimensional_scop_reconstruction();
+  void n_dimensional_scop_reconstruction();
   void build_output_scop();
 
   // One-dimensional scop delinearization helpers
   void create_and_store_statement();
 
   // Policy entry points
-  std::vector<qop_id> default_one_dimensional_selection_policy();
-  std::vector<statement_id> default_n_dimensional_selection_policy();
+  std::vector<qop_id> one_dimensional_selection_policy();
+  std::vector<statement_id> n_dimensional_selection_policy();
 };
 }  // namespace qrane
 #endif
