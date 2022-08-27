@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace qrane {
 
 enum decl_variant_e {
-	GATE
+	GATEDECL
 };
 
 class Decl : public Element {

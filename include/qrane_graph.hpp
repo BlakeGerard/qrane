@@ -255,7 +255,7 @@ adjacency_t<T> Graph<T>::get_neighbors(T v) const {
 */
 template <typename T>
 adjacency_t<T> Graph<T>::get_frontier() const {
-	auto frontier = std::adjacency_t<T>();
+	auto frontier = adjacency_t<T>();
 	if (G_.empty()) {
 		return frontier;
 	}
@@ -391,8 +391,8 @@ std::vector<T> Graph<T>::topological_ordering() const {
 	}
 
     if (H.num_edges()) {
-        std::cout << "Error in Graph::topological_ordering:" << std::endl;
-				  << "\t Graph has a cycle. Returning empty vector." << std::endl;
+        std::cout << "Error in Graph::topological_ordering:" << std::endl
+		  << "\t Graph has a cycle. Returning empty vector." << std::endl;
         return std::vector<T>();
     } else {
         return L;

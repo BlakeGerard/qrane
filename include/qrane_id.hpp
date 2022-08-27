@@ -58,7 +58,7 @@ private:
 	std::mutex mtx_;
 
     IdMachine() {
-		program_id_ctr_;
+		program_id_ctr_ = 0;
 		statement_id_ctr_ = 0;
 		qop_id_ctr_ = 0;
     	qubit_id_ctr_ = 0;

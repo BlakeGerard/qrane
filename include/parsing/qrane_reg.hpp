@@ -57,10 +57,10 @@ public:
 	void insert(qubit_id physical, qubit_id logical);
 	void permute_register(qubit_id lhs, qubit_id rhs);
 
-	reg_variant_t::iterator begin();
-	reg_variant_t::iterator end();
-	reg_variant_t::const_iterator begin() const;
-	reg_variant_t::const_iterator end() const;
+	reg_t::iterator begin();
+	reg_t::iterator end();
+	reg_t::const_iterator begin() const;
+	reg_t::const_iterator end() const;
 
 private:
 	reg_variant_e variant_;

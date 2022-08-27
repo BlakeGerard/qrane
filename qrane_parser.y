@@ -12,7 +12,7 @@
 %define api.token.constructor
 %define api.value.type variant
 %define api.parser.class {qrane_parser}
-%parse-param {std::shared_ptr<qrane_program> mainprogram}
+%parse-param {std::shared_ptr<Program> mainprogram}
 
 %code requires {
     #ifndef YY_NULLPTR
@@ -26,7 +26,7 @@
     #endif
 
     #include "qrane_general.hpp"
-	using namespace qrane
+    using namespace qrane;
 }
 
 %code {
@@ -42,9 +42,9 @@
     extern char *yytext;
     extern yy::location loc;
 
-    bool qreg_seen = false;
-    unsigned int qreg_size = 0;
-    qop_id qop_count = 0;
+    //bool qreg_seen = false;
+    //unsigned int qreg_size = 0;
+    //qop_id qop_count = 0;
 }
 
 %token T_OPENQASM               
@@ -103,7 +103,7 @@
 %type <std::shared_ptr<qrane::Argument>>                   argument;
 %type <std::vector<std::shared_ptr<qrane::Parameter>>>     explist;
 %type <std::shared_ptr<Parameter>>                         exp;
-%type <unaryop_type>                                       unaryop;
+%type <unary_expr_e>                                       unaryop;
 
 %left T_ADD
 %left T_SUB
@@ -115,31 +115,31 @@
 
 mainprogram : T_OPENQASM T_REAL T_SEMICOLON program 
             {
-                mainprogram->initialize($4, qreg_size);
+                mainprogram->initialize($4);
             }
 
 program : statement             
         {
-            $$ = qrane_statementlist();
-            $$.append($1);
+	  $$ = std::vector<std::shared_ptr<Element>>();
+          $$.push_back($1);
         }      
         | program statement     
         {
             $$ = $1;
-            $$.append($2);
+            $$.push_back($2);
         }
 
 statement : decl
           {
-            $$ = std::static_pointer_cast<qrane_statement>($1);
+            $$ = std::static_pointer_cast<Element>($1);
           } 
           | reg
           {
-            $$ = std::static_pointer_cast<qrane_statement>($1);
+            $$ = std::static_pointer_cast<Element>($1);
           }   
           | qop
           {
-            $$ = std::static_pointer_cast<qrane_statement>($1);
+            $$ = std::static_pointer_cast<Element>($1);
           }
           | T_IF T_LPAR T_ID T_EQLTY T_UINTEGER T_RPAR qop
           {
@@ -159,35 +159,33 @@ decl : gatedecl goplist T_RCUR
 
 gatedecl : T_GATE_CUSTOM T_ID idlist T_LCUR
          {
-            $$ = std::make_shared<qrane_decl>(
-                    statement_type::DECL, decl_type::GATEDECL,
+            $$ = std::make_shared<Decl>(
+                    element_variant_e::DECL, decl_variant_e::GATEDECL,
                     $2, $3);
          }
          | T_GATE_CUSTOM T_ID T_LPAR T_RPAR idlist T_LCUR
          {
-            $$ = std::make_shared<qrane_decl>(
-                    statement_type::DECL, decl_type::GATEDECL,
+            $$ = std::make_shared<Decl>(
+                    element_variant_e::DECL, decl_variant_e::GATEDECL,
                     $2, $5);
          }
          | T_GATE_CUSTOM T_ID T_LPAR explist T_RPAR idlist T_LCUR
          {
-            $$ = std::make_shared<qrane_decl>(
-                    statement_type::DECL, decl_type::GATEDECL,
+            $$ = std::make_shared<Decl>(
+                    element_variant_e::DECL, decl_variant_e::GATEDECL,
                     $2, $4, $6);
          }
 
 reg : T_QREG T_ID T_LBRA T_UINTEGER T_RBRA T_SEMICOLON
      {
-        qreg_seen = true;
-		qreg_size = $4;
-         $$ = std::make_shared<qrane_reg>(
-                statement_type::REG, reg_type::QREG,
+        $$ = std::make_shared<Reg>(
+                element_variant_e::REG, reg_variant_e::QREG,
                 $1, $2, $4);
      }
      | T_CREG T_ID T_LBRA T_UINTEGER T_RBRA T_SEMICOLON
      {
-         $$ = std::make_shared<qrane_reg>(
-                statement_type::REG, reg_type::CREG,
+         $$ = std::make_shared<Reg>(
+                element_variant_e::REG, reg_variant_e::CREG,
                 $1, $2, $4);
      }
 
@@ -197,80 +195,70 @@ qop : uop
     }
     | T_MEASURE argument T_ARROW argument T_SEMICOLON       // measure q[0]->c[0];
     {
-        $$ = std::make_shared<qrane_qop>(
-                statement_type::QOP, qop_type::MEASURE, 
-                qop_count, $1, qrane_argumentlist({$2, $4}));
-        if (qreg_seen) { qop_count += 1; }
+        $$ = std::make_shared<Qop>(
+		element_variant_e::QOP, qop_variant_e::MEASURE, 
+                $1, std::vector<std::shared_ptr<Argument>>({$2, $4}));
     }
     | T_RESET argument T_SEMICOLON                          // reset q[0];
     {
-        $$ = std::make_shared<qrane_qop>(
-                statement_type::QOP, qop_type::RESET, 
-                qop_count, $1, qrane_argumentlist({$2}));
-        if (qreg_seen) { qop_count += 1; }
+        $$ = std::make_shared<Qop>(
+                element_variant_e::QOP, qop_variant_e::RESET, 
+                $1, std::vector<std::shared_ptr<Argument>>({$2}));
     }
     | T_BARRIER anylist T_SEMICOLON
     {
-        if (qreg_seen) { mainprogram->increment_num_qops(); }
-        $$ = std::make_shared<qrane_qop>(
-                statement_type::QOP, qop_type::BARRIER, 
-                qop_count, $1, $2);
-        if (qreg_seen) { qop_count += 1; }
+        $$ = std::make_shared<Qop>(
+                element_variant_e::QOP, qop_variant_e::BARRIER, 
+                $1, $2);
     }
     | T_OPAQUE T_ID idlist T_SEMICOLON
     {
-        $$ = std::make_shared<qrane_qop>(
-                statement_type::QOP, qop_type::OPAQUE, 
-                qop_count, $2, $3);
-        if (qreg_seen) { qop_count += 1; }
+        $$ = std::make_shared<Qop>(
+                element_variant_e::QOP, qop_variant_e::OPAQUE, 
+                $2, $3);
     }
     | T_OPAQUE T_ID T_LPAR T_RPAR idlist T_SEMICOLON 
     {
-        $$ = std::make_shared<qrane_qop>(
-                statement_type::QOP, qop_type::OPAQUE, 
-                qop_count, $2, $5);
-        if (qreg_seen) { qop_count += 1; }
+        $$ = std::make_shared<Qop>(
+                element_variant_e::QOP, qop_variant_e::OPAQUE, 
+                $2, $5);
     }
     | T_OPAQUE T_ID T_LPAR explist T_RPAR idlist T_SEMICOLON
     {
-        $$ = std::make_shared<qrane_qop>(
-                statement_type::QOP, qop_type::OPAQUE, 
-                qop_count, $2, $4, $6);
-        if (qreg_seen) { qop_count += 1; }
+        $$ = std::make_shared<Qop>(
+                element_variant_e::QOP, qop_variant_e::OPAQUE, 
+                $2, $4, $6);
     }
 
 uop : T_ID anylist T_SEMICOLON                              // gate_name q[0],q[2],q[3],q[1];
     {
 		
-        $$ = std::make_shared<qrane_qop>(
-                statement_type::QOP, qop_type::GATE, 
-                qop_count, $1, $2);
-        if (qreg_seen) { qop_count += 1; }
+        $$ = std::make_shared<Qop>(
+                element_variant_e::QOP, qop_variant_e::GATE, 
+                $1, $2);
     }
     | T_ID T_LPAR T_RPAR anylist T_SEMICOLON                // gate_name() q[0],q[2],q[4],q[3];
     {
-        $$ = std::make_shared<qrane_qop>(
-                statement_type::QOP, qop_type::GATE, 
-                qop_count, $1, $4);
-        if (qreg_seen) { qop_count += 1; }
+        $$ = std::make_shared<Qop>(
+                element_variant_e::QOP, qop_variant_e::GATE, 
+                $1, $4);
     }
     | T_ID T_LPAR explist T_RPAR anylist T_SEMICOLON        // gate_name(2.0,0.0,pi/4) q[0],q[2],q[4];
     {
-        $$ = std::make_shared<qrane_qop>(
-                statement_type::QOP, qop_type::GATE, 
-                qop_count, $1, $3, $5);
-        if (qreg_seen) { qop_count += 1; }
+        $$ = std::make_shared<Qop>(
+                element_variant_e::QOP, qop_variant_e::GATE, 
+                $1, $3, $5);
     }
 
 goplist : qop
         {
-            $$ = qrane_statementlist();
-            $$.append($1); 
+	  $$ = std::vector<std::shared_ptr<Element>>();
+            $$.push_back($1); 
         }
         | goplist qop
         {
             $$ = $1;
-            $$.append($2);
+            $$.push_back($2);
         }
 
 anylist : idlist        { $$ = $1; } 
@@ -278,111 +266,111 @@ anylist : idlist        { $$ = $1; }
 
 idlist : T_ID
        {
-           $$ = qrane_argumentlist();
-           $$.append(std::make_shared<qrane_argument>($1));
+	 $$ = std::vector<std::shared_ptr<Argument>>();
+           $$.push_back(std::make_shared<Argument>($1));
        }
        | idlist T_COMMA T_ID
        {
             $$ = $1;
-            $$.append(std::make_shared<qrane_argument>($3));
+            $$.push_back(std::make_shared<Argument>($3));
        }
 
 mixedlist : T_ID T_LBRA T_UINTEGER T_RBRA
           {
-            $$ = qrane_argumentlist();
-            $$.append(std::make_shared<qrane_argument>($1, $3));
+            $$ = std::vector<std::shared_ptr<Argument>>();
+            $$.push_back(std::make_shared<Argument>($1, $3));
           }
           | mixedlist T_COMMA T_ID 
           {
             $$ = $1;
-            $$.append(std::make_shared<qrane_argument>($3));
+            $$.push_back(std::make_shared<Argument>($3));
           }
           | mixedlist T_COMMA T_ID T_LBRA T_UINTEGER T_RBRA
           {
             $$ = $1;
-            $$.append(std::make_shared<qrane_argument>($3, $5));
+            $$.push_back(std::make_shared<Argument>($3, $5));
           }
           | idlist T_COMMA T_ID T_LBRA T_UINTEGER T_RBRA
           {
             $$ = $1;
-            $$.append(std::make_shared<qrane_argument>($3, $5));
+            $$.push_back(std::make_shared<Argument>($3, $5));
           }
 
 argument : T_ID 
          {
-            $$ = std::make_shared<qrane_argument>($1);
+            $$ = std::make_shared<Argument>($1);
          }
          | T_ID T_LBRA T_UINTEGER T_RBRA
          {
-            $$ = std::make_shared<qrane_argument>($1, $3);
+            $$ = std::make_shared<Argument>($1, $3);
          }
 
 explist : exp
         {
-            $$ = qrane_parameterlist();
-            $$.append($1);
+	  $$ = std::vector<std::shared_ptr<Parameter>>();
+            $$.push_back($1);
         }
         | explist T_COMMA exp
         {
             $$ = $1;
-            $$.append($3);
+            $$.push_back($3);
         }
 
 exp : T_REAL                    
     { 
-         $$ = std::make_shared<qrane_value<double>>($1);
+         $$ = std::make_shared<ParameterValue<double>>($1);
     } 
     | T_UINTEGER
     { 
-         $$ = std::make_shared<qrane_value<int>>($1);
+         $$ = std::make_shared<ParameterValue<int>>($1);
     }               
     | T_PI
     { 
-         $$ = std::make_shared<qrane_value<double>>(double(M_PI));
+         $$ = std::make_shared<ParameterValue<double>>(double(M_PI));
     }                    
     | T_ID
     { 
-         $$ = std::make_shared<qrane_value<std::string>>($1);
+         $$ = std::make_shared<ParameterValue<std::string>>($1);
     }                      
     | exp T_ADD exp     %prec T_ADD        
     { 
-        $$ = std::make_shared<qrane_binaryop>(binaryop_type::ADD, $2, $1, $3);
+        $$ = std::make_shared<BinaryExpr>(binary_expr_e::ADD, $2, $1, $3);
     }           
     | exp T_SUB exp      %prec T_SUB       
     {
-        $$ = std::make_shared<qrane_binaryop>(binaryop_type::SUB, $2, $1, $3);
+        $$ = std::make_shared<BinaryExpr>(binary_expr_e::SUB, $2, $1, $3);
     }           
     | exp T_MUL exp       %prec T_MUL
     { 
-        $$ = std::make_shared<qrane_binaryop>(binaryop_type::MUL, $2, $1, $3);
+        $$ = std::make_shared<BinaryExpr>(binary_expr_e::MUL, $2, $1, $3);
     }           
     | exp T_DIV exp        %prec T_DIV
     {
-        $$ = std::make_shared<qrane_binaryop>(binaryop_type::DIV, $2, $1, $3);
+        $$ = std::make_shared<BinaryExpr>(binary_expr_e::DIV, $2, $1, $3);
     }           
     | T_SUB exp                 
     { 
-        $$ = std::make_shared<qrane_unaryop>(unaryop_type::NEG, $1, $2);
+        $$ = std::make_shared<UnaryExpr>(unary_expr_e::NEG, $1, $2);
     }         
     | exp T_CARROT exp       %prec T_CARROT
     { 
-        $$ = std::make_shared<qrane_binaryop>(binaryop_type::CAR, $2, $1, $3);
+        $$ = std::make_shared<BinaryExpr>(binary_expr_e::CAR, $2, $1, $3);
     }        
     | T_LPAR exp T_RPAR         
     {
-        $$ = std::make_shared<qrane_unaryop>(unaryop_type::PAR, "", $2);
+        $$ = std::make_shared<UnaryExpr>(unary_expr_e::PAR, "", $2);
     }                
     | unaryop T_LPAR exp T_RPAR 
     { 
-        $$ = std::make_shared<qrane_unaryop>($1, "", $3);
+        $$ = std::make_shared<UnaryExpr>($1, "", $3);
     }
 
-unaryop : T_SIN     { $$ = unaryop_type::SIN;  }
-        | T_COS     { $$ = unaryop_type::COS;  }
-        | T_TAN     { $$ = unaryop_type::TAN;  }
-        | T_EXP     { $$ = unaryop_type::EXP;  }
-        | T_LN      { $$ = unaryop_type::LN;   }
-        | T_SQRT    { $$ = unaryop_type::SQRT; }
+unaryop : T_SIN     { $$ = unary_expr_e::SIN;  }
+        | T_COS     { $$ = unary_expr_e::COS;  }
+        | T_TAN     { $$ = unary_expr_e::TAN;  }
+        | T_EXP     { $$ = unary_expr_e::EXP;  }
+        | T_LN      { $$ = unary_expr_e::LN;   }
+        | T_SQRT    { $$ = unary_expr_e::SQRT; }
 
 %%
 

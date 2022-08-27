@@ -6,7 +6,7 @@
 #include "isl/ast_build.h"
 #include "isl/union_map.h"
 #include "isl/union_set.h"
-#include "qrane_deps.hpp"
+#include "qrane_dependence_profile.hpp"
 
 namespace qrane {
 
@@ -65,6 +65,7 @@ typedef struct s_qrane_ast_info_t t_qrane_ast_info;
 
 #endif
 
+/*
 namespace qrane {
 
 struct full_scop_s {
@@ -114,3 +115,4 @@ struct s_qrane_ast_info_t {
 typedef struct s_qrane_ast_info_t t_qrane_ast_info;
 
 #endif
+*/

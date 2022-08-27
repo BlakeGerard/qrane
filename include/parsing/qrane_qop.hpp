@@ -44,12 +44,12 @@ public:
 	// Constructors
 	Qop();
 	Qop(element_variant_e element_variant, qop_variant_e qop_variant, 
-		qop_id id, std::string name);
+		std::string name);
 	Qop(element_variant_e element_variant, qop_variant_e qop_variant, 
-		qop_id id, std::string name,
+		std::string name,
 		std::vector<std::shared_ptr<Argument>> args);
 	Qop(element_variant_e element_variant, qop_variant_e qop_variant, 
-		qop_id  id, std::string name,
+		std::string name,
 		std::vector<std::shared_ptr<Parameter>>, 
 		std::vector<std::shared_ptr<Argument>> args);
 
@@ -61,7 +61,6 @@ public:
 	bool operator==(const Qop& rhs);
 
 	// Accessors
-	qop_id id() const;
 	std::string name() const;
 	std::string to_string() const;
 	unsigned int num_params() const;
@@ -75,7 +74,6 @@ public:
 
 private:
 	qop_variant_e variant_;
-	qop_id id_;
 	std::string name_;
 	std::vector<std::shared_ptr<Parameter>> params_;
 	std::vector<std::shared_ptr<Argument>> args_;
