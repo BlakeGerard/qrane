@@ -5,67 +5,49 @@
 
 namespace qrane {
 
-typedef int program_id;
-typedef int statement_id;
-typedef int qop_id;
-typedef int qubit_id;
+typedef int ProgramId;
+typedef int StatementId;
+typedef int QopId;
+typedef int QubitId;
 
 /*
-	Singleton, thread-safe class for dealing 
-	out integer ids for qubits, qops, and scops.
-	We need thread-safe ids because multiple threads
-	may be generating scops at the same time.
-
-	TODO?: May need to generate UUIDs instead of 
-	incremental IDs if needed in the future.
+  Singleton, thread-safe class for dealing
+  out integer ids for qubits, qops, and scops.
+  We need thread-safe ids because multiple threads
+  may be generating scops at the same time.
 */
 class IdMachine {
 
 public:
-	program_id get_program_id() {
-		std::lock_guard<std::mutex> lock(mtx_);
-        program_id ret = program_id_ctr_;
-        program_id_ctr_++;
-        return ret;
-	}
+  ProgramId getProgramId() {
+    std::lock_guard<std::mutex> lock(mtx_);
+    return programIdCtr_++;
+  }
 
-	statement_id get_statement_id() {
-		std::lock_guard<std::mutex> lock(mtx_);
-        statement_id ret = statement_id_ctr_;
-        statement_id_ctr_++;
-        return ret;
-    };
+  StatementId getStatementId() {
+    std::lock_guard<std::mutex> lock(mtx_);
+    return statementIdCtr_++;
+  }
 
-	 qop_id get_qop_id() {
-		std::lock_guard<std::mutex> lock(mtx_);
-		qop_id ret = qop_id_ctr_;
-        qop_id_ctr_++;
-        return ret;
-    };
+  QopId getQopId() {
+    std::lock_guard<std::mutex> lock(mtx_);
+    return qopIdCtr_++;
+  }
 
-    qubit_id get_qubit_id() {
-		std::lock_guard<std::mutex> lock(mtx_);
-    	qubit_id ret = qubit_id_ctr_;
-        qubit_id_ctr_++;
-        return ret;
-    };
+  QubitId getQubitId() {
+    std::lock_guard<std::mutex> lock(mtx_);
+    return qubitIdCtr_++;
+  }
 
 private:
-	program_id program_id_ctr_;
-    statement_id statement_id_ctr_; 
-	qop_id qop_id_ctr_;
-    qubit_id qubit_id_ctr_;
-	std::mutex mtx_;
+  ProgramId programIdCtr_{0};
+  StatementId statementIdCtr_{0};
+  QopId qopIdCtr_{0};
+  QubitId qubitIdCtr_{0};
+  std::mutex mtx_;
 
-    IdMachine() {
-		program_id_ctr_ = 0;
-		statement_id_ctr_ = 0;
-		qop_id_ctr_ = 0;
-    	qubit_id_ctr_ = 0;
-    };
-            
-    static IdMachine id_machine;
+  static IdMachine id_machine;
 };
-}
+} // namespace qrane
 
 #endif

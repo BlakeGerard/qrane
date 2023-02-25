@@ -14,3 +14,6 @@ qrane_parser.h
 qrane_parser.output
 qrane_scanner.c
 location.hh
+
+# Emacs tmps
+\#*#

@@ -35,8 +35,8 @@ SRCS = qrane_driver.cpp $(SCANNER).c $(GRAMMAR).c ./src/*
 LIBSRCS = qrane_api.cpp $(SCANNER).c $(GRAMMAR).c ./src/*
 
 FLEX_BIN = flex
-CXX = g++
-CXXFLAGS = -Wall -O3 -fopenmp -std=c++11 -pthread -march=native
+CXX = clang++
+CXXFLAGS = -Wall -O2 -fopenmp -std=c++17 -pthread -march=native
 CXXLIBFLAGS = -shared -fpic
 
 all: scanner grammar bin lib
