@@ -1,6 +1,5 @@
-.vscode/
-.cache/
 qasm/
+topologies/
 build/
 
 # Library files
@@ -9,9 +8,5 @@ lib/*-install
 # Parser files
 parser/*.c
 parser/*.h
-parser/*output
+parser/*.output
 parser/*.hh
-
-# Emacs tmps
-\#*#
-*~
