@@ -7,9 +7,15 @@ ntl_flag="--install-ntl"
 clean_flag="--clean-all"
 help_flag="--help"
 
+lib_dir=$PWD/lib
+
 bison_version=bison-3.3
 barvinok_version=barvinok-0.41.4
 ntl_version=ntl-11.4.3
+
+bison_install=$lib_dir/bison-install
+barvinok_install=$lib_dir/barvinok-install
+ntl_install=$lib_dir/ntl-install
 
 install_all() {
 	install_bison
@@ -17,53 +23,64 @@ install_all() {
 	install_barvinok
 }
 
-install_bison() {
-	echo "Installing bison"
-	zip=$bison_version.tar.gz
-	install_dir=$PWD/lib/bison
-	tar -xvzf $zip
-	cd ./$bison_version/
-	./configure --prefix=$install_dir && make && make install
-	cd -
-}
-
 install_barvinok() {
 	echo "Installing barvinok"
-	zip=$barvinok_version.tar.gz
-	install_dir=$PWD/lib/barvinok
-	ntl_dir=$PWD/lib/ntl
-	ntl_build=./$ntl_version/src/
-	tar -xvzf $zip
-	cd ./$barvinok_version/
-	./configure --prefix=$install_dir --with-ntl-prefix=$ntl_dir --enable-shared-barvinok && make && make install
+	zip=$lib_dir/$barvinok_version.tar.gz
+	tar -xvzf $zip -C $lib_dir
+	cd $lib_dir/$barvinok_version/
+	./configure --prefix=$barvinok_install \
+		    --with-ntl-prefix=$ntl_install \
+		    --enable-shared-barvinok \
+	            && make && make install
 	cd -
+	rm -rf $lib_dir/$barvinok_version/
+}
+
+install_bison() {
+	echo "Installing bison"
+	zip=$lib_dir/$bison_version.tar.gz
+	tar -xvzf $zip -C $lib_dir
+	cd $lib_dir/$bison_version/
+	./configure --prefix=$bison_install && make && make install
+	cd -
+	rm -rf $lib_dir/$bison_version/
 }
 
 install_ntl() {
 	echo "Installing ntl"
-	zip=$ntl_version.tar.gz
-	install_dir=$PWD/lib/ntl
-	tar -xvzf $zip
-	cd ./$ntl_version/src/
-	./configure SHARED=on DEF_PREFIX=$install_dir NTL_GMP_LIP=on NTL_THREADS=on NTL_THREAD_BOOST=on NTL_STD_CXX11=on && make && make install
+	zip=$lib_dir/$ntl_version.tar.gz
+	tar -xvzf $zip -C $lib_dir
+	cd $lib_dir/$ntl_version/src/
+	./configure SHARED=on \
+		    DEF_PREFIX=$ntl_install \
+		    NTL_GMP_LIP=on \
+		    NTL_THREADS=on \
+		    NTL_THREAD_BOOST=on \
+		    NTL_STD_CXX11=on \
+	            && make && make install
 	cd -
+	rm -rf $lib_dir/$ntl_version
 }
 
 clean_all() {
-	if [ -d $bison_version ]; then
-  		rm -rf ./$bison_version/
+    set -x
+	if [ -d $bison_install ]; then
+  		rm -rf $bison_install
 	fi
-	if [ -d $barvinok_version ]; then
-		rm -rf ./$barvinok_version/
+	if [ -d $barvinok_install ]; then
+		rm -rf $barvinok_install
 	fi
-	if [ -d $ntl_version ]; then
-		rm -rf ./$ntl_version/
+	if [ -d $ntl_install ]; then
+		rm -rf $ntl_install
 	fi
-	rm -rf lib
 }	
 
 if [ ! -d lib ]; then
   mkdir lib
+fi
+
+if [ ! -d build ]; then
+  mkdir build
 fi
 
 for arg in "$@"
