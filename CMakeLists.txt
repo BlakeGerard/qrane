@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(Qrane VERSION 1.0
-	      DESCRIPTION
-		"Lifting Quantum Assembly to an Affine Intermediate Representation."
-	      LANGUAGES CXX)
+project(qrane-project VERSION 1.0
+	          DESCRIPTION
+		      "Lifting Quantum Assembly to an Affine Intermediate Representation."
+	          LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
-
 
 # Setup Flex and Bison
 find_package(BISON)
@@ -16,26 +15,21 @@ BISON_TARGET(QraneParser qrane_parser.y ${CMAKE_CURRENT_BINARY_DIR}/qrane_parser
 FLEX_TARGET(QraneScanner qrane_scanner.yy ${CMAKE_CURRENT_BINARY_DIR}/qrane_scanner.c)
 ADD_FLEX_BISON_DEPENDENCY(QraneScanner QraneParser)
 
-# Setup NTL
-find_library(NTL_LIB ntl
-		     PATHS "${CMAKE_SOURCE_DIR}/lib/ntl/lib")
-		     
-find_path(NTL_INC config.h
-	             PATHS "${CMAKE_SOURCE_DIR}/lib/ntl/include/NTL")
+add_subdirectory(lib)
 
 # Setup Barvinok
-find_library(BARVINOK_LIB barvinok
-			  PATHS "${CMAKE_SOURCE_DIR}/lib/barvinok/lib")
+#find_library(BARVINOK_LIB barvinok
+#			  PATHS "${CMAKE_SOURCE_DIR}/lib/barvinok/lib")
 
-find_path(BARVINOK_INC barvinok.h
-		       PATHS "${CMAKE_SOURCE_DIR}/lib/barvinok/include/barvinok")
+#find_path(BARVINOK_INC barvinok.h
+#		       PATHS "${CMAKE_SOURCE_DIR}/lib/barvinok/include/barvinok")
 
 # Setup Python
 find_package(Python COMPONENTS Development REQUIRED)
 
-# Setup Qrane
+# Setup qrane
 add_executable(qrane src/qrane_argument.cpp
-		     src/qrane_codegen.cpp
+		             src/qrane_codegen.cpp
 		     src/qrane_decl.cpp
 		     src/qrane_dependence_profile.cpp
 		     src/qrane_driver.cpp # Main
@@ -51,11 +45,15 @@ add_executable(qrane src/qrane_argument.cpp
 
 target_include_directories(qrane PRIVATE src)
 
-target_link_libraries(qrane PRIVATE "${NTL_LIB}")
-target_include_directories(qrane PRIVATE "${NTL_INC}")
+add_dependencies(qrane ntl-project)
+add_dependencies(qrane barvinok-project)
+target_link_libraries(qrane PRIVATE barvinok)
 
-target_link_libraries(qrane PRIVATE "${BARVINOK_LIB}")
-target_include_directories(qrane PRIVATE "${BARVINOK_INC}")
+#target_link_libraries(qrane PRIVATE "${NTL_LIB}")
+#target_include_directories(qrane PRIVATE "${NTL_INC}")
 
-target_link_libraries(qrane PRIVATE "${Python_LIBRARIES}")
-target_include_directories(qrane PRIVATE "${Python_INCLUDE_DIRS}")
+#target_link_libraries(qrane PRIVATE "${BARVINOK_LIB}")
+#target_include_directories(qrane PRIVATE "${BARVINOK_INC}")
+
+#target_link_libraries(qrane PRIVATE "${Python_LIBRARIES}")
+#target_include_directories(qrane PRIVATE "${Python_INCLUDE_DIRS}")
