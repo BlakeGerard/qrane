@@ -11,24 +11,27 @@ ExternalProject_Add(
     GIT_REPOSITORY https://github.com/libntl/ntl.git
     GIT_TAG v11.5.1
 
-    CONFIGURE_COMMAND cd <SOURCE_DIR>/src/ && ./configure PREFIX=<BINARY_DIR> NTL_GMP_LIP=on NTL_THREADS=on NTL_THREAD_BOOST=on NTL_STD_CXX11=on
+    CONFIGURE_COMMAND cd <SOURCE_DIR>/src/ && ./configure PREFIX=<BINARY_DIR> NTL_GMP_LIP=on NTL_THREADS=on NTL_THREAD_BOOST=on
     BUILD_COMMAND cd <SOURCE_DIR>/src/ && $(MAKE)
     INSTALL_COMMAND cd <SOURCE_DIR>/src/ && $(MAKE) install
 )
 
 ExternalProject_Get_Property(ntl-project BINARY_DIR)
 set(NTL_INSTALL_PATH ${BINARY_DIR})
-set(NTL_INC_PATH ${NTL_INSTALL}/include/NTL)
-set(NTL_LIB_PATH ${NTL_INSTALL}/lib)
+set(NTL_INC_PATH ${NTL_INSTALL_PATH}/include/NTL)
+set(NTL_LIB_PATH ${NTL_INSTALL_PATH}/lib)
+
+set(POLYLIB_CFLAGS "-Wno-implicit-function-conversion -Wno-int-conversion")
 
 ExternalProject_Add(
     barvinok-project
 
     GIT_REPOSITORY https://repo.or.cz/barvinok.git
-    GIT_TAG barvinok-0.41.7
+    GIT_TAG barvinok-0.41.6
 
-    CONFIGURE_COMMAND cd <SOURCE_DIR> && ./get_submodules.sh && sh autogen.sh && ./configure --prefix=<BINARY_DIR> --with-ntl-prefix=${NTL_INSTALL_PATH}
+    CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CFLAGS=${POLYLIB_CFLAGS} && cd <SOURCE_DIR> && ./get_submodules.sh && ./autogen.sh && ./configure --prefix=<BINARY_DIR> --with-ntl-prefix=${NTL_INSTALL_PATH}
     BUILD_COMMAND cd <SOURCE_DIR> && $(MAKE)
-    INSTALL_COMMAND cd <SOOURCE_DIR> && $(MAKE) install
+    INSTALL_COMMAND cd <SOURCE_DIR> && $(MAKE) install
 )
 
+add_dependencies(barvinok-project ntl-project)
