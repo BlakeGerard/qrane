@@ -1,3 +1,0 @@
-barvinok=0.41.4
-bison=3.3.0
-ntl=11.4.3
