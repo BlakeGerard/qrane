@@ -24,16 +24,17 @@ struct StrideGraph {
 std::vector<qop_id> stride_graph_long_path_search(
     DependenceProfile &dependence_profile,
     const std::map<qop_id, std::shared_ptr<Qop>> &all_qops);
+
+template <typename A, typename B>
+std::initializer_list<A>
+get_map_keys_as_initializer_list(const std::map<A, B> &m);
+
 } // namespace Utils
 } // namespace qrane
 
 #endif
 
 ////////// OLD //////////
-
-// template<typename A, typename B>
-// std::initializer_list<A> get_map_keys_as_initializer_list(const std::map<A,
-// B>& m);
 
 // // qrane_statement splicing
 // std::vector<std::shared_ptr<Element>>

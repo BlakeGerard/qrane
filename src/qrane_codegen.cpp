@@ -193,7 +193,7 @@ qrane_codegen::qrane_build_access_at_domain(__isl_keep isl_ast_build *build,
   isl_union_map *sched_to_call;
   // sched_to_call = isl_union_map_apply_range(
   //	  			isl_union_map_reverse(isl_union_map_copy(sched)),
-  //isl_union_map_copy (call));
+  // isl_union_map_copy (call));
 
   sched_to_call = isl_union_map_reverse(isl_union_map_copy(sched));
   isl_ctx *ctx = isl_union_map_get_ctx(sched);
@@ -220,7 +220,7 @@ __isl_give isl_ast_node *
 qrane_codegen::qrane_at_each_domain(__isl_keep isl_ast_node *node,
                                     __isl_take isl_ast_build *build,
                                     void *user) {
-  t_qrane_scop *scop = (t_qrane_scop *)(user);
+  auto *scop = (qrane::full_scop_s *)(user);
 
   isl_ctx *ctx = isl_ast_node_get_ctx(node);
   isl_union_map *sched = isl_ast_build_get_schedule(build);
@@ -245,15 +245,16 @@ qrane_codegen::qrane_at_each_domain(__isl_keep isl_ast_node *node,
         Just a utility to find the domain object for the current domain in the
    traversal
 */
-std::string qrane_codegen::find_domain_gate_id(const char *dom,
-                                               std::vector<qrane_domain> doms) {
+std::string
+qrane_codegen::find_domain_gate_id(const char *dom,
+                                   std::vector<qrane::Statement> statements) {
   std::string ret("");
   std::string tmp = std::string(dom);
   tmp.erase(tmp.begin());
-  for (const auto &domain : doms) {
-    if (std::to_string(domain.domain_num).compare(tmp) == 0) {
+  for (const auto &statement : statements) {
+    if (std::to_string(statement.id()).compare(tmp) == 0) {
       // ret = domain.gate_id;
-      ret = std::to_string(domain.domain_num);
+      ret = std::to_string(statement.id());
     }
   }
   return ret;

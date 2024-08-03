@@ -64,6 +64,7 @@ public:
   qop_id time_space_min() const;
   qop_id time_space_max() const;
   int get_coefficient(unsigned int arg, unsigned int dim) const;
+  statement_id id() const { return id_; }
 
 private:
   statement_id id_;          // Unique Statement id

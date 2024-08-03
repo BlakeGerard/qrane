@@ -87,12 +87,12 @@ void print_qrane_options(qrane_options *opt) {
 
 int main(int argc, char *argv[]) {
   qrane_options opt = qrane_options();
-  qrane_timer timer = qrane_timer();
+  qrane::global_timer_s timer;
   qrane_options_init(&opt);
   qrane_options_check(&opt);
 
   int res;
-  qrane_host host = qrane_host(&opt, &timer);
+  qrane::Host host = qrane::Host(&opt, &timer);
 
   timer.global_start = std::chrono::high_resolution_clock::now();
 
@@ -116,11 +116,17 @@ int main(int argc, char *argv[]) {
 
   // Run qrane's reconstruction process
   std::cout << "Beginning reconstruction.\n";
+
+#ifdef QRANE_USE_AQUMA
   if (!opt.substr) {
     res = host.process_circuit();
   } else {
     res = host.process_circuit_via_substring_decomposition();
   }
+#else
+  res = host.process_circuit();
+#endif
+
   if (res) {
     std::cout << "Something went wrong during reconstruction. Exiting.\n";
     qrane_options_free(&opt);

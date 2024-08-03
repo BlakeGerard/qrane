@@ -10,10 +10,12 @@ Copyright (C) 2020
 
 #include <algorithm>
 #include <fstream>
+#include <functional>
 #include <initializer_list>
 #include <iostream>
 #include <limits>
 #include <map>
+#include <numeric>
 #include <queue>
 #include <set>
 #include <sstream>
@@ -129,7 +131,7 @@ Graph<T>::Graph(std::initializer_list<T> &vertex_set, bool directed) {
         if it does not already exist.
 */
 template <typename T> void Graph<T>::add_vertex(T v) {
-  if (G_.contains_vertex(v)) {
+  if (contains_vertex(v)) {
     return;
   }
   G_.insert(std::make_pair(v, adjacency_t<T>()));
@@ -141,13 +143,13 @@ template <typename T> void Graph<T>::add_vertex(T v) {
         are added to the graph if not already present.
 */
 template <typename T> void Graph<T>::add_edge(T v, T u) {
-  if (G_.contains_edge(v, u)) {
+  if (contains_edge(v, u)) {
     return;
   }
-  if (!G_.contains_vertex(v)) {
+  if (!contains_vertex(v)) {
     add_vertex(v);
   }
-  if (!G_.contains_vertex(u)) {
+  if (!contains_vertex(u)) {
     add_vertex(u);
   }
 
@@ -165,7 +167,7 @@ template <typename T> void Graph<T>::add_edge(T v, T u) {
     Remove vertex v from the graph, if it exists.
 */
 template <typename T> void Graph<T>::remove_vertex(T v) {
-  if (!G_.contains_edge(v)) {
+  if (!contains_vertex(v)) {
     return;
   }
 
@@ -176,11 +178,9 @@ template <typename T> void Graph<T>::remove_vertex(T v) {
   }
 
   // Remove any reference to v in all adjacency list
-  for (auto &entry : G_) {
-    auto it = std::find(entry.second.begin(), entry.second.end(), v);
-    if (it != entry.second.end()) {
-      entry.second.erase(it);
-    }
+  for (auto &[vertex, neighbors] : G_) {
+    neighbors.erase(std::remove_if(neighbors.begin(), neighbors.end(),
+                                   [&](const auto &n) { return n == v; }));
   }
 
   // Remove v from the graph and in_degree_ map
@@ -193,14 +193,16 @@ template <typename T> void Graph<T>::remove_vertex(T v) {
 */
 template <typename T>
 void Graph<T>::remove_vertices(const adjacency_t<T> &vertices) {
-  std::for_each(vertices.begin(), vertices.end(), &remove_vertex);
+  for (const auto &v : vertices) {
+    remove_vertex(v);
+  }
 }
 
 /*
     Remove edge (v, u) from the graph, if it exists.
 */
 template <typename T> void Graph<T>::remove_edge(T v, T u) {
-  if (!G_.contains_edge(v, u)) {
+  if (!contains_edge(v, u)) {
     return;
   }
 
@@ -219,8 +221,8 @@ template <typename T> void Graph<T>::remove_edge(T v, T u) {
 */
 template <typename T> adjacency_t<T> Graph<T>::get_vertex_set() const {
   adjacency_t<T> vertex_set;
-  for (const auto entry : G_) {
-    vertex_set.push_back(entry.first);
+  for (const auto &[vertex, _] : G_) {
+    vertex_set.push_back(vertex);
   }
   return vertex_set;
 }
@@ -231,8 +233,8 @@ template <typename T> adjacency_t<T> Graph<T>::get_vertex_set() const {
     if v is not present in the graph.
 */
 template <typename T> adjacency_t<T> Graph<T>::get_neighbors(T v) const {
-  if (G_.contains_vertex(v)) {
-    return G_[v];
+  if (contains_vertex(v)) {
+    return G_.at(v);
   }
   return adjacency_t<T>();
 }
@@ -243,7 +245,7 @@ template <typename T> adjacency_t<T> Graph<T>::get_neighbors(T v) const {
 */
 template <typename T> adjacency_t<T> Graph<T>::get_frontier() const {
   auto frontier = adjacency_t<T>();
-  if (G_.empty()) {
+  if (empty()) {
     return frontier;
   }
   for (const auto &entry : in_degree_) {
@@ -268,11 +270,12 @@ template <typename T> unsigned int Graph<T>::num_vertices() const {
         for both types.
 */
 template <typename T> unsigned int Graph<T>::num_edges() const {
-  unsigned int cnt = 0;
-  for (const auto &entry : G_) {
-    cnt += entry.second.size();
-  }
-  return cnt;
+  unsigned int count =
+      std::accumulate(G_.begin(), G_.end(), /*init=*/0,
+                      [](unsigned int count, const auto &neighbors) {
+                        return std::move(count) + neighbors.size();
+                      });
+  return count;
 }
 
 template <typename T> inline bool Graph<T>::contains_vertex(T v) const {
@@ -280,13 +283,13 @@ template <typename T> inline bool Graph<T>::contains_vertex(T v) const {
 }
 
 template <typename T> bool Graph<T>::contains_edge(T v, T u) const {
-  if (!G_.contains_vertex(v)) {
+  if (!contains_vertex(v)) {
     return false;
   }
-  if (!G_.contains_vertex(u)) {
+  if (!contains_vertex(u)) {
     return false;
   }
-  return std::find(G_[v].begin(), G_[v].end(), u) != G_[v].end();
+  return std::find(G_.at(v).begin(), G_.at(v).end(), u) != G_.at(v).end();
 }
 
 /*

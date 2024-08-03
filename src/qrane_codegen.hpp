@@ -2,6 +2,7 @@
 #define QRANE_CODEGEN_H
 
 #include "qrane_scop.hpp"
+#include "qrane_statement.hpp"
 #include "isl/aff.h"
 #include "isl/ast.h"
 #include "isl/ast_build.h"
@@ -54,7 +55,7 @@ __isl_give isl_ast_node *qrane_at_each_domain(__isl_keep isl_ast_node *node,
                                               void *user);
 
 std::string find_domain_gate_id(const char *dom,
-                                std::vector<qrane_domain> doms);
+                                std::vector<qrane::Statement> statements);
 } // namespace qrane_codegen
 
 #endif

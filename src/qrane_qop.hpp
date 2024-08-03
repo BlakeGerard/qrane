@@ -36,11 +36,11 @@ class Qop : public Element {
 public:
   // Constructors
   Qop();
-  Qop(element_variant_e element_variant, qop_variant_e qop_variant,
+  Qop(element_variant_e element_variant, qop_variant_e qop_variant, int id,
       std::string name);
-  Qop(element_variant_e element_variant, qop_variant_e qop_variant,
+  Qop(element_variant_e element_variant, qop_variant_e qop_variant, int id,
       std::string name, std::vector<std::shared_ptr<Argument>> args);
-  Qop(element_variant_e element_variant, qop_variant_e qop_variant,
+  Qop(element_variant_e element_variant, qop_variant_e qop_variant, int id,
       std::string name, std::vector<std::shared_ptr<Parameter>>,
       std::vector<std::shared_ptr<Argument>> args);
 
@@ -64,9 +64,11 @@ public:
   std::shared_ptr<Argument> arg(unsigned int index);
   std::vector<std::shared_ptr<Parameter>> parameters();
   std::vector<std::shared_ptr<Argument>> arguments();
+  int id() const { return id_; }
 
 private:
   qop_variant_e variant_;
+  int id_;
   std::string name_;
   std::vector<std::shared_ptr<Parameter>> params_;
   std::vector<std::shared_ptr<Argument>> args_;

@@ -5,27 +5,29 @@ namespace qrane {
 Qop::Qop() : Element(element_variant_e::QOP) {
   variant_ = qop_variant_e::GATE;
   name_ = std::string("DEFAULT_QOP");
+  id_ = -1;
 }
 
-Qop::Qop(element_variant_e statement_type, qop_variant_e qop_type,
+Qop::Qop(element_variant_e statement_type, qop_variant_e qop_type, int id,
          std::string name)
-    : Element(statement_type) {
+    : Element(statement_type), id_(id) {
   variant_ = qop_type;
   name_ = name;
 }
 
-Qop::Qop(element_variant_e statement_type, qop_variant_e qop_type,
+Qop::Qop(element_variant_e statement_type, qop_variant_e qop_type, int id,
          std::string name, std::vector<std::shared_ptr<Argument>> args)
-    : Element(statement_type) {
+    : Element(statement_type), id_(id) {
   variant_ = qop_type;
   name_ = name;
   args_ = args;
 }
 
 Qop::Qop(element_variant_e element_variant_e, qop_variant_e qop_variant_e,
-         std::string name, std::vector<std::shared_ptr<Parameter>> params,
+         int id, std::string name,
+         std::vector<std::shared_ptr<Parameter>> params,
          std::vector<std::shared_ptr<Argument>> args)
-    : Element(element_variant_e) {
+    : Element(element_variant_e), id_(id) {
   variant_ = qop_variant_e;
   name_ = name;
   params_ = params;

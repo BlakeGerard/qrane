@@ -10,6 +10,8 @@
 
 namespace qrane {
 
+class Statement;
+
 struct full_scop_s {
   isl_union_set *domain;
   isl_union_map *read;
@@ -18,6 +20,9 @@ struct full_scop_s {
   isl_union_map *schedule;
   isl_union_map *dependencies;
   isl_union_map *arguments;
+  membership_map_t membership;
+  qubit_profile_map qubit_access_profile;
+  std::vector<Statement> final_domain_list;
 
   ~full_scop_s() {
     isl_union_set_free(domain);

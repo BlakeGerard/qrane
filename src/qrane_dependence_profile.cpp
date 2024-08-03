@@ -4,7 +4,7 @@
 #include <queue>
 #include <sstream>
 
-#include "include/qrane_deps.hpp"
+#include "qrane_dependence_profile.hpp"
 #include "qrane_utils.hpp"
 
 // -------------------------------
@@ -17,7 +17,7 @@ DependenceProfile::DependenceProfile(
     const std::map<qop_id, std::shared_ptr<Qop>> &qops,
     const qrane_options *opt) {
   auto V =
-      utils::get_map_keys_as_initializer_list<qop_id, std::shared_ptr<Qop>>(
+      Utils::get_map_keys_as_initializer_list<qop_id, std::shared_ptr<Qop>>(
           qops);
   G_static_ = Graph<qop_id>(V, true);
   G_dynamic_ = Graph<qop_id>(V, true);

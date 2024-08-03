@@ -1,7 +1,7 @@
 #ifndef QRANE_hpp
 #define QRANE_hpp
 
-#include "include/qrane_host.hpp"
+#include "qrane_host.hpp"
 
 void qrane_options_init(qrane_options *opt);
 
@@ -13,6 +13,6 @@ void print_qrane_options(qrane_options *opt);
 
 int qrane_check_isomorphism(int argc, char *argv[], qrane_options *opt);
 
-qrane_output_scop *qrane_driver(int argc, char *argv[], qrane_options *opt);
+qrane::output_scop_s *qrane_driver(int argc, char *argv[], qrane_options *opt);
 
 #endif

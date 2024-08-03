@@ -54,19 +54,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace qrane {
 
 /*
-        Default OpenQASM processor. It splits the reconstruction
-        into one-dimensional and n-dimensional phases.
-        It maintaints qops and reconstructed statements
-        in simple maps based on unique ids.
-
-        DESIGN NOTE: For greater extensibility, make a parent class
-        -- something like "Processor" or "Delinearizer" -- that defines
-        a public API just like the one used here. That way someone else
-        can write their own processor while still taking advantage of
-        qrane's infrastructure.
-        One option is the "natural tree structure" idea where the
-        id map storage mechanism is replaced by a tree representing
-        the delinearization as a whole.
+  Default OpenQASM processor. It splits the reconstruction
+  into one-dimensional and n-dimensional phases.
+  It maintaints qops and reconstructed statements
+  in simple maps based on unique ids.
 */
 class Program {
 public:
