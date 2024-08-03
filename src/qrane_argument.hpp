@@ -22,25 +22,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define QRANE_ARGUMENT_HPP
 
 #include "qrane_shared.hpp"
-#include <string>
 #include <sstream>
+#include <string>
 
 namespace qrane {
 
 class Argument {
 
 public:
-	Argument();
-	Argument(std::string reg);
-	Argument(std::string reg, qubit_id index);
-	std::string reg() const;
-	qubit_id index() const;
-	std::string to_string() const;
+  Argument();
+  Argument(std::string reg);
+  Argument(std::string reg, qubit_id index);
+  std::string reg() const;
+  qubit_id index() const;
+  std::string to_string() const;
 
 private:
-	std::string reg_;
-	qubit_id index_;
+  std::string reg_;
+  qubit_id index_;
 };
-}
+} // namespace qrane
 
 #endif

@@ -29,6 +29,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <unordered_set>
 #include <utility>
 
+#include "qrane_dependence_profile.hpp"
+#include "qrane_exception.hpp"
+#include "qrane_id.hpp"
+#include "qrane_options.hpp"
+#include "qrane_parsing.hpp"
+#include "qrane_scop.hpp"
+#include "qrane_shared.hpp"
+#include "qrane_statement.hpp"
+#include "qrane_utils.hpp"
 #include "isl/ast.h"
 #include "isl/ast_build.h"
 #include "isl/constraint.h"
@@ -41,15 +50,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "isl/space.h"
 #include "isl/union_map.h"
 #include "isl/union_set.h"
-#include "qrane_dependence_profile.hpp"
-#include "qrane_exception.hpp"
-#include "qrane_id.hpp"
-#include "qrane_options.hpp"
-#include "qrane_parsing.hpp"
-#include "qrane_scop.hpp"
-#include "qrane_shared.hpp"
-#include "qrane_statement.hpp"
-#include "qrane_utils.hpp"
 
 namespace qrane {
 
@@ -69,8 +69,8 @@ namespace qrane {
         the delinearization as a whole.
 */
 class Program {
- public:
-  Program(isl_ctx* ctx, const qrane_options* opt, program_id id);
+public:
+  Program(isl_ctx *ctx, const qrane_options *opt, program_id id);
   ~Program();
 
   // Drivers
@@ -87,9 +87,9 @@ class Program {
   output_scop get_output_scop() const;
   std::string codegen() const;
 
- private:
-  isl_ctx* ctx_;              // Pointer to isl context managed by Host
-  const qrane_options* opt_;  // Pointer to options managed by Host
+private:
+  isl_ctx *ctx_;             // Pointer to isl context managed by Host
+  const qrane_options *opt_; // Pointer to options managed by Host
 
   program_id id_;
   std::size_t num_qops_;
@@ -113,7 +113,7 @@ class Program {
   std::vector<qop_id> one_dimensional_selection_policy();
   std::vector<statement_id> n_dimensional_selection_policy();
 };
-}  // namespace qrane
+} // namespace qrane
 #endif
 
 /*

@@ -25,26 +25,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace qrane {
 
-enum element_variant_e {
-	DECL,
-	REG,
-	QOP
-};
+enum element_variant_e { DECL, REG, QOP };
 
 class Element {
 
 public:
-	Element(element_variant_e variant);
-	element_variant_e element_type() const;
-	bool is_decl() const;
-	bool is_reg() const;
-	bool is_qop() const;
-	virtual std::string to_string() const = 0;
+  Element(element_variant_e variant);
+  element_variant_e element_type() const;
+  bool is_decl() const;
+  bool is_reg() const;
+  bool is_qop() const;
+  virtual std::string to_string() const = 0;
 
 private:
-	element_variant_e variant_;
-
+  element_variant_e variant_;
 };
-}
+} // namespace qrane
 
 #endif

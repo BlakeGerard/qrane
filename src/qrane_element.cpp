@@ -21,23 +21,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "qrane_element.hpp"
 
 namespace qrane {
-Element::Element(element_variant_e type) {
-	this->variant_ = type;
-}
+Element::Element(element_variant_e type) { this->variant_ = type; }
 
-element_variant_e Element::element_type() const {
-	return this->variant_;
-}
+element_variant_e Element::element_type() const { return this->variant_; }
 
 bool Element::is_decl() const {
-	return this->variant_ == element_variant_e::DECL;
+  return this->variant_ == element_variant_e::DECL;
 }
 
 bool Element::is_reg() const {
-	return this->variant_ == element_variant_e::REG;
+  return this->variant_ == element_variant_e::REG;
 }
 
 bool Element::is_qop() const {
-	return this->variant_ == element_variant_e::QOP;
+  return this->variant_ == element_variant_e::QOP;
 }
-}
+} // namespace qrane

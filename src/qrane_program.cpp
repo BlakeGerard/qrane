@@ -24,7 +24,7 @@ namespace qrane {
 
 /////////////// START OF PUBLIC INTERFACE ///////////////
 
-Program::Program(isl_ctx* ctx, const qrane_options* opt, program_id id) {
+Program::Program(isl_ctx *ctx, const qrane_options *opt, program_id id) {
   ctx_ = ctx;
   opt_ = opt;
   id_ = id;
@@ -124,7 +124,7 @@ std::string Program::codegen() const { return std::string(); }
 /////////////// END OF PUBLIC INTERFACE ///////////////
 
 void Program::extract_qops() {
-  for (const auto& elem : elements_) {
+  for (const auto &elem : elements_) {
     if (elem->is_qop()) {
       auto new_id = IdMachine.get_qop_id();
       auto qop = std::static_pointer_cast<Qop>(elem);
@@ -182,7 +182,7 @@ std::vector<qop_id> Program::default_one_dimensional_selection_policy() {
 };
 
 void Program::create_and_store_new_statement(
-    const std::vector<qop_id>& selected_qops) {
+    const std::vector<qop_id> &selected_qops) {
   auto statement_id = IdMachine.get_statement_id();
   auto statement = Statement(ctx_, qops_, statement_id, selected_qops);
   statements_.insert(std::make_pair(statement_id, statement));
@@ -192,18 +192,18 @@ void Program::create_and_store_new_statement(
         Drive the ND reconstruction phase.
 */
 void Program::n_dimensional_scop_reconstruction(
-    std::function<std::vector<statement_id>(const std::vector<statement_id>&)>
+    std::function<std::vector<statement_id>(const std::vector<statement_id> &)>
         selection_policy) {
   return;
 }
 
 /*
         Build output_scop of ISL structures as the union
-	of all statements' local structures.
+        of all statements' local structures.
 */
 void Program::build_output_scop() {
   output_scop_ = output_scop(ctx);
-  for (const auto& stmt : statements_) {
+  for (const auto &stmt : statements_) {
     output_scop_.domain =
         isl_union_set_add(output_scop_.domain, stmt.get_domain());
     output_scop_.read =
@@ -1478,7 +1478,8 @@ void Program::build_output_scop() {
 // 	}
 
 // 	// Then, go left two columns at a time and check right is zero and left
-// is non-zero 	for (int i = args; i-- > 0;) { 		int right_val_index = 2*i+1; 		int left_val_index = 2*i; 		right_val =
+// is non-zero 	for (int i = args; i-- > 0;) { 		int right_val_index =
+// 2*i+1; 		int left_val_index = 2*i; 		right_val =
 // isl_mat_get_element_val(mat, 0, right_val_index); 		left_val =
 // isl_mat_get_element_val(mat, 0, left_val_index); 		if
 // (isl_val_is_zero(right_val) && !isl_val_is_zero(left_val)) {
@@ -2113,4 +2114,4 @@ void Program::build_output_scop() {
 // 	return strm.str();
 // }
 
-}  // namespace qrane
+} // namespace qrane

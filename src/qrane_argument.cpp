@@ -24,31 +24,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace qrane {
 
 Argument::Argument() {
-	this->reg_ = std::string("DEFAULT_ARGUMENT");
-	this->index_ = std::numeric_limits<qubit_id>::max();
+  this->reg_ = std::string("DEFAULT_ARGUMENT");
+  this->index_ = std::numeric_limits<qubit_id>::max();
 }
 
 Argument::Argument(std::string reg) {
-	this->reg_ = reg;
-	this->index_ = std::numeric_limits<qubit_id>::max();
+  this->reg_ = reg;
+  this->index_ = std::numeric_limits<qubit_id>::max();
 }
 
 Argument::Argument(std::string reg, qubit_id index) {
-	this->reg_ = reg;
-	this->index_ = index;
+  this->reg_ = reg;
+  this->index_ = index;
 }
 
-std::string Argument::reg() const {
-	return this->reg_;
-}
+std::string Argument::reg() const { return this->reg_; }
 
-qubit_id Argument::index() const {
-	return this->index_;
-}
+qubit_id Argument::index() const { return this->index_; }
 
 std::string Argument::to_string() const {
-	std::ostringstream strm;
-	strm << reg_ << "[" << index_ << "]";
-	return strm.str();
+  std::ostringstream strm;
+  strm << reg_ << "[" << index_ << "]";
+  return strm.str();
 }
-}
+} // namespace qrane

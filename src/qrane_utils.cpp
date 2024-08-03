@@ -12,8 +12,8 @@ namespace qrane {
 namespace Utils {
 
 std::vector<qop_id> stride_graph_long_path_search(
-    DependenceProfile& dependence_profile const
-        std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+    DependenceProfile &dependence_profile const
+        std::map<qop_id, std::shared_ptr<Qop>> &all_qops) {
   std::vector<qop_id> group;
 
   // Get the current frontier
@@ -43,11 +43,11 @@ std::vector<qop_id> stride_graph_long_path_search(
 // Anonymous namespace private to Utils namespace.
 namespace {
 
-std::vector<qop_id> get_one_qubit_qops(
-    const std::vector<qop_id>& frontier,
-    const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+std::vector<qop_id>
+get_one_qubit_qops(const std::vector<qop_id> &frontier,
+                   const std::map<qop_id, std::shared_ptr<Qop>> &all_qops) {
   std::vector<qop_id> one_qubit_qops;
-  for (const auto& id : frontier) {
+  for (const auto &id : frontier) {
     if (all_qops.at(id)->is_1Q_gate()) {
       one_qubit_qops.push_back(id);
     }
@@ -55,11 +55,11 @@ std::vector<qop_id> get_one_qubit_qops(
   return one_qubit_qops;
 };
 
-std::vector<qop_id> get_two_qubit_qops(
-    const std::vector<qop_id>& frontier,
-    const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+std::vector<qop_id>
+get_two_qubit_qops(const std::vector<qop_id> &frontier,
+                   const std::map<qop_id, std::shared_ptr<Qop>> &all_qops) {
   std::vector<qop_id> one_qubit_qops;
-  for (const auto& id : frontier) {
+  for (const auto &id : frontier) {
     if (all_qops.at(id)->is_1Q_gate()) {
       one_qubit_qops.push_back(id);
     }
@@ -68,12 +68,12 @@ std::vector<qop_id> get_two_qubit_qops(
 };
 
 std::vector<qop_id> get_qops_of_most_common_gate_type(
-    const std::vector<qop_id>& subset,
-    const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+    const std::vector<qop_id> &subset,
+    const std::map<qop_id, std::shared_ptr<Qop>> &all_qops) {
   std::map<std::string, std::vector<qop_id>> gate_types;
 
   // Collect qops of each gate type
-  for (const auto& id : subset) {
+  for (const auto &id : subset) {
     auto gate = all_qops.at(id)->name();
     gate_types[gate].push_back(id);
   }
@@ -81,44 +81,45 @@ std::vector<qop_id> get_qops_of_most_common_gate_type(
   // Find the maximum count
   auto max = std::max_element(
       gate_types.begin(), gate_types.end(),
-      [](const std::pair<std::string, std::vector<qop_id>>& a,
-         const std::pair<std::string, std::vector<qop_id>>& b) {
+      [](const std::pair<std::string, std::vector<qop_id>> &a,
+         const std::pair<std::string, std::vector<qop_id>> &b) {
         return a.second.size() < b.second.size();
       });
   return max->second;
 };
 
 std::vector<qop_id> stride_graph_longest_path_of_constant_weight(
-    const std::vector<qop_id>& subset,
-    const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+    const std::vector<qop_id> &subset,
+    const std::map<qop_id, std::shared_ptr<Qop>> &all_qops) {
   // Generate the stride_graph and edge_weights
   StrideGraph SG = generate_stride_graph(subset, all_qops);
 }
 
-StrideGraph generate_stride_graph(
-    const std::vector<qop_id>& subset,
-    const std::map<qop_id, std::shared_ptr<Qop>>& all_qops) {
+StrideGraph
+generate_stride_graph(const std::vector<qop_id> &subset,
+                      const std::map<qop_id, std::shared_ptr<Qop>> &all_qops) {
   StrideGraph ret;
   ret.G = Graph<qop_id>();
   ret.W = edge_properties_t<qop_id, int>();
 
-  for (const auto& u : subset) {
-    for (const auto& v : subset) {
+  for (const auto &u : subset) {
+    for (const auto &v : subset) {
     }
   }
 }
 
-}  // namespace
-}  // namespace Utils
-}  // namespace qrane
+} // namespace
+} // namespace Utils
+} // namespace qrane
 
 //////// OLD /////////
 
 // 		template<typename A, typename B>
 // 		std::initializer_list<A> get_map_keys_as_initializer_list(const
-// std::map<A, B>& m) { 			const std::size_t m_size = m.size();
-// std::size_t i = 0; 			std::array<A, m_size> tmp; 			for (const auto& element : m) {
-// 				tmp[i] = element.first;
+// std::map<A, B>& m) { 			const std::size_t m_size =
+// m.size(); std::size_t i = 0; 			std::array<A, m_size>
+// tmp; 			for (const auto& element : m) { 				tmp[i] =
+// element.first;
 // 				++i;
 // 			}
 // 			return std::initializer_list<A>(std::move(tmp));
@@ -135,8 +136,8 @@ StrideGraph generate_stride_graph(
 // 			for (unsigned int i = 0; i < stmts.size(); ++i) {
 // 				if (std::find(locs.begin(), locs.end(), i) !=
 // locs.end())
-// { 					len_countdown = len - 1; 				}
-// else if (len_countdown > 0) { 					len_countdown
+// { 					len_countdown = len - 1;
+// } else if (len_countdown > 0) { len_countdown
 // -= 1; 				} else {
 // ret.push_back(stmts.at(i));
 // 				}
@@ -145,9 +146,9 @@ StrideGraph generate_stride_graph(
 // 		}
 
 // 		std::vector<std::vector<std::shared_ptr<Element>>>
-// split_into_n_components( 			std::vector<std::shared_ptr<Element>>
-// stmts,
-// unsigned int chunks) { 			int size = (stmts.size() - 1) / chunks
+// split_into_n_components(
+// std::vector<std::shared_ptr<Element>> stmts, unsigned int chunks) {
+// int size = (stmts.size() - 1) / chunks
 // + 1;
 
 // 			// create an array of vectors to store the sub-vectors
@@ -162,8 +163,8 @@ StrideGraph generate_stride_graph(
 // 				// get range for the next set of `n` elements
 // 				std::vector<std::shared_ptr<Element>>::iterator
 // start_itr = std::next(stmts.begin(), k*chunks);
-// 				std::vector<std::shared_ptr<Element>>::iterator end_itr
-// = std::next(stmts.begin(), k*chunks + chunks);
+// 				std::vector<std::shared_ptr<Element>>::iterator
+// end_itr = std::next(stmts.begin(), k*chunks + chunks);
 
 // 				// allocate memory for the sub-vector
 // 				vec[k].resize(chunks);
@@ -202,8 +203,9 @@ StrideGraph generate_stride_graph(
 // G)
 // { 			std::size_t num_v = G.size();
 // std::unordered_map<qop_id, bool>
-// visited(num_v); 			for (auto elem : G) { visited[elem.first] =
-// false; } 			std::stack<qop_id> ordering = std::stack<qop_id>();
+// visited(num_v); 			for (auto elem : G) {
+// visited[elem.first] = false; } 			std::stack<qop_id>
+// ordering = std::stack<qop_id>();
 
 // 			for (auto elem : G) {
 // 				if (!visited[elem.first]) {
@@ -223,18 +225,19 @@ StrideGraph generate_stride_graph(
 
 // 		void adj_list_topological_ordering_util(qop_id start,
 // stride_graph& G, std::unordered_map<qop_id, bool>& visited,
-// std::stack<qop_id>& ordering) { 			visited[start] = true; 			for (std::size_t i =
-// 0; i < G[start].size(); ++i) { 				unsigned int neighbor = G[start][i].first; 				if
-// (!visited[neighbor]) { 					adj_list_topological_ordering_util(neighbor, G,
-// visited, ordering);
+// std::stack<qop_id>& ordering) { 			visited[start] = true;
+// for (std::size_t i = 0; i < G[start].size(); ++i) {
+// unsigned int neighbor = G[start][i].first; 				if
+// (!visited[neighbor]) {
+// adj_list_topological_ordering_util(neighbor, G, visited, ordering);
 // 				}
 // 			}
 // 			ordering.push(start);
 // 		}
 
 // 		bool queue_size_predicate(const std::deque<unsigned int>& lhs,
-// const std::deque<unsigned int>& rhs) { 			return lhs.size() <
-// rhs.size();
+// const std::deque<unsigned int>& rhs) { 			return
+// lhs.size() < rhs.size();
 // 		}
 
 // 		bool is_integer(const float m) {
@@ -247,9 +250,9 @@ StrideGraph generate_stride_graph(
 
 // 		int generate_c_test_file(std::string c_name, std::string
 // qasm_name, std::string codegen_c_str, std::string qreg_decls, std::string
-// rv_map) { 		std::ofstream ofile; 		std::string ofile_name(c_name);
-// 		ofile.open(ofile_name);
-// 		if (!ofile.is_open()) { return 1; }
+// rv_map) { 		std::ofstream ofile; 		std::string
+// ofile_name(c_name); 		ofile.open(ofile_name); 		if (!ofile.is_open()) { return 1;
+// }
 
 // 		const char* macros =	"#ifdef ceild\n"
 // 								"#undef ceild\n"
@@ -265,16 +268,16 @@ StrideGraph generate_stride_graph(
 // 								"#ifdef min\n"
 // 								"#undef min\n"
 // 								"#endif\n"
-// 								"#define ceild(n,d)  (((n) <
-// 0)?
+// 								"#define
+// ceild(n,d)  (((n) < 0)?
 // -((-(n))/(d)) : ((n)+(d)-1)/(d))\n"
-// 								"#define floord(x,y) (((x) <
-// 0)?
+// 								"#define
+// floord(x,y) (((x) < 0)?
 // -((-(x)+(y)-1)/(y)) : (x)/(y))\n"
-// 								"#define max(x,y)    ((x) > (y)?
-// (x) : (y))\n"
-// 								"#define min(x,y)    ((x) < (y)?
-// (x) : (y))\n";
+// 								"#define
+// max(x,y)    ((x) > (y)? (x) : (y))\n"
+// 								"#define
+// min(x,y)    ((x) < (y)? (x) : (y))\n";
 
 // 			// qasm output file from C test file
 // 			std::string qfile(qasm_name);
@@ -290,7 +293,8 @@ StrideGraph generate_stride_graph(
 // 			ofile << std::endl << "int main() {" << std::endl;
 // 			ofile << "FILE *f = fopen(\"" << qfile << "\", \"w\");"
 // << std::endl;
-// 			//ofile << "fprintf(f, \"OPENQASM 2.0;\\ninclude " << qelib
+// 			//ofile << "fprintf(f, \"OPENQASM 2.0;\\ninclude " <<
+// qelib
 // <<
 // ";\\n" << qreg_decls << "\");" << std::endl; 			ofile <<
 // codegen_c_str; 			ofile << "fclose(f);\nreturn 0;" <<
@@ -397,16 +401,16 @@ StrideGraph generate_stride_graph(
 // isl_mat_copy(mat); 			int access_rows = isl_mat_rows(mat);
 
 // 			// First find any dim columns that are zero and record
-// them. 			int dim_cols_lb = 2*args; 			int dim_cols_ub
-// = isl_mat_cols(mat); 			std::vector<int> zero_cols = find_zero_cols(mat,
-// dim_cols_lb, dim_cols_ub); 			int num_zero_cols =
-// zero_cols.size();
+// them. 			int dim_cols_lb = 2*args; int dim_cols_ub =
+// isl_mat_cols(mat); 			std::vector<int> zero_cols =
+// find_zero_cols(mat, dim_cols_lb, dim_cols_ub); 			int
+// num_zero_cols = zero_cols.size();
 
 // 			// Unless there are zero cols, the rows of coeff_mat is
 // equal to args
 // 			// and the cols of coeff_mat is equal to dim + 1 (offset
-// column) 			isl_size coeff_rows = args; 			isl_size
-// coeff_cols = dim + 1;
+// column) 			isl_size coeff_rows = args;
+// isl_size coeff_cols = dim + 1;
 
 // 			// Then drop those columns from the access_mat and
 // update
@@ -414,8 +418,8 @@ StrideGraph generate_stride_graph(
 // 			isl_mat* w_access_mat;
 // 			if (num_zero_cols > 0) {
 // 				w_access_mat = drop_zero_cols(access_mat_copy,
-// zero_cols); 				coeff_cols -= num_zero_cols; 			}
-// else { 				w_access_mat = access_mat_copy;
+// zero_cols); 				coeff_cols -= num_zero_cols;
+// } else { 				w_access_mat = access_mat_copy;
 // 			}
 // 			//std::cout << "After drops access_mat:" << std::endl <<
 // std::flush;
@@ -423,8 +427,8 @@ StrideGraph generate_stride_graph(
 
 // 			// Initialize the coeff_mat
 // 			isl_mat* coeff_mat = get_zero_matrix(ctx, coeff_rows,
-// coeff_cols); 			isl_val* wrk1; 			isl_val* wrk2;
-// isl_val* wrk3;
+// coeff_cols); 			isl_val* wrk1; 			isl_val*
+// wrk2; isl_val* wrk3;
 
 // 			// Need to do back substitution for each argument
 // 			for(int arg = args; arg-- > 0;) {
@@ -433,15 +437,14 @@ StrideGraph generate_stride_graph(
 
 // 				for (int row = 0; row < access_rows; ++row) {
 // 					// x[i] = a(i,n)
-// 					// We compute coefficients starting with the
-// offset going to highest dim
-// 					// Thus, we start on the right-most side of
-// the
-// coeff_mat and work leftwards 					int coeff_col =
-// -1*row+(coeff_cols-1);
+// 					// We compute coefficients starting with
+// the offset going to highest dim
+// 					// Thus, we start on the right-most side
+// of the coeff_mat and work leftwards 					int
+// coeff_col = -1*row+(coeff_cols-1);
 
-// 					// arg_col is the column of access_mat that
-// arg refers to,
+// 					// arg_col is the column of access_mat
+// that arg refers to,
 // 					// i.e. for ccx: arg0->col4, arg1->col2,
 // arg0->col0 					int arg_col = -2*arg+(2*args-2);
 // wrk1 = isl_mat_get_element_val(w_access_mat, row, arg_col);
@@ -450,33 +453,34 @@ StrideGraph generate_stride_graph(
 // 					// ub was here too
 // 					for (int index = 0; index < row;
 // ++index)
-// { 						int arg_col; 						if
-// (index == 0) { 							arg_col = (2*args-1)-2*arg;
-// } else { 							arg_col =
-// 2*args+(index-1);
+// { 						int arg_col;
+// if (index == 0) { 							arg_col
+// = (2*args-1)-2*arg; } else {
+// arg_col = 2*args+(index-1);
 // 						}
-// 						wrk1 = isl_mat_get_element_val(coeff_mat,
-// arg, coeff_col); // x[i] 						wrk2 =
-// isl_mat_get_element_val(w_access_mat, row, arg_col);  // a(i,j)
-// wrk3 = isl_mat_get_element_val(coeff_mat, arg, -1*index+(coeff_cols-1)); //
-// x[j] 						wrk2 = isl_val_mul(wrk2, wrk3); // a(i,j)
+// 						wrk1 =
+// isl_mat_get_element_val(coeff_mat, arg, coeff_col); // x[i]
+// wrk2 = isl_mat_get_element_val(w_access_mat, row, arg_col);  // a(i,j) wrk3 =
+// isl_mat_get_element_val(coeff_mat, arg, -1*index+(coeff_cols-1)); // x[j]
+// wrk2 = isl_val_mul(wrk2, wrk3); // a(i,j)
 // *
-// x[j] 						wrk1 = isl_val_sub(wrk1, wrk2); // x[i] -
-// (a(i,j) * x[j]) 						coeff_mat =
-// isl_mat_set_element_val(coeff_mat, arg, coeff_col, wrk1);
+// x[j] 						wrk1 = isl_val_sub(wrk1,
+// wrk2); // x[i] - (a(i,j) * x[j])
+// coeff_mat = isl_mat_set_element_val(coeff_mat, arg, coeff_col, wrk1);
 // 					}
 
-// 					wrk1 = isl_mat_get_element_val(coeff_mat,
-// arg, coeff_col); // x[i] 					int target;
-// if (row == 0) { 						target =
-// (2*args-1)-2*arg; 						wrk2 = isl_mat_get_element_val(w_access_mat, row, target);
-// } else { 						target = 1*row+(2*args-1);
-// wrk2 = isl_mat_get_element_val(w_access_mat, row, target);
+// 					wrk1 =
+// isl_mat_get_element_val(coeff_mat, arg, coeff_col); // x[i]
+// int target; if (row == 0) { 						target =
+// (2*args-1)-2*arg; 						wrk2 =
+// isl_mat_get_element_val(w_access_mat, row, target); } else {
+// target = 1*row+(2*args-1); wrk2 = isl_mat_get_element_val(w_access_mat, row,
+// target);
 // 					}
 
 // 					//wrk1 = isl_val_div(wrk1, wrk2);
-// 					coeff_mat = isl_mat_set_element_val(coeff_mat,
-// arg, coeff_col, wrk1);
+// 					coeff_mat =
+// isl_mat_set_element_val(coeff_mat, arg, coeff_col, wrk1);
 // 				}
 // 			}
 
@@ -498,9 +502,9 @@ StrideGraph generate_stride_graph(
 // 			for (int i = 0; i < rows; ++i) {
 // 				strm << "[";
 // 				for (int j = 0; j < cols; ++j) {
-// 					isl_val* val = isl_mat_get_element_val(mat,
-// i,
-// j); 					strm << isl_val_get_num_si(val) << " ";
+// 					isl_val* val =
+// isl_mat_get_element_val(mat, i, j); 					strm <<
+// isl_val_get_num_si(val) << " ";
 // 				}
 // 				strm << "]\n";
 // 			}

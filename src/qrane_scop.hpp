@@ -3,21 +3,21 @@
 
 #include <vector>
 
+#include "qrane_dependence_profile.hpp"
 #include "isl/ast_build.h"
 #include "isl/union_map.h"
 #include "isl/union_set.h"
-#include "qrane_dependence_profile.hpp"
 
 namespace qrane {
 
 struct full_scop_s {
-  isl_union_set* domain;
-  isl_union_map* read;
-  isl_union_map* write;
-  isl_union_map* call;
-  isl_union_map* schedule;
-  isl_union_map* dependencies;
-  isl_union_map* arguments;
+  isl_union_set *domain;
+  isl_union_map *read;
+  isl_union_map *write;
+  isl_union_map *call;
+  isl_union_map *schedule;
+  isl_union_map *dependencies;
+  isl_union_map *arguments;
 
   ~full_scop_s() {
     isl_union_set_free(domain);
@@ -32,13 +32,13 @@ struct full_scop_s {
 typedef full_scop_s full_scop;
 
 struct output_scop_s {
-  isl_union_set* domain;
-  isl_union_map* read;
-  isl_union_map* write;
-  isl_union_map* schedule;
-  isl_union_map* arguments;
+  isl_union_set *domain;
+  isl_union_map *read;
+  isl_union_map *write;
+  isl_union_map *schedule;
+  isl_union_map *arguments;
 
-  output_scop_s(isl_ctx* ctx) {
+  output_scop_s(isl_ctx *ctx) {
     domain = isl_union_set_empty_ctx(ctx);
     read = isl_union_map_empty_ctx(ctx);
     write = isl_union_map_empty_ctx(ctx);
@@ -55,11 +55,11 @@ struct output_scop_s {
   }
 };
 typedef output_scop_s output_scop;
-}  // namespace qrane
+} // namespace qrane
 
 struct s_qrane_ast_info_t {
-  isl_ast_expr_list* ast_exl;
-  isl_ast_build* build;
+  isl_ast_expr_list *ast_exl;
+  isl_ast_build *build;
 };
 typedef struct s_qrane_ast_info_t t_qrane_ast_info;
 

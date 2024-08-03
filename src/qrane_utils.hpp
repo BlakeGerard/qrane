@@ -6,11 +6,11 @@
 #include <stack>
 #include <string>
 
-#include "isl/mat.h"
-#include "isl/val.h"
 #include "qrane_dependence_profile.hpp"
 #include "qrane_qop.hpp"
 #include "qrane_shared.hpp"
+#include "isl/mat.h"
+#include "isl/val.h"
 
 namespace qrane {
 
@@ -22,10 +22,10 @@ struct StrideGraph {
 };
 
 std::vector<qop_id> stride_graph_long_path_search(
-    DependenceProfile& dependence_profile,
-    const std::map<qop_id, std::shared_ptr<Qop>>& all_qops);
-}  // namespace Utils
-}  // namespace qrane
+    DependenceProfile &dependence_profile,
+    const std::map<qop_id, std::shared_ptr<Qop>> &all_qops);
+} // namespace Utils
+} // namespace qrane
 
 #endif
 

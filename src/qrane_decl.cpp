@@ -22,43 +22,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace qrane {
 
-Decl::Decl(element_variant_e element_variant, decl_variant_e decl_type, 
-	std::string name) : Element(element_variant) {
-	variant_ = decl_type;
-	name_ = name;
-	params_ = std::vector<std::shared_ptr<Parameter>>();
-	args_ = std::vector<std::shared_ptr<Argument>>();
-	elements_ = std::vector<std::shared_ptr<Element>>();
+Decl::Decl(element_variant_e element_variant, decl_variant_e decl_type,
+           std::string name)
+    : Element(element_variant) {
+  variant_ = decl_type;
+  name_ = name;
+  params_ = std::vector<std::shared_ptr<Parameter>>();
+  args_ = std::vector<std::shared_ptr<Argument>>();
+  elements_ = std::vector<std::shared_ptr<Element>>();
 }
 
-Decl::Decl(element_variant_e element_variant, decl_variant_e decl_type, 
-	std::string name, std::vector<std::shared_ptr<Argument>> args) : Element(element_variant) {
-	variant_ = decl_type;
-	name_ = name;
-	params_ = std::vector<std::shared_ptr<Parameter>>();
-	args_ = args;
-	elements_ = std::vector<std::shared_ptr<Element>>();
+Decl::Decl(element_variant_e element_variant, decl_variant_e decl_type,
+           std::string name, std::vector<std::shared_ptr<Argument>> args)
+    : Element(element_variant) {
+  variant_ = decl_type;
+  name_ = name;
+  params_ = std::vector<std::shared_ptr<Parameter>>();
+  args_ = args;
+  elements_ = std::vector<std::shared_ptr<Element>>();
 }
 
-Decl::Decl(element_variant_e element_variant, decl_variant_e decl_type, 
-	std::string name, std::vector<std::shared_ptr<Parameter>> params, 
-	std::vector<std::shared_ptr<Argument>> args) : Element(element_variant) {
-	variant_ = decl_type;
-	name_ = name;
-	params_ = params;
-	args_ = args;
-	elements_ = std::vector<std::shared_ptr<Element>>();
+Decl::Decl(element_variant_e element_variant, decl_variant_e decl_type,
+           std::string name, std::vector<std::shared_ptr<Parameter>> params,
+           std::vector<std::shared_ptr<Argument>> args)
+    : Element(element_variant) {
+  variant_ = decl_type;
+  name_ = name;
+  params_ = params;
+  args_ = args;
+  elements_ = std::vector<std::shared_ptr<Element>>();
 }
 
 void Decl::set_elements(std::vector<std::shared_ptr<Element>> elements) {
-	elements_ = elements;
+  elements_ = elements;
 }
 
-std::string Decl::name() const {
-	return name_;
-}
+std::string Decl::name() const { return name_; }
 
-std::string Decl::to_string() const {
-	return std::string("decl " + name_);
-}
-}
+std::string Decl::to_string() const { return std::string("decl " + name_); }
+} // namespace qrane

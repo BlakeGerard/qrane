@@ -22,35 +22,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define QRANE_DECL_H
 
 #include "qrane_argument.hpp"
-#include "qrane_parameter.hpp"
 #include "qrane_element.hpp"
+#include "qrane_parameter.hpp"
 
 namespace qrane {
 
-enum decl_variant_e {
-	GATEDECL
-};
+enum decl_variant_e { GATEDECL };
 
 class Decl : public Element {
 
 public:
-	Decl(element_variant_e element_variant, decl_variant_e  decl_variant, std::string name);
-	Decl(element_variant_e element_variant, decl_variant_e  decl_variant, std::string name, 
-		std::vector<std::shared_ptr<Argument>> args);
-	Decl(element_variant_e element_variant, decl_variant_e  decl_variant, std::string name,
-		std::vector<std::shared_ptr<Parameter>> params, 
-		std::vector<std::shared_ptr<Argument>> args);
-	void set_elements(std::vector<std::shared_ptr<Element>> elements);
-	std::string name() const;
-	std::string to_string() const;
+  Decl(element_variant_e element_variant, decl_variant_e decl_variant,
+       std::string name);
+  Decl(element_variant_e element_variant, decl_variant_e decl_variant,
+       std::string name, std::vector<std::shared_ptr<Argument>> args);
+  Decl(element_variant_e element_variant, decl_variant_e decl_variant,
+       std::string name, std::vector<std::shared_ptr<Parameter>> params,
+       std::vector<std::shared_ptr<Argument>> args);
+  void set_elements(std::vector<std::shared_ptr<Element>> elements);
+  std::string name() const;
+  std::string to_string() const;
 
 private:
-	decl_variant_e variant_;
-	std::string name_;
-	std::vector<std::shared_ptr<Parameter>> params_;
-	std::vector<std::shared_ptr<Argument>> args_;
-	std::vector<std::shared_ptr<Element>> elements_;
+  decl_variant_e variant_;
+  std::string name_;
+  std::vector<std::shared_ptr<Parameter>> params_;
+  std::vector<std::shared_ptr<Argument>> args_;
+  std::vector<std::shared_ptr<Element>> elements_;
 };
-}
+} // namespace qrane
 
 #endif
