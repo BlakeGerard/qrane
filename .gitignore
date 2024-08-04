@@ -1,7 +1,3 @@
 .vscode/
 .cache/
-qasm/
-
-barvinok-0.41.4/
-bison-3.3
-ntl-11.4.3/
+build/
