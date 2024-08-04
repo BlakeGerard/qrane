@@ -50,13 +50,13 @@ add_executable(qrane src/qrane_api.cpp
 
 target_include_directories(qrane PRIVATE
                                  src/
+                                 ${BARVINOK_SOURCE_DIR}
                                  ${PARSER_OUTPUTS_DIR}
                                  ${Python_INCLUDE_DIRS})
 
-target_link_libraries(qrane PUBLIC
-                            OpenMP::OpenMP_CXX
-                            PRIVATE
-                            barvinok)
+target_link_libraries(qrane PRIVATE
+                            barvinok
+                            OpenMP::OpenMP_CXX)
 
 target_compile_features(qrane PRIVATE
                               cxx_std_17)

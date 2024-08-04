@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 include(ExternalProject)
+include(CMakePrintHelpers)
 
 ExternalProject_Add(
     ntl-project
@@ -42,5 +43,8 @@ ExternalProject_Add(
     BUILD_COMMAND $(MAKE)
     INSTALL_COMMAND $(MAKE) install
 )
+
+ExternalProject_Get_Property(barvinok-project SOURCE_DIR)
+SET(BARVINOK_SOURCE_DIR "${SOURCE_DIR}" CACHE INTERNAL "barvinok source dir")
 
 add_dependencies(barvinok-project ntl-project)

@@ -10,6 +10,6 @@
 #include "qrane_statement.hh"
 #include "qrane_stmtlist.hh"
 #include "qrane_mainprogram.hh"
-#include "qrane-parser.h"
+#include "qrane_parser.h"
 
 #endif

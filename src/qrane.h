@@ -1,7 +1,7 @@
 #ifndef QRANE_HH
 #define QRANE_HH
 
-#include "include/qrane_host.hh"
+#include "qrane_host.hh"
 
 void qrane_options_init(qrane_options* opt);
 
