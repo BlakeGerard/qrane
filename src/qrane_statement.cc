@@ -24,23 +24,23 @@ qrane_statement::qrane_statement() {};
 qrane_statement::~qrane_statement() {};
 
 void qrane_statement::set_statement_type(statement_type stmt_type) {
-    this->stmt_type = stmt_type;
+  this->stmt_type = stmt_type;
 };
 
 qrane_statement::statement_type qrane_statement::get_statement_type() {
-    return this->stmt_type;
+  return this->stmt_type;
 };
 
 void qrane_statement::print_type() {
-    switch(stmt_type) {
-        case DECL:
-            std::cout << "Declaration" << std::endl;
-			break;
-        case QOP:
-            std::cout << "Quantum Operation" << std::endl;
-			break;
-        case QREG:
-            std::cout << "qreg" << std::endl;
-			break;
-    }
+  switch (stmt_type) {
+  case DECL:
+    std::cout << "Declaration" << std::endl;
+    break;
+  case QOP:
+    std::cout << "Quantum Operation" << std::endl;
+    break;
+  case QREG:
+    std::cout << "qreg" << std::endl;
+    break;
+  }
 };

@@ -25,17 +25,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class qrane_argument {
 
-    protected:
-        std::string id;
-        unsigned long index;
+protected:
+  std::string id;
+  unsigned long index;
 
-    public:
-        qrane_argument(std::string id);
-        qrane_argument(std::string id, unsigned long index);
-        qrane_argument();
-        ~qrane_argument();
-        std::string get_id();
-        unsigned long get_index();
+public:
+  qrane_argument(std::string id);
+  qrane_argument(std::string id, unsigned long index);
+  qrane_argument();
+  ~qrane_argument();
+  std::string get_id();
+  unsigned long get_index();
 };
 
 #endif

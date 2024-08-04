@@ -21,27 +21,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef QRANE_STMTLIST
 #define QRANE_STMTLIST
 
-#include <vector>
-#include <string>
-#include <stdlib.h>
-#include <iostream>
 #include "qrane_qop.hh"
 #include "qrane_statement.hh"
+#include <iostream>
+#include <stdlib.h>
+#include <string>
+#include <vector>
 
 class qrane_stmtlist {
-  private:
-    std::vector<qrane_statement*> stmts;
+private:
+  std::vector<qrane_statement *> stmts;
 
-  public:
-    ~qrane_stmtlist();
-	  void set_stmts(std::vector<qrane_statement*> given);
-    void add_statement(qrane_statement* statement);
-    std::vector<qrane_statement*> get_stmts();
-    std::vector<qrane_statement*> get_qops();
-    std::vector<qrane_statement*> get_1Q_gates();
-    std::vector<qrane_statement*> get_2Q_gates();
-    std::vector<qrane_statement*> get_qregs();
-    std::vector<unsigned long> get_qops_first_argument_indices();
+public:
+  ~qrane_stmtlist();
+  void set_stmts(std::vector<qrane_statement *> given);
+  void add_statement(qrane_statement *statement);
+  std::vector<qrane_statement *> get_stmts();
+  std::vector<qrane_statement *> get_qops();
+  std::vector<qrane_statement *> get_1Q_gates();
+  std::vector<qrane_statement *> get_2Q_gates();
+  std::vector<qrane_statement *> get_qregs();
+  std::vector<unsigned long> get_qops_first_argument_indices();
 };
 
 #endif

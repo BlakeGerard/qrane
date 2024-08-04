@@ -22,12 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 qrane_explist::qrane_explist() {};
 qrane_explist::~qrane_explist() {
-    for (auto exp : explist) {
-        delete exp;
-    }
-    explist.clear();
+  for (auto exp : explist) {
+    delete exp;
+  }
+  explist.clear();
 };
 
-void qrane_explist::add_exp(qrane_exp* exp) {
-    this->explist.push_back(exp);
-};
+void qrane_explist::add_exp(qrane_exp *exp) { this->explist.push_back(exp); };

@@ -20,22 +20,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "qrane_argument.hh"
 
-qrane_argument::qrane_argument(std::string id) {
-    this->id = id;
-};
+qrane_argument::qrane_argument(std::string id) { this->id = id; };
 
 qrane_argument::qrane_argument(std::string id, unsigned long index) {
-    this->id = id;
-    this->index = index;
+  this->id = id;
+  this->index = index;
 };
 
-qrane_argument::qrane_argument(){};
-qrane_argument::~qrane_argument(){};
+qrane_argument::qrane_argument() {};
+qrane_argument::~qrane_argument() {};
 
-std::string qrane_argument::get_id() {
-    return this->id;
-};
+std::string qrane_argument::get_id() { return this->id; };
 
-unsigned long qrane_argument::get_index() {
-    return this->index;
-};
+unsigned long qrane_argument::get_index() { return this->index; };

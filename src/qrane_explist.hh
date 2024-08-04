@@ -21,18 +21,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef QRANE_EXPLIST
 #define QRANE_EXPLIST
 
-#include <vector>
 #include "qrane_exp.hh"
+#include <vector>
 
 class qrane_explist {
 
-    protected:
-        std::vector<qrane_exp*> explist;
+protected:
+  std::vector<qrane_exp *> explist;
 
-    public:
-        qrane_explist();
-        ~qrane_explist();
-        void add_exp(qrane_exp* exp);
+public:
+  qrane_explist();
+  ~qrane_explist();
+  void add_exp(qrane_exp *exp);
 };
 
 #endif

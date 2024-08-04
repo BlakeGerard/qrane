@@ -21,33 +21,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef QRANE_STATEMENT
 #define QRANE_STATEMENT
 
-#include <string>
-#include <stdlib.h>
-#include <iostream>
-#include "qrane_explist.hh"
-#include "qrane_argument.hh"
 #include "qrane_arglist.hh"
+#include "qrane_argument.hh"
+#include "qrane_explist.hh"
+#include <iostream>
+#include <stdlib.h>
+#include <string>
 
 class qrane_statement {
 
-    public:
-        enum statement_type {
-            DECL = 0,
-            QOP, 
-            QREG
-        };
-        qrane_statement();
-        virtual ~qrane_statement();
-        void set_statement_type(statement_type type);
-        statement_type get_statement_type();
+public:
+  enum statement_type { DECL = 0, QOP, QREG };
+  qrane_statement();
+  virtual ~qrane_statement();
+  void set_statement_type(statement_type type);
+  statement_type get_statement_type();
 
-        void print_type();
+  void print_type();
 
-        virtual void set_if_condition(std::string if_id, int if_nnint) {}
-        virtual void set_idlist(qrane_idlist* idlist) {}
-    
-    protected:
-        statement_type stmt_type;
+  virtual void set_if_condition(std::string if_id, int if_nnint) {}
+  virtual void set_idlist(qrane_idlist *idlist) {}
+
+protected:
+  statement_type stmt_type;
 };
 
 #endif

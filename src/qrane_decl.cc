@@ -23,123 +23,85 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 qrane_decl::qrane_decl() {};
 qrane_decl::~qrane_decl() {};
 
-void qrane_decl::set_decl_type(decl_type t_decl) {
-    this->t_decl = t_decl;
-};
+void qrane_decl::set_decl_type(decl_type t_decl) { this->t_decl = t_decl; };
 
-qrane_decl::decl_type qrane_decl::get_decl_type() {
-    return this->t_decl;
-};
+qrane_decl::decl_type qrane_decl::get_decl_type() { return this->t_decl; };
 
 qrane_qreg::qrane_qreg() {};
 qrane_qreg::~qrane_qreg() {};
 
-void qrane_qreg::set_id(std::string id) {
-    this->id = id;
-};
+void qrane_qreg::set_id(std::string id) { this->id = id; };
 
-void qrane_qreg::set_size(int nninteger) {
-    this->size = nninteger;
-};
+void qrane_qreg::set_size(int nninteger) { this->size = nninteger; };
 
-std::string qrane_qreg::get_id() {
-    return this->id;
-};
+std::string qrane_qreg::get_id() { return this->id; };
 
-int qrane_qreg::get_size() {
-    return this->size;
-}
+int qrane_qreg::get_size() { return this->size; }
 
 qrane_creg::qrane_creg() {};
 qrane_creg::~qrane_creg() {};
 
-void qrane_creg::set_id(std::string id) {
-    this->id = id;
-};
+void qrane_creg::set_id(std::string id) { this->id = id; };
 
-void qrane_creg::set_size(int nninteger) {
-    this->size = nninteger;
-};
+void qrane_creg::set_size(int nninteger) { this->size = nninteger; };
 
-std::string qrane_creg::get_id() {
-    return this->id;
-};
+std::string qrane_creg::get_id() { return this->id; };
 
-int qrane_creg::get_size() {
-    return this->size;
-}
+int qrane_creg::get_size() { return this->size; }
 
 qrane_gatedecl::qrane_gatedecl() {};
 
 qrane_gatedecl::~qrane_gatedecl() {
-    delete paramlist;
-    delete arglist;
-    delete goplist;
+  delete paramlist;
+  delete arglist;
+  delete goplist;
 };
 
-void qrane_gatedecl::set_id(std::string id) {
-    this->id = id;
+void qrane_gatedecl::set_id(std::string id) { this->id = id; };
+
+void qrane_gatedecl::set_paramlist(qrane_idlist *paramlist) {
+  this->paramlist = paramlist;
 };
 
-void qrane_gatedecl::set_paramlist(qrane_idlist* paramlist) {
-    this->paramlist = paramlist;
-};
-
-void qrane_gatedecl::set_arglist(qrane_idlist* arglist) {
-    this->arglist = arglist;
+void qrane_gatedecl::set_arglist(qrane_idlist *arglist) {
+  this->arglist = arglist;
 };
 
 void qrane_gatedecl::set_goplist(qrane_stmtlist *goplist) {
-    this->goplist = goplist;
+  this->goplist = goplist;
 };
 
-std::string qrane_gatedecl::get_id() {
-    return this->id;
-};
+std::string qrane_gatedecl::get_id() { return this->id; };
 
-int qrane_gatedecl::get_size() {
-    return this->arglist->size();
-}
+int qrane_gatedecl::get_size() { return this->arglist->size(); }
 
 qrane_opaque::qrane_opaque() {};
 qrane_opaque::~qrane_opaque() {
-    delete paramlist;
-    delete arglist;
+  delete paramlist;
+  delete arglist;
 };
 
-void qrane_opaque::set_id(std::string id) {
-    this->id = id;
+void qrane_opaque::set_id(std::string id) { this->id = id; };
+
+void qrane_opaque::set_paramlist(qrane_idlist *paramlist) {
+  this->paramlist = paramlist;
 };
 
-void qrane_opaque::set_paramlist(qrane_idlist* paramlist) {
-    this->paramlist = paramlist;
+void qrane_opaque::set_arglist(qrane_idlist *arglist) {
+  this->arglist = arglist;
 };
 
-void qrane_opaque::set_arglist(qrane_idlist* arglist) {
-    this->arglist = arglist;
-};
+std::string qrane_opaque::get_id() { return this->id; };
 
-std::string qrane_opaque::get_id() {
-    return this->id;
-};
-
-int qrane_opaque::get_size() {
-    return this->arglist->size();
-}
+int qrane_opaque::get_size() { return this->arglist->size(); }
 
 qrane_barrier::qrane_barrier() {};
-qrane_barrier::~qrane_barrier() {
-    delete arglist;
+qrane_barrier::~qrane_barrier() { delete arglist; };
+
+void qrane_barrier::set_arglist(qrane_arglist *arglist) {
+  this->arglist = arglist;
 };
 
-void qrane_barrier::set_arglist(qrane_arglist* arglist) {
-    this->arglist = arglist;
-};
+std::string qrane_barrier::get_id() { return std::string("barrier"); };
 
-std::string qrane_barrier::get_id() {
-    return std::string("barrier");
-};
-
-int qrane_barrier::get_size() {
-    return this->arglist->size();
-}
+int qrane_barrier::get_size() { return this->arglist->size(); }

@@ -21,58 +21,55 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef QRANE_ARGLIST
 #define QRANE_ARGLIST
 
-#include <vector>
-#include <string>
-#include <iostream>
 #include "qrane_argument.hh"
+#include <iostream>
+#include <string>
+#include <vector>
 
 class qrane_arglist {
 
-    public:
+public:
+  enum arglist_type { IDLIST = 0, MIXED };
 
-        enum arglist_type {
-            IDLIST = 0,
-            MIXED
-        };
+  qrane_arglist();
+  virtual ~qrane_arglist();
+  void set_type(arglist_type type);
+  virtual void add_id(std::string id) {}
+  virtual void add_argument(qrane_argument *arg) {}
 
-        qrane_arglist();
-        virtual ~qrane_arglist();
-        void set_type(arglist_type type);
-        virtual void add_id(std::string id) {}
-        virtual void add_argument(qrane_argument* arg) {}
+  virtual std::size_t size() = 0;
+  virtual int get_arg_index_val(int index) = 0;
 
-        virtual std::size_t size() = 0;
-        virtual int get_arg_index_val(int index) = 0;
-
-    protected:
-        arglist_type type;
+protected:
+  arglist_type type;
 };
 
 class qrane_idlist : public qrane_arglist {
-    protected:
-        std::vector<std::string> idlist;
+protected:
+  std::vector<std::string> idlist;
 
-    public:
-        qrane_idlist();
-        ~qrane_idlist();
-        void add_id(std::string id);
-        std::size_t size();
-        int get_arg_index_val(int index);
+public:
+  qrane_idlist();
+  ~qrane_idlist();
+  void add_id(std::string id);
+  std::size_t size();
+  int get_arg_index_val(int index);
 };
 
 class qrane_mixedlist : public qrane_arglist {
 
-    protected:
-        std::vector<qrane_argument*> arglist;
-    public:
-        qrane_mixedlist();
-        ~qrane_mixedlist();
-        void add_argument(qrane_argument* arg);
-        std::vector<qrane_argument*> get_arglist();
-        qrane_argument* get_first_control();
-        qrane_argument* get_target();
-        std::size_t size();
-        int get_arg_index_val(int index);
+protected:
+  std::vector<qrane_argument *> arglist;
+
+public:
+  qrane_mixedlist();
+  ~qrane_mixedlist();
+  void add_argument(qrane_argument *arg);
+  std::vector<qrane_argument *> get_arglist();
+  qrane_argument *get_first_control();
+  qrane_argument *get_target();
+  std::size_t size();
+  int get_arg_index_val(int index);
 };
 
 #endif

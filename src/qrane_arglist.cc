@@ -25,59 +25,46 @@ qrane_arglist::qrane_arglist() {};
 
 qrane_arglist::~qrane_arglist() {};
 
-void qrane_arglist::set_type(arglist_type type) {
-    this->type = type;
-};
+void qrane_arglist::set_type(arglist_type type) { this->type = type; };
 
 /* IDLIST */
 qrane_idlist::qrane_idlist() {};
 qrane_idlist::~qrane_idlist() {
-    
+
 };
 
-void qrane_idlist::add_id(std::string id) {
-    this->idlist.push_back(id);
-};
+void qrane_idlist::add_id(std::string id) { this->idlist.push_back(id); };
 
-std::size_t qrane_idlist::size() {
-    return this->idlist.size();
-}
+std::size_t qrane_idlist::size() { return this->idlist.size(); }
 
 // TERRIBLE CODE. FIND SOMETHING BETTER LATER
-int qrane_idlist::get_arg_index_val(int index) {
-    return 0;
-};
+int qrane_idlist::get_arg_index_val(int index) { return 0; };
 
 /* MIXEDLIST */
 qrane_mixedlist::qrane_mixedlist() {};
 qrane_mixedlist::~qrane_mixedlist() {
-    for (auto arg : arglist) {
-        delete arg;
-    }
-    arglist.clear();
+  for (auto arg : arglist) {
+    delete arg;
+  }
+  arglist.clear();
 };
 
-void qrane_mixedlist::add_argument(qrane_argument* arg) {
-    this->arglist.push_back(arg);
+void qrane_mixedlist::add_argument(qrane_argument *arg) {
+  this->arglist.push_back(arg);
 };
 
-std::vector<qrane_argument*> qrane_mixedlist::get_arglist() {
-    return this->arglist;
+std::vector<qrane_argument *> qrane_mixedlist::get_arglist() {
+  return this->arglist;
 };
 
-qrane_argument* qrane_mixedlist::get_first_control() {
-    return this->arglist.front();
+qrane_argument *qrane_mixedlist::get_first_control() {
+  return this->arglist.front();
 };
 
-qrane_argument* qrane_mixedlist::get_target() {
-    return this->arglist.back();
-};
+qrane_argument *qrane_mixedlist::get_target() { return this->arglist.back(); };
 
-std::size_t qrane_mixedlist::size() {
-    return this->arglist.size();
-}
+std::size_t qrane_mixedlist::size() { return this->arglist.size(); }
 
 int qrane_mixedlist::get_arg_index_val(int index) {
-    return this->arglist.at(index)->get_index();
+  return this->arglist.at(index)->get_index();
 };
-

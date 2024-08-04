@@ -18,19 +18,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <string>
 #include "qrane_exp.hh"
+#include <string>
 
 qrane_exp::qrane_exp() {};
 qrane_exp::~qrane_exp() {};
 
-template <typename T>
-qrane_value<T>::qrane_value(T value) {
-    this->value = value;
+template <typename T> qrane_value<T>::qrane_value(T value) {
+  this->value = value;
 };
 
-template <typename T>
-qrane_value<T>::~qrane_value() {};
+template <typename T> qrane_value<T>::~qrane_value(){};
 
 template class qrane_value<double>;
 template class qrane_value<int>;
@@ -38,31 +36,21 @@ template class qrane_value<std::string>;
 
 qrane_binaryop::qrane_binaryop() {};
 qrane_binaryop::~qrane_binaryop() {
-    delete lhs;
-    delete rhs;
+  delete lhs;
+  delete rhs;
 };
 
 void qrane_binaryop::set_binaryop_type(binaryop_type type) {
-    this->type = type;
+  this->type = type;
 };
 
-void qrane_binaryop::set_lhs(qrane_exp* lhs) {
-    this->lhs = lhs;
-};
+void qrane_binaryop::set_lhs(qrane_exp *lhs) { this->lhs = lhs; };
 
-void qrane_binaryop::set_rhs(qrane_exp* rhs) {
-    this->rhs = rhs;
-};
+void qrane_binaryop::set_rhs(qrane_exp *rhs) { this->rhs = rhs; };
 
 qrane_unaryop::qrane_unaryop() {};
-qrane_unaryop::~qrane_unaryop() {
-    delete arg;
-};
+qrane_unaryop::~qrane_unaryop() { delete arg; };
 
-void qrane_unaryop::set_unaryop_type(unaryop_type type) {
-    this->type = type;
-};
+void qrane_unaryop::set_unaryop_type(unaryop_type type) { this->type = type; };
 
-void qrane_unaryop::set_arg(qrane_exp* arg) {
-    this->arg = arg;
-};
+void qrane_unaryop::set_arg(qrane_exp *arg) { this->arg = arg; };
