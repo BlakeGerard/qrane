@@ -85,10 +85,13 @@ void print_qrane_options(qrane_options *opt) {
 }
 
 int main(int argc, char *argv[]) {
+  std::cout << "START" << std::endl;
   qrane_options opt = qrane_options();
   qrane_timer timer = qrane_timer();
   qrane_options_init(&opt);
+  std::cout << "OPTIONS_INIT" << std::endl;
   qrane_options_check(&opt);
+  std::cout << "OPTIONS_CHECK" << std::endl;
 
   int res;
   qrane_host host = qrane_host(&opt, &timer);

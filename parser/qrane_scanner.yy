@@ -24,8 +24,8 @@ yy::location loc;
 // Counter to track number of include buffers
 int num_incl_buffs = 0;
 
-std::string qrane_home = std::string(std::getenv("QRANE_HOME"));
-std::string qelib = qrane_home + "/qelib1.inc";
+//std::string qrane_home = std::string(std::getenv("QRANE_HOME"));
+//std::string qelib = qrane_home + "/qelib1.inc";
 
 %}
 
@@ -201,6 +201,7 @@ NNINTEGER [1-9]+[0-9]*|0
 
 <incl>[ \t]*
 <incl>\".*\";	{
+                    /*
 					std::string file = std::string(yytext);
 					file.erase(std::remove(file.begin(), file.end(), '\"'), file.end());
 					file.erase(std::remove(file.begin(), file.end(), ';'), file.end());
@@ -210,6 +211,7 @@ NNINTEGER [1-9]+[0-9]*|0
 					++num_incl_buffs;
 					yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));					
 					BEGIN(INITIAL);
+                    */
 				}
 
 <<EOF>>		{ 
