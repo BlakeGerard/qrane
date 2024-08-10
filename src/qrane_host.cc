@@ -1,6 +1,7 @@
 #include "qrane_host.hh"
 
 #include <algorithm>
+#include <cstdio>
 
 // Global domain counting variable from qrane_ctr.hh
 unsigned int num_domains = 0;
@@ -169,25 +170,6 @@ qrane_substr_info qrane_host::substr_recursion(aquma_graph *ag) {
   return qrane_substr_info(prev, prev_locs);
 };
 
-std::vector<qrane_mainprogram>
-qrane_host::generate_qrane_mainprogram_list_from_chunked_statements(
-    std::vector<qrane_statement *> stmts_to_chunk,
-    unsigned int subcircuit_count) {
-  if (stmts_to_chunk.empty()) {
-    return std::vector<qrane_mainprogram>();
-  }
-  std::vector<std::vector<qrane_statement *>> chunked =
-      qrane_utils::split_into_n_components(stmts_to_chunk, opt->chunk);
-
-  std::vector<qrane_mainprogram> mps;
-  mps.reserve(chunked.size());
-  for (auto &chunk : chunked) {
-    mps.push_back(create_fresh_qrane_mainprogram(chunk, subcircuit_count));
-    subcircuit_count += 1;
-  }
-  return mps;
-}
-
 qrane_mainprogram qrane_host::generate_qrane_mainprogram_from_aquma_substr(
     qrane_substr_info &info, std::vector<qrane_statement *> &stmts_2Q,
     unsigned int subcircuit_num) {
@@ -198,19 +180,6 @@ qrane_mainprogram qrane_host::generate_qrane_mainprogram_from_aquma_substr(
   std::vector<qrane_statement *> stmts(first, last);
   return create_fresh_qrane_mainprogram(stmts, subcircuit_num);
 };
-
-qrane_mainprogram
-qrane_host::create_fresh_qrane_mainprogram(std::vector<qrane_statement *> stmts,
-                                           unsigned int subcircuit_num) {
-  qrane_stmtlist *stmtlist = new qrane_stmtlist();
-  stmtlist->set_stmts(stmts);
-  qrane_mainprogram new_mp = qrane_mainprogram(opt);
-  new_mp.set_subcircuit_num(subcircuit_num);
-  new_mp.add_stmtlist(stmtlist);
-  new_mp.set_num_qops(stmts.size());
-  new_mp.qreg_size = main_processor->qreg_size;
-  return new_mp;
-}
 
 void qrane_host::store_substrs_in_qrane_mainprogram(
     qrane_mainprogram &mp, qrane_substr_info &info,
@@ -407,6 +376,38 @@ void qrane_host::sequential_process() {
   main_processor->build_isl_domain_read_write_schedule();
 };
 
+std::vector<qrane_mainprogram>
+qrane_host::generate_qrane_mainprogram_list_from_chunked_statements(
+    std::vector<qrane_statement *> stmts_to_chunk,
+    unsigned int subcircuit_count) {
+  if (stmts_to_chunk.empty()) {
+    return std::vector<qrane_mainprogram>();
+  }
+  std::vector<std::vector<qrane_statement *>> chunked =
+      qrane_utils::split_into_n_components(stmts_to_chunk, opt->chunk);
+
+  std::vector<qrane_mainprogram> mps;
+  mps.reserve(chunked.size());
+  for (auto &chunk : chunked) {
+    mps.push_back(create_fresh_qrane_mainprogram(chunk, subcircuit_count));
+    subcircuit_count += 1;
+  }
+  return mps;
+}
+
+qrane_mainprogram
+qrane_host::create_fresh_qrane_mainprogram(std::vector<qrane_statement *> stmts,
+                                           unsigned int subcircuit_num) {
+  qrane_stmtlist *stmtlist = new qrane_stmtlist();
+  stmtlist->set_stmts(stmts);
+  qrane_mainprogram new_mp = qrane_mainprogram(opt);
+  new_mp.set_subcircuit_num(subcircuit_num);
+  new_mp.add_stmtlist(stmtlist);
+  new_mp.set_num_qops(stmts.size());
+  new_mp.qreg_size = main_processor->qreg_size;
+  return new_mp;
+}
+
 bool sort_mps_in_time(const qrane_mainprogram &a, const qrane_mainprogram &b) {
   return a.get_time_max() < b.get_time_min();
 };
@@ -472,6 +473,7 @@ void qrane_host::parallel_process(std::vector<qrane_mainprogram> mps) {
     all_scops[i] = mps[i].get_scop();
   }
 
+#ifdef QRANE_USE_AQUMA
   if (opt->substr) {
     for (std::size_t i = 0; i < mps.size(); ++i) {
       if (!mps[i].substrs.empty()) {
@@ -482,9 +484,9 @@ void qrane_host::parallel_process(std::vector<qrane_mainprogram> mps) {
       }
     }
   }
+#endif
 
   codegen_for_all_subcircuits(mps);
-  exit(1);
 
   if (!opt->quiet) {
     std::cout << "Merging subcircuit scops ... " << std::flush;
@@ -930,6 +932,8 @@ int qrane_host::output_to_files() {
 int qrane_host::parse_options(int argc, char *argv[]) {
   int gopt;
 
+  /*
+    What the heck was this?
   char name[] = "./name";
   int new_argc = argc + 1;
   char *new_argv_temp[new_argc];
@@ -943,6 +947,7 @@ int qrane_host::parse_options(int argc, char *argv[]) {
   for (i = 0; i < new_argc; i++) {
     new_argv[i] = strdup(new_argv_temp[i]);
   }
+  */
 
   while (1) {
     static struct option long_options[] = {
@@ -968,7 +973,7 @@ int qrane_host::parse_options(int argc, char *argv[]) {
         {0, 0, 0, 0}};
 
     int option_index;
-    gopt = getopt_long(new_argc, new_argv, "", long_options, &option_index);
+    gopt = getopt_long(argc, argv, "", long_options, &option_index);
 
     if (gopt == -1) {
       return 0;
@@ -994,7 +999,6 @@ int qrane_host::parse_options(int argc, char *argv[]) {
         std::cout << "Invalid argument for --chunk=" << std::endl;
         return 1;
       }
-
       break;
 
       // Check
@@ -1112,15 +1116,17 @@ int qrane_host::parse_options(int argc, char *argv[]) {
 
     default:
       std::cout << help_message();
-      return 1;
       break;
     }
   }
 
+  /*
+    What the heck was this?
   for (i = 0; i < new_argc; i++) {
     free(new_argv[i]);
   }
   free(new_argv);
+  */
 
   return 0;
 };

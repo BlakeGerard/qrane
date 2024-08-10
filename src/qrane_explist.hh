@@ -30,7 +30,6 @@ protected:
   std::vector<qrane_exp *> explist;
 
 public:
-  qrane_explist();
   ~qrane_explist();
   void add_exp(qrane_exp *exp);
 };

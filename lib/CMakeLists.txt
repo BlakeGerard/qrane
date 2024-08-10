@@ -21,9 +21,9 @@ ExternalProject_Add(
 )
 
 ExternalProject_Get_Property(ntl-project BINARY_DIR)
-set(NTL_INSTALL_PATH ${BINARY_DIR})
-set(NTL_INC_PATH ${NTL_INSTALL_PATH}/include/NTL)
-set(NTL_LIB_PATH ${NTL_INSTALL_PATH}/lib)
+set(NTL_BINARY_DIR "${BINARY_DIR}" CACHE INTERNAL "ntl binary dir")
+set(NTL_INC_PATH ${NTL_BINARY_DIR}/include/NTL)
+set(NTL_LIB_PATH ${NTL_BINARY_DIR}/lib)
 
 set(POLYLIB_CFLAGS "-Wno-implicit-function-declaration -Wno-int-conversion")
 ExternalProject_Add(
@@ -38,7 +38,7 @@ ExternalProject_Add(
                       && <SOURCE_DIR>/autogen.sh
                       COMMAND <SOURCE_DIR>/configure
                       --prefix=<BINARY_DIR>
-                      --with-ntl-prefix=${NTL_INSTALL_PATH}
+                      --with-ntl-prefix=${NTL_BINARY_DIR}
                       "CFLAGS=${CMAKE_C_FLAGS} ${POLYLIB_CFLAGS}"
     BUILD_COMMAND $(MAKE)
     INSTALL_COMMAND $(MAKE) install
@@ -46,5 +46,8 @@ ExternalProject_Add(
 
 ExternalProject_Get_Property(barvinok-project SOURCE_DIR)
 SET(BARVINOK_SOURCE_DIR "${SOURCE_DIR}" CACHE INTERNAL "barvinok source dir")
+
+ExternalProject_Get_Property(barvinok-project BINARY_DIR)
+SET(BARVINOK_BINARY_DIR "${BINARY_DIR}" CACHE INTERNAL "barvinok binary dir")
 
 add_dependencies(barvinok-project ntl-project)
