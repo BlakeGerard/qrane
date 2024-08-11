@@ -932,24 +932,7 @@ int qrane_host::output_to_files() {
 int qrane_host::parse_options(int argc, char *argv[]) {
   int gopt;
 
-  /*
-    What the heck was this?
-  char name[] = "./name";
-  int new_argc = argc + 1;
-  char *new_argv_temp[new_argc];
-  char **new_argv = (char **)malloc(sizeof(char *) * new_argc);
-  new_argv_temp[0] = name;
-
-  int i;
-  for (i = 0; i < argc; i++) {
-    new_argv_temp[i + 1] = argv[i];
-  }
-  for (i = 0; i < new_argc; i++) {
-    new_argv[i] = strdup(new_argv_temp[i]);
-  }
-  */
-
-  while (1) {
+  while (true) {
     static struct option long_options[] = {
         {"qasm", required_argument, 0, 0},
         {"chunk", required_argument, 0, 1},
@@ -976,7 +959,7 @@ int qrane_host::parse_options(int argc, char *argv[]) {
     gopt = getopt_long(argc, argv, "", long_options, &option_index);
 
     if (gopt == -1) {
-      return 0;
+      break;
     }
 
     switch (gopt) {
@@ -1120,16 +1103,54 @@ int qrane_host::parse_options(int argc, char *argv[]) {
     }
   }
 
-  /*
-    What the heck was this?
-  for (i = 0; i < new_argc; i++) {
-    free(new_argv[i]);
-  }
-  free(new_argv);
-  */
-
-  return 0;
+  return validate_options();
 };
+
+int qrane_host::validate_options() const {
+  if (opt->qasm_file == nullptr) {
+    printf("Please provide an OpenQASM file path with --qasm <path>.\n");
+    return 1;
+  }
+
+  FILE *check;
+
+  // Verify the qasm file if supplied
+  if (opt->qasm_file) {
+    if ((check = fopen(opt->qasm_file, "r"))) {
+      fclose(check);
+    } else {
+      printf("OpenQASM file %s not found ... Aborting.", opt->qasm_file);
+      return 1;
+    }
+  }
+
+  // Verify the codegen file if supplied
+  if (opt->codegen_file) {
+    if ((check = fopen(opt->codegen_file, "w"))) {
+      fclose(check);
+    } else {
+      printf("Failed to create or open codegen file %s ... Aborting.",
+             opt->codegen_file);
+      return 1;
+    }
+  }
+
+#ifdef QRANE_USE_AQUMA
+  // Verify the aquma output file if supplied
+  if (opt->aquma_file) {
+    if ((check = fopen(opt->codegen_file, "w"))) {
+      fclose(check);
+    } else {
+      printf("Failed to create or open aquma output file %s ... Aborting.",
+             opt->aquma_file);
+      return 1;
+    }
+  }
+#endif
+
+  // Everything checks out
+  return 0;
+}
 
 std::string qrane_host::help_message() {
   std::ostringstream strm;

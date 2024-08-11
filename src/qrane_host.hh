@@ -81,6 +81,8 @@ private:
   void sequential_process();
   std::string help_message();
 
+  int validate_options() const;
+
 public:
   qrane_host(qrane_options *opt, qrane_timer *timer);
   ~qrane_host();

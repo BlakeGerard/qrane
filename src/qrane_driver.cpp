@@ -20,10 +20,10 @@ void qrane_options_init(qrane_options *opt) {
 
 int qrane_options_check(qrane_options *opt) {
   if (!opt->qrane_home) {
-    return 0;
+    return 1;
   }
   if (!opt->qasm_file) {
-    return 0;
+    return 1;
   }
 
   FILE *check;
@@ -34,7 +34,7 @@ int qrane_options_check(qrane_options *opt) {
       fclose(check);
     } else {
       printf("OpenQASM file %s not found ... Aborting.", opt->qasm_file);
-      return 0;
+      return 1;
     }
   }
 
@@ -45,7 +45,7 @@ int qrane_options_check(qrane_options *opt) {
     } else {
       printf("Failed to create or open codegen file %s ... Aborting.",
              opt->codegen_file);
-      return 0;
+      return 1;
     }
   }
 
@@ -56,12 +56,12 @@ int qrane_options_check(qrane_options *opt) {
     } else {
       printf("Failed to create or open aquma output file %s ... Aborting.",
              opt->aquma_file);
-      return 0;
+      return 1;
     }
   }
 
   // Everything checks out
-  return 1;
+  return 0;
 }
 
 void qrane_options_free(qrane_options *opt) {}
@@ -85,13 +85,9 @@ void print_qrane_options(qrane_options *opt) {
 }
 
 int main(int argc, char *argv[]) {
-  std::cout << "START" << std::endl;
   qrane_options opt = qrane_options();
   qrane_timer timer = qrane_timer();
   qrane_options_init(&opt);
-  std::cout << "OPTIONS_INIT" << std::endl;
-  qrane_options_check(&opt);
-  std::cout << "OPTIONS_CHECK" << std::endl;
 
   int res;
   qrane_host host = qrane_host(&opt, &timer);
@@ -105,6 +101,7 @@ int main(int argc, char *argv[]) {
     qrane_options_free(&opt);
     return 1;
   }
+  std::cout << "res: " << res << std::endl;
 
   std::cout << "Parsing circuit\n" << std::endl;
   // Parse the input circuit
