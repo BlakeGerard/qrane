@@ -1078,7 +1078,7 @@ int qrane_host::parse_options(int argc, char *argv[]) {
     // help
     case 16:
       std::cout << help_message();
-      break;
+      std::exit(0);
 
     // Check qasm file
     case 17:
