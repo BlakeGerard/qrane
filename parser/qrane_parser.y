@@ -1,3 +1,4 @@
+// clang-format off
 %language "c++"
 %skeleton "lalr1.cc" /* -*- C++ -*- */
 %require "3.2"
@@ -551,6 +552,7 @@ unaryop : T_SIN     { $$ = qrane_exp::unaryop_type::SIN;  }
 
 %%
 
-void yy::qrane_parser::error (const yy::location & l, const std::string & s) {
-	std::cerr << "Qrane parsing error at " << l << " : " << s << std::endl;
+void yy::qrane_parser::error(const yy::location &l, const std::string &s) {
+  std::cerr << "Qrane parsing error at " << l << " : " << s << std::endl;
 }
+// clang-format on

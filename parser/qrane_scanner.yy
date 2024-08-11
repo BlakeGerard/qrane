@@ -55,9 +55,9 @@ NNINTEGER [1-9]+[0-9]*|0
 				return yy::qrane_parser::make_T_OPENQASM(loc); 
 			}
 
-"include"   {
-				BEGIN(incl);
-			}
+^include.*  {
+               // Skip include directives.
+            }
 
 "qreg"  	{ 
 				return yy::qrane_parser::make_T_QREG(loc); 
@@ -200,26 +200,27 @@ NNINTEGER [1-9]+[0-9]*|0
 		    }
 
 <incl>[ \t]*
-<incl>\".*\";	{
-                    /*
-					std::string file = std::string(yytext);
-					file.erase(std::remove(file.begin(), file.end(), '\"'), file.end());
-					file.erase(std::remove(file.begin(), file.end(), ';'), file.end());
+<incl>\".*\";
+            {
+                /*
+			    std::string file = std::string(yytext);
+			    file.erase(std::remove(file.begin(), file.end(), '\"'), file.end());
+			    file.erase(std::remove(file.begin(), file.end(), ';'), file.end());
 
-					yyin = fopen(qelib.c_str(), "r");
-					if (!yyin) { printf("Could not open include file.\n"); exit(1); }
-					++num_incl_buffs;
-					yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));					
-					BEGIN(INITIAL);
-                    */
-				}
+			    yyin = fopen(qelib.c_str(), "r");
+			    if (!yyin) { printf("Could not open include file.\n"); exit(1); }
+			    ++num_incl_buffs;
+			    yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));					
+			    BEGIN(INITIAL);
+                */
+		    }
 
 <<EOF>>		{ 
 				if (num_incl_buffs > 0) {
 					yypop_buffer_state();
 					--num_incl_buffs; 
 				} else {
-					return yy::qrane_parser::make_T_EOF(loc);
+  					return yy::qrane_parser::make_T_EOF(loc);
 				}
 			}
 
