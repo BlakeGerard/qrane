@@ -1093,11 +1093,11 @@ int qrane_host::parse_options(int argc, char *argv[]) {
       break;
 
     case '?':
-      break;
+      [[fallthrough]];
 
     default:
       std::cout << help_message();
-      break;
+      return 1;
     }
   }
 
