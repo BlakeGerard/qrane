@@ -486,8 +486,6 @@ void qrane_host::parallel_process(std::vector<qrane_mainprogram> mps) {
   }
 #endif
 
-  codegen_for_all_subcircuits(mps);
-
   if (!opt->quiet) {
     std::cout << "Merging subcircuit scops ... " << std::flush;
   }

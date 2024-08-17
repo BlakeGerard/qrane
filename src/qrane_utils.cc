@@ -174,6 +174,7 @@ int qrane_utils::generate_c_test_file(std::string c_name, std::string qasm_name,
                                       std::string qreg_decls) {
   std::ofstream ofile;
   std::string ofile_name(c_name);
+  std::cout << "opening file: " << ofile_name << std::endl;
   ofile.open(ofile_name);
   if (!ofile.is_open()) {
     return 1;
