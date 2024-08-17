@@ -2,6 +2,9 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 // Global domain counting variable from qrane_ctr.hh
 unsigned int num_domains = 0;
@@ -871,6 +874,7 @@ qrane_output_scop *qrane_host::get_scop() {
 };
 
 int qrane_host::output_to_files() {
+#ifdef QRANE_USE_AQUMA
   if (opt->aquma_file) {
     std::string str = main_processor->get_aquma_scop_str();
     std::ofstream aquma_out;
@@ -883,46 +887,57 @@ int qrane_host::output_to_files() {
       return 1;
     }
   }
+#endif
 
   if (opt->codegen_file) {
+    std::cout << "Generating codegen C program\n";
     std::string codegen_c_str = main_processor->generate_codegen_c_str();
-    std::string codegen_file = std::string(opt->codegen_file);
-    std::string base_name;
-    std::string c_name;
-    std::string qasm_name;
-    std::string executable_name;
+    fs::path codegen_file = fs::path(opt->codegen_file);
+    fs::path c_name = codegen_file;
+    fs::path executable_name = codegen_file;
     std::string compile;
     std::string execute;
     std::string cleanup;
 
-    base_name = codegen_file.substr(0, codegen_file.find_last_of("."));
-    c_name = base_name + ".c";
-    qasm_name = base_name + ".qasm";
-    executable_name = "temp.exe";
+    if (fs::exists(codegen_file) && fs::file_size(codegen_file) > 0) {
+      std::cout << "Codegen file already exists and is not empty!" << std::endl;
+      return 1;
+    }
 
-    compile = "gcc -std=c11 " + c_name + " -o " + executable_name;
-    execute = "./" + executable_name;
-    cleanup = "rm " + c_name + " " + executable_name;
+    c_name.replace_extension(".c");
+    executable_name.replace_extension(".exe");
+
+    std::string c_name_string = c_name.string();
+    std::string executable_name_string = executable_name.string();
+
+    compile = "gcc -std=c11 " + c_name_string + " -o " + executable_name_string;
+    execute = "./" + executable_name_string;
+    cleanup = "rm " + c_name_string + " " + executable_name_string;
 
     int res = qrane_utils::generate_c_test_file(
-        c_name, qasm_name, codegen_c_str, main_processor->get_registers());
+        c_name, codegen_file, codegen_c_str, main_processor->get_registers());
     if (res) {
       std::cout << "Failed to open codegen file ... returning error code 1.\n";
       return 1;
     }
+    std::cout << "Compiling codegen C program\n";
     // Use std::system to compile the codegen_c_str.c file and execute it
     if (std::system(compile.c_str())) {
       std::cout << "Could not compile codegen file.\n";
       return 1;
     }
+    std::cout << "Executing codegen C program\n";
     if (std::system(execute.c_str())) {
       std::cout << "Could not execute check program.\n";
       return 1;
     }
+    std::cout << "Cleaning up codegen C program\n";
     if (std::system(cleanup.c_str())) {
       std::cout << "Error doing cleanup.\n";
       return 1;
     }
+    std::cout << "Generated OpenQASM 2.0 program: " << codegen_file.string()
+              << "\n";
   }
   return 0;
 }
