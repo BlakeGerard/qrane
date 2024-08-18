@@ -1,6 +1,6 @@
 # QRANE: Lifting QASM Programs to an Affine IR
 
-Qrane is a tool that can generate an Affine IR to describe a given OpenQASM 2.0 circuit. Qrane consumes a stream of OpenQASM 2.0 gates and tries to define a set of multi-dimensional loop nests that could have generated that gate stream. The generated IR is composed of several abstractions core to the [Polyhedral Model of compilation](http://polyhedral.info/) that characterize and potentially optimize such loop nests. Qrane may then use its Affine IR to deliver a newly scheduled OpenQASM 2.0 gate stream based around some objective.
+Qrane is a tool that can generate an Affine IR to describe a given OpenQASM 2.0 circuit. Qrane consumes a stream of OpenQASM 2.0 gates and tries to define a set of multi-dimensional loop nests that could have generated that gate stream. The generated IR is composed of several abstractions core to the [Polyhedral Model of compilation](http://polyhedral.info/) that characterize and may be used to optimize such loop nests. Qrane can then generate a new OpenQASM 2.0 program scheduled around a given objective while respecting the dependencies of the original gate stream.
 
 For a closer look at our methodology, please see our paper from *Compiler Construction 2022*: https://dl.acm.org/doi/10.1145/3497776.3517775
 
