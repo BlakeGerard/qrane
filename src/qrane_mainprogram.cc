@@ -376,8 +376,6 @@ void qrane_mainprogram::process_ddg() {
   std::vector<std::vector<unsigned int>> all_paths;
   std::vector<unsigned int> chosen_path;
   unsigned int points_processed = 0;
-  std::cout << std::endl;
-
   // Do the processing
   while (points_processed != num_qops) {
     std::vector<unsigned int> frontier = deps.get_dependence_frontier();
@@ -385,20 +383,8 @@ void qrane_mainprogram::process_ddg() {
       break;
     }
 
-    std::cout << "Frontr: ";
-    for (auto val : frontier) {
-      std::cout << val << " ";
-    }
-    std::cout << std::endl;
-
     chosen_path = one_qubit_clearing_policy(frontier);
     // chosen_path = look_ahead_policy(frontier, opt->breadth_limit);
-
-    std::cout << "Chosen: ";
-    for (auto val : chosen_path) {
-      std::cout << val << " ";
-    }
-    std::cout << std::endl;
 
 // Create the new domain and store it in the domain_map
 #pragma omp critical
