@@ -28,32 +28,53 @@ cmake --build <dir> [-- <build-tool-options>]
 
 ## Usage
 
-### Getting Started - Executable
-
 Let's get a simple example going by just pointing Qrane to an OpenQASM 2.0 circuit with the required `--qasm` parameter:
 
 ```
-qrane --qasm examples/example.qasm
+qrane --qasm example.qasm
 ```
 
 Qrane will write the reconstructed iteration domains, read/write relations, and "identity" schedule that maps each point (one gate operation) in each iteration domain to its original location in the input file. It will also show a handful of "reconstruction metrics", such as a count of the number of iteration domains of varying dimensions, the number of points (gates) captured in domains of each dimensionality, and the number of domains of each cardinality. It will also print timings for different stages of reconstruction and scheduling.
 
-### Getting Started - Library
-
-First, include the "qrane.h" header in your program, which is located in the "src/" directory.
+We can have Qrane run its series of validations of its proposed IR with the --check flag:
 
 ```
-void qrane_options_init(qrane_options* opt);
-int qrane_options_check(qrane_options* opt);
-void qrane_options_free(qrane_options* opt);
-void print_qrane_options(qrane_options* opt);
-qrane_output_scop* qrane_driver(int argc, char* argv[],
-								qrane_options* opt);
+qrane --qasm example.qasm --check
 ```
+
+Before all of the aforementioned IR structures and reconstruction metrics are printed out, Qrane will run each check pass in series, stopping execution if any one check fails:
+
+```
+<snip>
+Checking that all qops have been accounted for ... True
+Checking that recovered schedule respects dependences ... True
+Checking that all qubits have the same number of accesses ... True
+Checking that control-read dependences are a subset of control-write depedence ... True
+Checking for isomorphism between original and recovered dependence graphs .. True
+```
+
+By default, Qrane produces the _implicit_ schedule that maps each point of every iteration domain back to its original index in the gate stream. Four scheduling options based on different objectives are provided thanks to isl:
+
+```
+--isl                            Use isl's default scheduling algorithm.
+--minfuse                        Use Pluto minfuse scheduling algorithm.
+--maxfuse                        Use Pluto maxfuse scheduling algorithm.
+--feautrier                      Use Feautrier's scheduling algorithm.
+```
+
+The details of the isl default scheduling approach may be found in section 1.5.3 of the isl manual. "minfuse" and "maxfuse" set specific scheduling options to isl to encourage minimal and maximal fusion of loop domains, respectively. Feautrier's multidimensional scheduling algorithm is documented in [Some efficient solutions to the affine scheduling problem Part II: Multidimensional Time](https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=e27663e907c0a1ffb35dd22078754863632d55a7).
+
+Now that we can reconstruct and validate a possible rescheduled IR, we'd like to generate a new OpenQASM 2.0 file. We just need to direct Qrane to the filepath we want generated via the '--codegen' option:
+
+```
+qrane --qasm example.qasm --feautrier --check --codegen="new.qasm"
+```
+
+The resultant OpenQASM 2.0 program is ready for import into any other framework that reads OpenQASM 2.0 programs.
 
 ## Resources and Documentation
 
-Qrane makes extensive use of the [Integer Set Library (isl)](https://libisl.sourceforge.io/) for its polyhedral needs. Please see the [complete isl manual](https://libisl.sourceforge.io/manual.pdf) for insight on the polyhedral compilation faculties available to Qrane, thanks to isl.
+Qrane makes extensive use of the [Integer Set Library (isl)](https://libisl.sourceforge.io/) for its polyhedral needs. Please see the [complete isl manual](https://libisl.sourceforge.io/manual.pdf) for insight on the polyhedral compilation faculties available to Qrane.
 
 ## License
 

@@ -689,10 +689,10 @@ bool qrane_host::check_qubit_access_profile_equivalence() {
   std::string mainmap = main_processor->get_qubit_access_profile_str();
   std::string checkmap = check_processor->get_qubit_access_profile_str();
 
-  // if (std::system(clean.c_str())) {
-  //	std::cout << "Error during qubit access profile check cleanup.\n";
-  //	return false;
-  // }
+  if (std::system(clean.c_str())) {
+    std::cout << "Error during qubit access profile check cleanup.\n";
+    return false;
+  }
 
   std::cout << mainmap;
   std::cout << checkmap;
@@ -795,10 +795,10 @@ bool qrane_host::check_isomorphism() {
     return false;
   }
 
-  // if (std::system(clean.c_str())) {
-  //	std::cout << "Error during isomorphism check cleanup.\n";
-  //	return false;
-  // }
+  if (std::system(clean.c_str())) {
+    std::cout << "Error during isomorphism check cleanup.\n";
+    return false;
+  }
 
   delete check_processor;
 
@@ -833,12 +833,14 @@ void qrane_host::print_stats() {
             << main_processor->get_num_points() << " points." << std::endl;
   std::cout << "-------------" << std::endl;
 
+#ifdef QRANE_USE_AQUMA
   std::cout << "--- Substr ---" << std::endl;
   std::cout << "Num substr             : " << substr_count << std::endl;
   std::cout << "Max substr size        : " << max_substr_size << std::endl;
   std::cout << "Avg substr size        : " << avg_substr_size << std::endl;
   std::cout << "Avg substr occurrences : " << avg_substr_occ << std::endl;
   std::cout << "--------------" << std::endl;
+#endif
 
   std::cout << main_processor->get_domain_size_histogram_str();
   std::cout << main_processor->get_reconstruction_histogram_str();
