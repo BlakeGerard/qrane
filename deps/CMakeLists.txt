@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.14)
 
 include(ExternalProject)
-include(CMakePrintHelpers)
 
 ExternalProject_Add(
     ntl-project
-    
+
     GIT_REPOSITORY https://github.com/libntl/ntl.git
     GIT_TAG v11.5.1
 
@@ -17,8 +16,7 @@ ExternalProject_Add(
                       NTL_THREADS=on
                       NTL_THREAD_BOOST=on
     BUILD_COMMAND cd <SOURCE_DIR>/src/ && $(MAKE)
-    INSTALL_COMMAND cd <SOURCE_DIR>/src/ && $(MAKE) install
-)
+    INSTALL_COMMAND cd <SOURCE_DIR>/src/ && $(MAKE) install)
 
 ExternalProject_Get_Property(ntl-project BINARY_DIR)
 set(NTL_BINARY_DIR "${BINARY_DIR}" CACHE INTERNAL "ntl binary dir")
@@ -41,8 +39,7 @@ ExternalProject_Add(
                       --with-ntl-prefix=${NTL_BINARY_DIR}
                       "CFLAGS=${CMAKE_C_FLAGS} ${POLYLIB_CFLAGS}"
     BUILD_COMMAND $(MAKE)
-    INSTALL_COMMAND $(MAKE) install
-)
+    INSTALL_COMMAND $(MAKE) install)
 
 ExternalProject_Get_Property(barvinok-project SOURCE_DIR)
 SET(BARVINOK_SOURCE_DIR "${SOURCE_DIR}" CACHE INTERNAL "barvinok source dir")
