@@ -1,13 +1,15 @@
 #ifndef AQUMA_OPTIONS_H
 #define AQUMA_OPTIONS_H
 
+#include <string>
+
 struct qrane_options_s {
-  char *qrane_home;
-  char *qasm_file;
-  char *device_file;
-  char *codegen_file;
-  char *aquma_file;
-  char *check_qasm;
+  std::string qrane_home;
+  std::string qasm_file;
+  std::string device_file;
+  std::string codegen_file;
+  std::string aquma_file;
+  std::string check_qasm;
   bool check;
   bool quiet;
   bool membership;

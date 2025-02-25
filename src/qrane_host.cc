@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <filesystem>
 
+#include <argparse/argparse.hpp>
+
 namespace fs = std::filesystem;
 
 // Global domain counting variable from qrane_ctr.hh
@@ -24,7 +26,7 @@ qrane_host::qrane_host(qrane_options *opt, qrane_timer *timer) {
 qrane_host::~qrane_host() { delete main_processor; }
 
 int qrane_host::parse_circuit() {
-  FILE *qasm = fopen(opt->qasm_file, "r");
+  FILE *qasm = fopen(opt->qasm_file.data(), "r");
   yyin = qasm;
   yy::qrane_parser main_parser(this->main_processor);
   int result = main_parser();
@@ -715,13 +717,13 @@ int qrane_host::check_input_output_isomorphism() {
   this->main_processor = new qrane_mainprogram(opt);
   this->check_processor = new qrane_mainprogram(opt);
 
-  FILE *qasm = fopen(opt->qasm_file, "r");
+  FILE *qasm = fopen(opt->qasm_file.data(), "r");
   yyin = qasm;
   yy::qrane_parser main_parser(this->main_processor);
   int result = main_parser();
   fclose(yyin);
 
-  FILE *check = fopen(opt->check_qasm, "r");
+  FILE *check = fopen(opt->check_qasm.data(), "r");
   yyin = check;
   yy::qrane_parser check_parser(this->check_processor);
   result = check_parser();
@@ -891,7 +893,7 @@ int qrane_host::output_to_files() {
   }
 #endif
 
-  if (opt->codegen_file) {
+  if (!opt->codegen_file.empty()) {
     std::cout << "Generating codegen C program\n";
     std::string codegen_c_str = main_processor->generate_codegen_c_str();
     fs::path codegen_file = fs::path(opt->codegen_file);
@@ -945,219 +947,313 @@ int qrane_host::output_to_files() {
 }
 
 int qrane_host::parse_options(int argc, char *argv[]) {
-  int gopt;
+  // int gopt;
 
-  while (true) {
-    static struct option long_options[] = {
-        {"qasm", required_argument, 0, 0},
-        {"chunk", required_argument, 0, 1},
-        {"check", no_argument, 0, 2},
-        {"depth", required_argument, 0, 3},
-        {"search", required_argument, 0, 4},
-        {"quiet", no_argument, 0, 5},
-        {"member", no_argument, 0, 6},
-        {"isl", no_argument, 0, 7},
-        {"minfuse", no_argument, 0, 8},
-        {"maxfuse", no_argument, 0, 9},
-        {"feautrier", no_argument, 0, 10},
-        {"aquma", optional_argument, 0, 11},
-        {"codegen", optional_argument, 0, 12},
-        {"circuit", no_argument, 0, 13},
-        {"device_file", required_argument, 0, 14},
-        {"substr", no_argument, 0, 15},
-        {"help", no_argument, 0, 16},
-        {"check_qasm", required_argument, 0, 17},
-        {"write_all", no_argument, 0, 18},
-        {0, 0, 0, 0}};
+  // while (true) {
+  //   static struct option long_options[] = {
+  //       {"qasm", required_argument, 0, 0},
+  //       {"chunk", required_argument, 0, 1},
+  //       {"check", no_argument, 0, 2},
+  //       {"depth", required_argument, 0, 3},
+  //       {"search", required_argument, 0, 4},
+  //       {"quiet", no_argument, 0, 5},
+  //       {"member", no_argument, 0, 6},
+  //       {"isl", no_argument, 0, 7},
+  //       {"minfuse", no_argument, 0, 8},
+  //       {"maxfuse", no_argument, 0, 9},
+  //       {"feautrier", no_argument, 0, 10},
+  //       {"aquma", optional_argument, 0, 11},
+  //       {"codegen", optional_argument, 0, 12},
+  //       {"circuit", no_argument, 0, 13},
+  //       {"device_file", required_argument, 0, 14},
+  //       {"substr", no_argument, 0, 15},
+  //       {"help", no_argument, 0, 16},
+  //       {"check_qasm", required_argument, 0, 17},
+  //       {"write_all", no_argument, 0, 18},
+  //       {0, 0, 0, 0}};
 
-    int option_index;
-    gopt = getopt_long(argc, argv, "", long_options, &option_index);
+  //   int option_index;
+  //   gopt = getopt_long(argc, argv, "", long_options, &option_index);
 
-    if (gopt == -1) {
-      break;
-    }
+  //   if (gopt == -1) {
+  //     break;
+  //   }
 
-    switch (gopt) {
+  //   switch (gopt) {
 
-    // Qasm
-    case 0:
-      if (optarg) {
-        opt->qasm_file = optarg;
-      } else {
-        std::cout << "Please provide input qasm file.\n";
-        return 1;
-      }
-      break;
+  //   // Qasm
+  //   case 0:
+  //     if (optarg) {
+  //       opt->qasm_file = optarg;
+  //     } else {
+  //       std::cout << "Please provide input qasm file.\n";
+  //       return 1;
+  //     }
+  //     break;
 
-    // Chunk
-    case 1:
-      try {
-        opt->chunk = std::stoul(std::string(optarg));
-      } catch (const std::invalid_argument &e) {
-        std::cout << "Invalid argument for --chunk=" << std::endl;
-        return 1;
-      }
-      break;
+  //   // Chunk
+  //   case 1:
+  //     try {
+  //       opt->chunk = std::stoul(std::string(optarg));
+  //     } catch (const std::invalid_argument &e) {
+  //       std::cout << "Invalid argument for --chunk=" << std::endl;
+  //       return 1;
+  //     }
+  //     break;
 
-      // Check
-    case 2:
-      opt->check = true;
-      break;
+  //     // Check
+  //   case 2:
+  //     opt->check = true;
+  //     break;
 
-    // Lookahead depth
-    case 3:
-      try {
-        opt->breadth_limit = std::stoul(std::string(optarg));
-      } catch (const std::invalid_argument &e) {
-        std::cout << "Invalid argument for --breadth_limit=" << std::endl;
-        return 1;
-      }
-      break;
+  //   // Lookahead depth
+  //   case 3:
+  //     try {
+  //       opt->breadth_limit = std::stoul(std::string(optarg));
+  //     } catch (const std::invalid_argument &e) {
+  //       std::cout << "Invalid argument for --breadth_limit=" << std::endl;
+  //       return 1;
+  //     }
+  //     break;
 
-      // Search limit
-    case 4:
-      try {
-        opt->search_limit = std::stoul(std::string(optarg));
-      } catch (const std::invalid_argument &e) {
-        std::cout << "Invalid argument for --search_limit=" << std::endl;
-        return 1;
-      }
-      break;
+  //     // Search limit
+  //   case 4:
+  //     try {
+  //       opt->search_limit = std::stoul(std::string(optarg));
+  //     } catch (const std::invalid_argument &e) {
+  //       std::cout << "Invalid argument for --search_limit=" << std::endl;
+  //       return 1;
+  //     }
+  //     break;
 
-      // Quiet mode
-    case 5:
-      opt->quiet = true;
-      break;
+  //     // Quiet mode
+  //   case 5:
+  //     opt->quiet = true;
+  //     break;
 
-    // Membership print
-    case 6:
-      opt->membership = true;
-      break;
+  //   // Membership print
+  //   case 6:
+  //     opt->membership = true;
+  //     break;
 
-    // isl schedule mode
-    case 7:
+  //   // isl schedule mode
+  //   case 7:
+  //     opt->schedule_mode = SCHEDULE_ISL;
+  //     break;
+
+  //   // minfuse schedule mode
+  //   case 8:
+  //     opt->schedule_mode = SCHEDULE_MINFUSE;
+  //     break;
+
+  //   // maxfuse schedule mode
+  //   case 9:
+  //     opt->schedule_mode = SCHEDULE_MAXFUSE;
+  //     break;
+
+  //   // feautrier schedule mode
+  //   case 10:
+  //     opt->schedule_mode = SCHEDULE_FEAUTRIER;
+  //     break;
+
+  //   // to aquma
+  //   case 11:
+  //     if (optarg) {
+  //       opt->aquma_file = optarg;
+  //     } else {
+  //       assert(false);
+  //     }
+  //     break;
+
+  //   // to C
+  //   case 12:
+  //     if (optarg) {
+  //       opt->codegen_file = optarg;
+  //     } else {
+  //       assert(false);
+  //     }
+  //     break;
+
+  //   // grid mode
+  //   case 13:
+  //     opt->process_mode = PROCESS_GRID;
+  //     break;
+
+  //   case 14:
+  //     if (optarg) {
+  //       opt->device_file = optarg;
+  //     } else {
+  //       std::cout << "Must provide a device file.\n";
+  //       return 1;
+  //     }
+  //     break;
+
+  //   case 15:
+  //     opt->substr = true;
+  //     break;
+
+  //   // help
+  //   case 16:
+  //     std::cout << help_message();
+  //     std::exit(0);
+
+  //   // Check qasm file
+  //   case 17:
+  //     if (optarg) {
+  //       opt->check_qasm = optarg;
+  //     } else {
+  //       std::cout << "Please provide check qasm file.\n";
+  //       return 1;
+  //     }
+  //     break;
+
+  //   case 18:
+  //     opt->write_all = true;
+  //     break;
+
+  //   case '?':
+  //     [[fallthrough]];
+
+  //   default:
+  //     std::cout << help_message();
+  //     return 1;
+  //   }
+  // }
+
+  argparse::ArgumentParser program("qrane");
+
+  program.add_argument("qasm")
+      .help("Input QASM file")
+      .required()
+      .store_into(opt->qasm_file);
+
+  program.add_argument("--chunk")
+      .help("Divide the QASM file into this many sub-circuits processed independently.")
+      .scan<'u', unsigned int>()
+      .store_into(opt->chunk);
+
+  program.add_argument("--check")
+      .help("Run validity checks on recovered polyhedral structures.")
+      .flag()
+      .store_into(opt->check);
+
+  program.add_argument("--depth")
+      .help("Lookahead depth for the look-ahead policy.")
+      .scan<'u', unsigned int>()
+      .store_into(opt->breadth_limit);
+
+  program.add_argument("--search")
+      .help("Search limit in nD phase. Smaller values improve execution time.")
+      .scan<'u', unsigned int>()
+      .store_into(opt->search_limit);
+
+  program.add_argument("--quiet")
+      .help("Enable quiet mode")
+      .flag()
+      .store_into(opt->quiet);
+
+  program.add_argument("--member")
+      .help("Enable membership print")
+      .flag()
+      .store_into(opt->membership);
+
+  program.add_argument("--isl").help("Set schedule mode to ISL").flag();
+
+  program.add_argument("--minfuse").help("Set schedule mode to MINFUSE").flag();
+
+  program.add_argument("--maxfuse").help("Set schedule mode to MAXFUSE").flag();
+
+  program.add_argument("--feautrier")
+      .help("Set schedule mode to FEAUTRIER")
+      .flag();
+
+  program.add_argument("--aquma")
+      .help("Output to Aquma file (requires AQUMA).")
+      .default_value(std::string{})
+      .store_into(opt->aquma_file);
+
+  program.add_argument("--codegen")
+      .help("Generate new QASM file from potentially optimized polyhedral structures.")
+      .default_value(std::string{})
+      .store_into(opt->codegen_file);
+
+  program.add_argument("--circuit").help("Enable plinko grid process mode").flag();
+
+  program.add_argument("--device_file")
+      .help("Qubit connection topology file.")
+      .default_value(std::string{})
+      .store_into(opt->device_file);
+
+  program.add_argument("--substr")
+      .help("Enable substring processing (requires AQUMA).")
+      .flag()
+      .store_into(opt->substr);
+
+  program.add_argument("--check_qasm")
+      .help("QASM file to check.")
+      .default_value(std::string{})
+      .store_into(opt->check_qasm);
+
+  program.add_argument("--write_all")
+      .help("Print the time space -> domain space map.")
+      .flag()
+      .store_into(opt->write_all);
+
+  try {
+    program.parse_args(argc, argv);
+
+    // Set schedule mode based on flags
+    if (program.get<bool>("--isl"))
       opt->schedule_mode = SCHEDULE_ISL;
-      break;
-
-    // minfuse schedule mode
-    case 8:
+    if (program.get<bool>("--minfuse"))
       opt->schedule_mode = SCHEDULE_MINFUSE;
-      break;
-
-    // maxfuse schedule mode
-    case 9:
+    if (program.get<bool>("--maxfuse"))
       opt->schedule_mode = SCHEDULE_MAXFUSE;
-      break;
-
-    // feautrier schedule mode
-    case 10:
+    if (program.get<bool>("--feautrier"))
       opt->schedule_mode = SCHEDULE_FEAUTRIER;
-      break;
 
-    // to aquma
-    case 11:
-      if (optarg) {
-        opt->aquma_file = optarg;
-      } else {
-        assert(false);
-      }
-      break;
+    opt->process_mode =
+      program.get<bool>("--circuit") ? PROCESS_GRID : PROCESS_DDG;
 
-    // to C
-    case 12:
-      if (optarg) {
-        opt->codegen_file = optarg;
-      } else {
-        assert(false);
-      }
-      break;
-
-    // grid mode
-    case 13:
-      opt->process_mode = PROCESS_GRID;
-      break;
-
-    case 14:
-      if (optarg) {
-        opt->device_file = optarg;
-      } else {
-        std::cout << "Must provide a device file.\n";
-        return 1;
-      }
-      break;
-
-    case 15:
-      opt->substr = true;
-      break;
-
-    // help
-    case 16:
-      std::cout << help_message();
-      std::exit(0);
-
-    // Check qasm file
-    case 17:
-      if (optarg) {
-        opt->check_qasm = optarg;
-      } else {
-        std::cout << "Please provide check qasm file.\n";
-        return 1;
-      }
-      break;
-
-    case 18:
-      opt->write_all = true;
-      break;
-
-    case '?':
-      [[fallthrough]];
-
-    default:
-      std::cout << help_message();
-      return 1;
-    }
+  } catch (const std::exception &err) {
+    std::cerr << "Error: " << err.what() << std::endl;
+    std::cerr << program;
+    return 1;
   }
 
   return validate_options();
 };
 
 int qrane_host::validate_options() const {
-  if (opt->qasm_file == nullptr) {
-    printf("Please provide an OpenQASM file path with --qasm <path>.\n");
-    return 1;
-  }
-
   FILE *check;
 
   // Verify the qasm file if supplied
-  if (opt->qasm_file) {
-    if ((check = fopen(opt->qasm_file, "r"))) {
+  if ((check = fopen(opt->qasm_file.data(), "r"))) {
       fclose(check);
     } else {
-      printf("OpenQASM file %s not found ... Aborting.", opt->qasm_file);
+    printf("OpenQASM file %s not found ... Aborting.", opt->qasm_file.data());
       return 1;
     }
-  }
 
   // Verify the codegen file if supplied
-  if (opt->codegen_file) {
-    if ((check = fopen(opt->codegen_file, "w"))) {
+  if (!opt->codegen_file.empty()) {
+    if ((check = fopen(opt->codegen_file.data(), "w"))) {
       fclose(check);
     } else {
       printf("Failed to create or open codegen file %s ... Aborting.",
-             opt->codegen_file);
+             opt->codegen_file.data());
       return 1;
     }
   }
 
 #ifdef QRANE_USE_AQUMA
   // Verify the aquma output file if supplied
-  if (opt->aquma_file) {
-    if ((check = fopen(opt->codegen_file, "w"))) {
+  if (!opt->aquma_file.empty()) {
+    if ((check = fopen(opt->codegen_file.data(), "w"))) {
       fclose(check);
     } else {
       printf("Failed to create or open aquma output file %s ... Aborting.",
-             opt->aquma_file);
+             opt->aquma_file.data());
       return 1;
     }
   }
@@ -1165,59 +1261,4 @@ int qrane_host::validate_options() const {
 
   // Everything checks out
   return 0;
-}
-
-std::string qrane_host::help_message() {
-  std::ostringstream strm;
-  strm << "----------- Options -----------" << std::endl;
-  strm << "--qasm=<path/to/*.qasm>          REQUIRED: Path to qasm input file."
-       << std::endl;
-  strm << "--chunk=<ui>                     Set the size of each subcircuit to "
-          "process."
-       << std::endl;
-  strm << "--check                          Check mode. Run all three "
-          "verification checks."
-       << std::endl;
-  strm << "--depth=<ui>                     Look-ahead depth for the "
-          "look-ahead policy."
-       << std::endl;
-  strm << "--search=<ui>                    Search limit in nD phase."
-       << std::endl;
-  strm << "--quiet                          Quiet mode. Only send domain size "
-          "histogram, checks, and stats to stdout."
-       << std::endl;
-  strm << "--member                         Print the time space -> domain "
-          "space map."
-       << std::endl;
-  strm << "--substr                         Use aquma-substring based circuit "
-          "decomposition tactic."
-       << std::endl;
-  strm << "--write_all                     Consider all qubit accesses as "
-          "write-only."
-       << std::endl;
-  strm << "--isl                            Use isl's default scheduling "
-          "algorithm."
-       << std::endl;
-  strm << "--minfuse                        Use Pluto minfuse scheduling "
-          "algorithm."
-       << std::endl;
-  strm << "--maxfuse                        Use Pluto maxfuse scheduling "
-          "algorithm."
-       << std::endl;
-  strm << "--feautrier                      Use Feautrier's scheduling "
-          "algorithm."
-       << std::endl;
-  strm << "--aquma=<path/to/output/file>    Generate .aquma file with "
-          "iteration domain and access relations."
-       << std::endl;
-  strm << "--codegen=<path/to/output/file>  Generate compilable C file "
-          "containing isl codegen output at filepath."
-       << std::endl;
-  strm << "--circuit                        Process the plinko grid instead of "
-          "dependence graph."
-       << std::endl;
-  strm << "--help                           Print this help message."
-       << std::endl;
-  strm << "-------------------------------" << std::endl;
-  return strm.str();
 }

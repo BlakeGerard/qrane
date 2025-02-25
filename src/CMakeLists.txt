@@ -44,7 +44,8 @@ target_link_libraries(qrane PRIVATE "${BARVINOK_BINARY_DIR}/lib/libbarvinok.a"
                                     "${NTL_BINARY_DIR}/lib/libntl.a"
                                     ${Python_LIBRARIES}
                                     gmp
-                                    OpenMP::OpenMP_CXX)
+                                    OpenMP::OpenMP_CXX
+                                    argparse)
 
 target_compile_features(qrane PRIVATE cxx_std_17)
 

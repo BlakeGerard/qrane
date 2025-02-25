@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 include(ExternalProject)
+include(FetchContent)
 
 ExternalProject_Add(
     ntl-project
@@ -48,3 +49,12 @@ ExternalProject_Get_Property(barvinok-project BINARY_DIR)
 SET(BARVINOK_BINARY_DIR "${BINARY_DIR}" CACHE INTERNAL "barvinok binary dir")
 
 add_dependencies(barvinok-project ntl-project)
+
+# Fetch latest p-ranav/argparse
+include(FetchContent)
+FetchContent_Declare(
+    argparse
+    GIT_REPOSITORY https://github.com/p-ranav/argparse.git
+)
+FetchContent_MakeAvailable(argparse)
+

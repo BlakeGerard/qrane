@@ -1,11 +1,10 @@
 #include "qrane.h"
 
 void qrane_options_init(qrane_options *opt) {
-  opt->qrane_home = std::getenv("QRANE_HOME");
-  opt->qasm_file = NULL;
-  opt->device_file = NULL;
-  opt->codegen_file = NULL;
-  opt->aquma_file = NULL;
+  opt->qasm_file = std::string();
+  opt->device_file = std::string();
+  opt->codegen_file = std::string{};
+  opt->aquma_file = std::string{};
   opt->check = false;
   opt->quiet = false;
   opt->membership = false;
@@ -19,43 +18,38 @@ void qrane_options_init(qrane_options *opt) {
 }
 
 int qrane_options_check(qrane_options *opt) {
-  if (!opt->qrane_home) {
-    return 1;
-  }
-  if (!opt->qasm_file) {
+  if (opt->qasm_file.empty()) {
     return 1;
   }
 
   FILE *check;
 
   // Verify the qasm file if supplied
-  if (opt->qasm_file) {
-    if ((check = fopen(opt->qasm_file, "r"))) {
-      fclose(check);
-    } else {
-      printf("OpenQASM file %s not found ... Aborting.", opt->qasm_file);
+  if ((check = fopen(opt->qasm_file.data(), "r"))) {
+       fclose(check);
+  } else {
+      printf("OpenQASM file %s not found ... Aborting.", opt->qasm_file.data());
       return 1;
-    }
   }
 
   // Verify the codegen file if supplied
-  if (opt->codegen_file) {
-    if ((check = fopen(opt->codegen_file, "w"))) {
+  if (!opt->codegen_file.empty()) {
+    if ((check = fopen(opt->codegen_file.data(), "w"))) {
       fclose(check);
     } else {
       printf("Failed to create or open codegen file %s ... Aborting.",
-             opt->codegen_file);
+             opt->codegen_file.data());
       return 1;
     }
   }
 
   // Verify the aquma output file if supplied
-  if (opt->aquma_file) {
-    if ((check = fopen(opt->codegen_file, "w"))) {
+  if (!opt->aquma_file.empty()) {
+    if ((check = fopen(opt->codegen_file.data(), "w"))) {
       fclose(check);
     } else {
       printf("Failed to create or open aquma output file %s ... Aborting.",
-             opt->aquma_file);
+             opt->aquma_file.data());
       return 1;
     }
   }
@@ -68,8 +62,7 @@ void qrane_options_free(qrane_options *opt) {}
 
 void print_qrane_options(qrane_options *opt) {
   printf("Collected Qrane options: \n");
-  printf("\tQRANE_HOME              : %s\n", opt->qrane_home);
-  printf("\tQasm Input              : %s\n", opt->qasm_file);
+  printf("\tQasm Input              : %s\n", opt->qasm_file.data());
   printf("\tCheck                   : %s\n", opt->check ? "True" : "False");
   printf("\tQuiet                   : %s\n", opt->quiet ? "True" : "False");
   printf("\tMembership              : %s\n",
